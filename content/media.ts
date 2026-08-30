@@ -30,6 +30,17 @@ export const introVideo: VideoSource = {
 /** Only used while `introVideo.src` is unset, to drive the progress indicator. */
 export const introFallbackDurationMs = 6000;
 
+/**
+ * How often the cinematic intro plays, on every device (desktop and
+ * mobile behave identically):
+ *  - "always":            every full page load.
+ *  - "once-per-session":  first load only; repeat visits in the same
+ *                         browser session go straight to the hero.
+ * Visitors with the OS-level "reduce motion" preference always skip the
+ * intro regardless of this setting.
+ */
+export const introFrequency: "always" | "once-per-session" = "always";
+
 export const heroVideo: VideoSource = {
   // Supplied hero film (12s loop, 16:9). Optimized from the 4K master to
   // 1080p30 h264, muted, faststart. Poster is the film's first frame so

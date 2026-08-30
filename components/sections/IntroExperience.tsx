@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { introFrequency } from "@/content/media";
 import { IntroVideo } from "@/components/sections/IntroVideo";
 import { Hero } from "@/components/sections/Hero";
 
@@ -16,8 +17,13 @@ const SESSION_KEY = "ysc-intro-seen";
  *   "intro"     — the intro overlay is the primary media experience.
  *                 The Hero stays poster-only underneath it.
  *   "hero"      — the intro has completed / been skipped / failed, or was
- *                 never eligible (reduced motion, repeat visit). Only now
- *                 does the Hero video become active.
+ *                 never eligible (reduced motion; repeat visit when
+ *                 introFrequency is "once-per-session"). Only now does
+ *                 the Hero video become active.
+ *
+ * The same flow runs on every device — desktop and mobile. Whether the
+ * intro repeats on later loads is configured centrally via
+ * `introFrequency` in content/media.ts.
  *
  * The Hero is mounted throughout (never remounted), so the intro's fade
  * reveals an already-rendered layer with no layout shift.
@@ -33,10 +39,12 @@ export function IntroExperience() {
     ).matches;
 
     let alreadySeen = false;
-    try {
-      alreadySeen = sessionStorage.getItem(SESSION_KEY) === "1";
-    } catch {
-      // Storage unavailable (private mode etc.) — treat as first visit.
+    if (introFrequency === "once-per-session") {
+      try {
+        alreadySeen = sessionStorage.getItem(SESSION_KEY) === "1";
+      } catch {
+        // Storage unavailable (private mode etc.) — treat as first visit.
+      }
     }
 
     const nextPhase: EntryPhase =
