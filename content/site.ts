@@ -55,8 +55,10 @@ export function getWhatsAppUrl(customMessage?: string): string | null {
 }
 
 export const externalLinks = {
-  // TODO: replace with the confirmed URL for the 3D location experience.
-  explore3d: "https://example.com/yamuna-sky-city-3d",
+  // External 3D location experience (client-supplied). If ever cleared,
+  // the 3D section falls back to a link-less "Coming Soon" preview —
+  // visitors are never sent to a fake destination.
+  explore3d: "https://www.turiya.co/360/YamunaSkyCity/",
 } as const;
 
 export const ctaLabels = {

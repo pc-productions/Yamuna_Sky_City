@@ -1,4 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- TEMPORARY private-viewing background — replace with a real project
+       render / cinematic still (see content/media.ts
+       privateViewingBackground). Deliberately neutral: gradient and
+       hairlines only, no development labels visible to visitors. -->
   <defs>
     <radialGradient id="g" cx="30%" cy="30%" r="90%">
       <stop offset="0%" stop-color="#26469d"/>
@@ -12,5 +16,4 @@
     <line x1="0" y1="960" x2="1920" y2="780"/>
     <line x1="0" y1="1020" x2="1920" y2="860"/>
   </g>
-  <text x="120" y="1000" font-family="Arial, sans-serif" font-size="14" fill="#8d90a1" letter-spacing="5">PROJECT VISUAL — PLACEHOLDER</text>
 </svg>

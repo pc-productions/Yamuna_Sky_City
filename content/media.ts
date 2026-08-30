@@ -39,7 +39,7 @@ export const introFallbackDurationMs = 6000;
  * Visitors with the OS-level "reduce motion" preference always skip the
  * intro regardless of this setting.
  */
-export const introFrequency: "always" | "once-per-session" = "always";
+export const introFrequency: "always" | "once-per-session" = "once-per-session";
 
 export const heroVideo: VideoSource = {
   // Supplied hero film (12s loop, 16:9). Optimized from the 4K master to

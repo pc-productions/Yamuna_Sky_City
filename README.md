@@ -42,7 +42,8 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 - **Private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
 - **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty; both sections currently render as minimal editorial statements (eyebrow + heading only) and expand to their full presentations automatically once verified entries/figures are added — nothing is invented, no placeholder rows are shown.
 - **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
-- **3D experience URL, production domain** (`content/site.ts`): marked with `TODO` comments.
+- **3D experience URL**: DONE — configured in `content/site.ts` (clearing it falls back to a link-less "Coming Soon" preview). **Production domain**: still a `TODO` in `content/site.ts`.
+- **Temporary visuals** (intro poster, private-viewing background, 3D preview): neutral brand-toned graphics with no development labels; marked TEMPORARY in the SVG sources — replace via `content/media.ts`.
 - **Privacy Policy / Terms pages** (`app/privacy-policy`, `app/terms`): placeholder copy.
 - **Lead backend**: see above — not connected by default.
 

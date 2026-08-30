@@ -1,4 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- TEMPORARY intro frame — replace when the final cinematic intro film
+       is supplied (see content/media.ts introVideo). Deliberately neutral:
+       wordmark only, no development labels visible to visitors. -->
   <defs>
     <radialGradient id="g" cx="50%" cy="42%" r="75%">
       <stop offset="0%" stop-color="#1a2b5c"/>
@@ -15,7 +18,5 @@
     <line x1="1100" y1="1080" x2="1080" y2="340"/>
   </g>
   <!-- Kept narrow and centered so it survives object-cover cropping on tall/narrow (mobile) viewports. -->
-  <text x="960" y="552" text-anchor="middle" font-family="Georgia, serif" font-size="40" fill="#e8eaf2" letter-spacing="1">YAMUNA SKY CITY</text>
-  <text x="960" y="588" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8d90a1" letter-spacing="3">CINEMATIC INTRO</text>
-  <text x="960" y="608" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8d90a1" letter-spacing="3">PLACEHOLDER FRAME</text>
+  <text x="960" y="560" text-anchor="middle" font-family="Georgia, serif" font-size="40" fill="#e8eaf2" letter-spacing="1">YAMUNA SKY CITY</text>
 </svg>
