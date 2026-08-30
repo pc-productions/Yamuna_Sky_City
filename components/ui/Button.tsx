@@ -3,20 +3,25 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 type Variant = "primary" | "outline-light" | "outline-dark" | "ghost-dark" | "ghost-light";
 type Size = "default" | "large";
 
+/*
+ * Sharp-cornered, letter-spaced CTA system. Luxury restraint: no radius,
+ * no shadows, no gradients — hierarchy comes from fill vs. hairline
+ * outline vs. quiet text, and a single unhurried hover transition.
+ */
 const base =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-xs font-semibold uppercase tracking-[0.15em] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-[0.6875rem] font-semibold uppercase tracking-[0.22em] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-white hover:bg-brand-dark",
-  "outline-light": "border border-white/70 text-white hover:bg-white/10",
-  "outline-dark": "border border-ink/30 text-ink hover:border-brand hover:text-brand",
+  "outline-light": "border border-white/60 text-white hover:border-white hover:bg-white hover:text-night",
+  "outline-dark": "border border-ink/25 text-ink hover:border-brand hover:text-brand",
   "ghost-dark": "text-mist hover:text-white",
   "ghost-light": "text-ink-muted hover:text-brand",
 };
 
 const sizes: Record<Size, string> = {
-  default: "px-6 py-3.5",
-  large: "px-8 py-4.5 text-sm",
+  default: "px-7 py-3.5",
+  large: "px-10 py-[1.125rem] text-xs tracking-[0.24em]",
 };
 
 type CommonProps = {

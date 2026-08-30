@@ -6,26 +6,26 @@ import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Location is presented as a designed static image asset (not a live/
- * interactive map). Swap `locationImage.src` in content/media.ts to
- * replace it — no component changes needed.
+ * interactive map) — the custom connectivity diagram is the centerpiece
+ * and the surrounding typography deliberately stays quiet. Swap
+ * `locationImage.src` in content/media.ts to replace the artwork; the
+ * aspect-ratio box keeps loading stable and distortion-free.
  */
 export function Location() {
   return (
-    <section id="location" className="scroll-mt-18 bg-paper-muted py-24 sm:py-32">
-      <Container className="flex flex-col gap-14">
+    <section id="location" className="section-pad scroll-mt-18 bg-paper">
+      <Container>
         <Reveal>
-          {/* Neutral framing only — connectivity/positioning claims belong in
-              the final approved diagram artwork, not invented copy here. */}
           <SectionHeading eyebrow="Location" heading="The Location." />
         </Reveal>
 
-        <Reveal delayMs={100}>
-          <div className="relative mx-auto aspect-square w-full max-w-3xl overflow-hidden border border-line bg-paper">
+        <Reveal delayMs={100} className="mt-16 sm:mt-24">
+          <div className="relative mx-auto aspect-square w-full max-w-4xl">
             <Image
               src={locationImage.src}
               alt={locationImage.alt}
               fill
-              sizes="(min-width: 1024px) 768px, 100vw"
+              sizes="(min-width: 1024px) 896px, 100vw"
               className="object-contain"
               loading="lazy"
             />

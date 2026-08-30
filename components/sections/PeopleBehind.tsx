@@ -27,8 +27,8 @@ export function PeopleBehind() {
   if (contributors.length === 0) return null;
 
   return (
-    <section className="bg-paper py-24 sm:py-32">
-      <Container className="flex flex-col gap-16">
+    <section className="section-pad bg-paper">
+      <Container className="flex flex-col gap-16 sm:gap-24">
         <Reveal>
           <SectionHeading
             eyebrow="People Behind the Project"
@@ -39,13 +39,11 @@ export function PeopleBehind() {
         <div className="flex flex-col divide-y divide-line border-y border-line">
           {contributors.map((person, i) => (
             <Reveal key={`${person.role}-${i}`} delayMs={i * 60}>
-              <div className="flex flex-col gap-6 py-8 sm:flex-row sm:items-start">
+              <div className="flex flex-col gap-6 py-10 sm:flex-row sm:items-start sm:gap-10">
                 <Initials name={person.name} />
-                <div className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
-                    {person.role}
-                  </span>
-                  <h3 className="font-display text-2xl font-medium text-ink">{person.name}</h3>
+                <div className="flex flex-col gap-1.5">
+                  <span className="eyebrow text-brand">{person.role}</span>
+                  <h3 className="font-display text-2xl text-ink">{person.name}</h3>
                   <p className="text-sm text-ink-muted">{person.organization}</p>
                   <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-faint">
                     {person.description}

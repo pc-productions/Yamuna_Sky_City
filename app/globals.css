@@ -5,29 +5,29 @@
  *
  * Single source of truth for color, type and spacing primitives.
  * Brand blue (#26469D) is used deliberately, not on every element —
- * see component-level usage for hierarchy.
+ * luxury comes from typography, proportion and restraint, with the blue
+ * reserved for identity moments (eyebrows, primary CTAs, selection).
  * ---------------------------------------------------------------------- */
 :root {
   /* Brand */
   --color-brand: #26469d;
-  --color-brand-dark: #172c66;
+  --color-brand-dark: #1b3474;
   --color-brand-light: #5b78c4;
   --color-brand-tint: #eef1f8;
 
   /* Neutrals — light surface */
   --color-paper: #faf9f6;
-  --color-paper-muted: #f1efe9;
+  --color-paper-muted: #f2f0eb;
   --color-ink: #14161c;
   --color-ink-muted: #4a4d57;
   --color-ink-faint: #8a8d97;
-  --color-line: #e2e0d9;
+  --color-line: #e4e2db;
 
   /* Neutrals — dark surface */
   --color-night: #0a0d16;
-  --color-night-elevated: #12162350;
   --color-mist: #d7d9e2;
   --color-mist-muted: #8d90a1;
-  --color-line-dark: #262b3b;
+  --color-line-dark: #232838;
 
   --font-display: var(--font-fraunces);
   --font-body: var(--font-inter);
@@ -55,6 +55,50 @@
   --font-body: var(--font-body);
 }
 
+/* ---------------------------------------------------------------------- *
+ * Typography scale — editorial display sizes (fluid).
+ * Generates text-display-* / text-stat-* utilities via Tailwind v4 theme.
+ * Keep this the only place display sizes are defined.
+ * ---------------------------------------------------------------------- */
+@theme {
+  /* Hero-scale project title */
+  --text-display-xl: clamp(3.25rem, 8vw, 6.5rem);
+  --text-display-xl--line-height: 1;
+  --text-display-xl--letter-spacing: -0.02em;
+
+  /* Primary section headings */
+  --text-display-lg: clamp(2.5rem, 4.5vw, 4rem);
+  --text-display-lg--line-height: 1.08;
+  --text-display-lg--letter-spacing: -0.015em;
+
+  /* Secondary display (modal headings, sub-compositions) */
+  --text-display-md: clamp(1.875rem, 3vw, 2.5rem);
+  --text-display-md--line-height: 1.15;
+  --text-display-md--letter-spacing: -0.01em;
+
+  /* Project fact values — architectural numerals */
+  --text-stat-lg: clamp(3.25rem, 6.5vw, 5.75rem);
+  --text-stat-lg--line-height: 1;
+  --text-stat-lg--letter-spacing: -0.02em;
+
+  --text-stat-md: clamp(2.25rem, 4vw, 3.5rem);
+  --text-stat-md--line-height: 1.05;
+  --text-stat-md--letter-spacing: -0.015em;
+}
+
+/* Consistent section vertical rhythm — tune the whole site here. */
+@utility section-pad {
+  padding-block: clamp(5.5rem, 11vw, 10rem);
+}
+
+/* Understated editorial eyebrow label. */
+@utility eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -63,6 +107,8 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body);
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -70,7 +116,8 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  letter-spacing: -0.01em;
+  font-weight: 450;
+  letter-spacing: -0.015em;
 }
 
 ::selection {
@@ -82,7 +129,7 @@ h4 {
 :focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 .dark-surface :focus-visible {

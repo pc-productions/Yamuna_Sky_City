@@ -21,7 +21,7 @@ export function EnquiryModal({
         type="button"
         aria-label="Close"
         onClick={onClose}
-        className="absolute inset-0 bg-night/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-night/75 backdrop-blur-sm"
       />
 
       <div
@@ -29,23 +29,24 @@ export function EnquiryModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="enquiry-modal-heading"
-        className="relative flex max-h-[90vh] w-full flex-col overflow-y-auto bg-paper p-8 sm:max-w-md sm:rounded-sm sm:p-10"
+        className="relative flex max-h-[92vh] w-full flex-col overflow-y-auto bg-paper px-8 py-10 sm:max-w-md sm:px-12 sm:py-14"
       >
         <button
           type="button"
           onClick={onClose}
           aria-label="Close enquiry form"
-          className="absolute right-6 top-6 text-2xl leading-none text-ink-muted transition-colors hover:text-brand"
+          className="absolute right-6 top-6 flex size-9 items-center justify-center text-xl leading-none text-ink-faint transition-colors duration-300 hover:text-ink"
         >
           &times;
         </button>
 
-        <h2 id="enquiry-modal-heading" className="font-display pr-8 text-3xl font-medium text-ink">
+        <span className="eyebrow text-brand">Private Viewing</span>
+        <h2 id="enquiry-modal-heading" className="text-display-md mt-6 pr-6 text-ink">
           {formCopy.heading}
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-ink-muted">{formCopy.supportingLine}</p>
+        <p className="mt-4 text-sm leading-relaxed text-ink-muted">{formCopy.supportingLine}</p>
 
-        <div className="mt-8">
+        <div className="mt-10">
           <EnquiryForm source="modal" tone="light" />
         </div>
       </div>

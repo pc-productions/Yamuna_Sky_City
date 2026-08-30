@@ -26,8 +26,11 @@ export function FormField({
   const labelTone = tone === "dark" ? "text-mist-muted" : "text-ink-muted";
 
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={inputId} className={`text-xs font-semibold uppercase tracking-[0.1em] ${labelTone}`}>
+    <div className="flex flex-col gap-2.5">
+      <label
+        htmlFor={inputId}
+        className={`text-[0.6875rem] font-semibold uppercase tracking-[0.16em] ${labelTone}`}
+      >
         {field.label}
         {field.required && <span aria-hidden="true"> *</span>}
       </label>

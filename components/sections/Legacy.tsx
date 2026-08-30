@@ -13,8 +13,8 @@ export function Legacy() {
   if (!hasLegacyContent()) return null;
 
   return (
-    <section id="legacy" className="dark-surface scroll-mt-18 bg-night py-24 text-mist sm:py-32">
-      <Container className="flex flex-col gap-16">
+    <section id="legacy" className="dark-surface section-pad scroll-mt-18 bg-night text-mist">
+      <Container className="flex flex-col gap-16 sm:gap-24">
         <Reveal>
           <SectionHeading
             eyebrow={legacyContent.eyebrow}

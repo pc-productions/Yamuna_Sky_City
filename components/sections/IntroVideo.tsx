@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { introVideo, introFallbackDurationMs } from "@/content/media";
-import { ctaLabels } from "@/content/site";
+import { brand, ctaLabels } from "@/content/site";
 import { VideoBackground } from "@/components/ui/VideoBackground";
 
 /**
@@ -74,21 +74,33 @@ export function IntroVideo({ onComplete }: { onComplete: () => void }) {
         />
       </div>
 
-      <div className="relative z-10 flex w-full flex-col gap-6 p-8 sm:p-12">
-        <div className="h-px w-full max-w-xs bg-white/20">
-          <div
-            className="h-full bg-white/80 transition-[width] duration-100 ease-linear"
-            style={{ width: `${progress * 100}%` }}
-          />
-        </div>
+      {/* Quiet wordmark — the film stays the dominant experience. */}
+      <span className="absolute left-8 top-8 z-10 font-display text-base tracking-tight text-white/85 sm:left-12 sm:top-10">
+        {brand.name}
+      </span>
 
-        <button
-          type="button"
-          onClick={finish}
-          className="self-start text-xs font-semibold uppercase tracking-[0.2em] text-white/80 transition-colors hover:text-white"
-        >
-          {ctaLabels.skipIntro} &rarr;
-        </button>
+      {/* Discreet skip control, bottom-right. */}
+      <button
+        type="button"
+        onClick={finish}
+        className="absolute bottom-10 right-8 z-10 border-b border-white/30 pb-1 text-[0.6875rem] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors duration-300 hover:border-white hover:text-white sm:bottom-12 sm:right-12"
+      >
+        {ctaLabels.skipIntro}
+      </button>
+
+      {/* Hairline progress along the very bottom edge. */}
+      <div
+        className="absolute inset-x-0 bottom-0 z-10 h-px bg-white/15"
+        role="progressbar"
+        aria-label="Intro progress"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress * 100)}
+      >
+        <div
+          className="h-full bg-white/80 transition-[width] duration-100 ease-linear"
+          style={{ width: `${progress * 100}%` }}
+        />
       </div>
     </div>
   );
