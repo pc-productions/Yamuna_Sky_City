@@ -7,11 +7,11 @@ export type LegacyStat = {
  * Yamuna's Legacy section content.
  *
  * NOT YET SUPPLIED — no verified legacy narrative, history, or figures
- * have been confirmed. `body` is empty and `legacyStats` is an empty
- * array; the Legacy section renders nothing while both are empty, so no
- * invented years/project-counts/square-footage ever reach visitors.
- * Populate with verified content only; the section appears automatically
- * once data exists.
+ * have been confirmed. While `body` is empty and `legacyStats` has no
+ * entries, the section renders as a minimal dark editorial statement
+ * (eyebrow + heading only) — no invented years/project-counts/square-
+ * footage, no placeholder dashes. Populate with verified content only;
+ * the full presentation appears automatically.
  */
 export const legacyContent = {
   eyebrow: "Yamuna's Legacy",
@@ -22,8 +22,3 @@ export const legacyContent = {
 export const legacyStats: LegacyStat[] = [
   // e.g. { value: "…", label: "Years of Experience" } — verified figures only.
 ];
-
-/** True once any real legacy content exists — drives section visibility. */
-export function hasLegacyContent(): boolean {
-  return legacyContent.body.length > 0 || legacyStats.length > 0;
-}

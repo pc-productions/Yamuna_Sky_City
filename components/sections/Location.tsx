@@ -1,35 +1,64 @@
 import Image from "next/image";
 import { locationImage } from "@/content/media";
+import { connectivity, locationContent } from "@/content/location";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Location is presented as a designed static image asset (not a live/
- * interactive map) — the custom connectivity diagram is the centerpiece
- * and the surrounding typography deliberately stays quiet. Swap
- * `locationImage.src` in content/media.ts to replace the artwork; the
- * aspect-ratio box keeps loading stable and distortion-free.
+ * interactive map) — the approved "Perfectly Connected" connectivity
+ * artwork is the centerpiece; the surrounding typography stays quiet.
+ * Copy lives in content/location.ts; swap `locationImage.src` in
+ * content/media.ts to drop in the final export. The fixed aspect-ratio
+ * frame keeps loading stable and distortion-free.
  */
 export function Location() {
   return (
-    <section id="location" className="section-pad scroll-mt-18 bg-paper">
+    <section id="location" className="section-pad scroll-mt-18 bg-paper-muted">
       <Container>
         <Reveal>
-          <SectionHeading eyebrow="Location" heading="The Location." />
+          <SectionHeading
+            eyebrow={locationContent.eyebrow}
+            heading={locationContent.heading}
+            supportingLine={locationContent.supportingLine}
+          />
         </Reveal>
 
         <Reveal delayMs={100} className="mt-16 sm:mt-24">
-          <div className="relative mx-auto aspect-square w-full max-w-4xl">
+          <div
+            className="relative w-full overflow-hidden"
+            style={{ aspectRatio: locationImage.aspect }}
+          >
             <Image
               src={locationImage.src}
               alt={locationImage.alt}
               fill
-              sizes="(min-width: 1024px) 896px, 100vw"
-              className="object-contain"
+              sizes="(min-width: 1280px) 1152px, 100vw"
+              className="object-cover"
               loading="lazy"
             />
           </div>
+        </Reveal>
+
+        {/* The artwork's labels are too small to read on phones, so the
+            same verified travel times (content/location.ts) render as a
+            quiet list on mobile only — the image stays the sole carrier
+            of this data on larger screens. */}
+        <Reveal delayMs={150} className="mt-12 sm:hidden">
+          <ul>
+            {connectivity.map((item) => (
+              <li
+                key={item.label}
+                className="flex items-baseline justify-between gap-6 border-t border-line py-4 last:border-b"
+              >
+                <span className="text-sm text-ink-muted">{item.label}</span>
+                <span className="font-display text-xl whitespace-nowrap text-ink">
+                  {item.minutes} min
+                </span>
+              </li>
+            ))}
+          </ul>
         </Reveal>
       </Container>
     </section>

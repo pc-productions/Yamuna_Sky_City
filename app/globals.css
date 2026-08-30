@@ -20,7 +20,9 @@
   --color-paper-muted: #f2f0eb;
   --color-ink: #14161c;
   --color-ink-muted: #4a4d57;
-  --color-ink-faint: #8a8d97;
+  /* Darkest "faint" that still reads quiet — keeps small labels at
+     ≥4.5:1 contrast on paper surfaces. */
+  --color-ink-faint: #6d707c;
   --color-line: #e4e2db;
 
   /* Neutrals — dark surface */

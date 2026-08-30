@@ -39,8 +39,12 @@ export const heroVideo: VideoSource = {
 };
 
 export const locationImage = {
-  src: "/media/location/connectivity-diagram.svg", // TODO: replace with final designed connectivity diagram.
-  alt: "Yamuna Sky City connectivity diagram — placeholder pending final artwork",
+  // TODO: replace with the final exported "Perfectly Connected" artwork
+  // (landscape). The placeholder mirrors its composition and data.
+  src: "/media/location/connectivity-diagram.svg",
+  alt: "Connectivity diagram showing Yamuna Sky City at the center with travel times to the beach, National Highway 66, International School, A. J. Hospital, City Mall, City Centre and Mangalore International Airport",
+  /** Aspect ratio of the artwork — keeps loading stable across swaps. */
+  aspect: "16 / 9",
 };
 
 export const privateViewingBackground = {

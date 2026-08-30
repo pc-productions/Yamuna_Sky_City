@@ -12,7 +12,10 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function PrivateViewingCTA() {
   return (
-    <section className="dark-surface relative flex min-h-[85svh] items-center overflow-hidden bg-night">
+    <section
+      data-header-tone="dark"
+      className="dark-surface relative flex min-h-[85svh] items-center overflow-hidden bg-night"
+    >
       <Image
         src={privateViewingBackground.src}
         alt={privateViewingBackground.alt}

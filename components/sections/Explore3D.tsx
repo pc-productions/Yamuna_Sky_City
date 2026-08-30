@@ -39,9 +39,17 @@ export function Explore3D() {
               className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.02]"
               loading="lazy"
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-night/25 transition-colors duration-500 group-hover:bg-night/40">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-night/25 transition-colors duration-500 group-hover:bg-night/40">
               <span className="border border-white/60 px-10 py-[1.125rem] text-xs font-semibold uppercase tracking-[0.24em] text-white transition-colors duration-300 group-hover:border-white group-hover:bg-white group-hover:text-night">
                 {ctaLabels.exploreIn3d}
+                {/* Outward arrow signals an external destination. */}
+                <span aria-hidden="true" className="ml-3 inline-block">
+                  &#8599;
+                </span>
+                <span className="sr-only">(opens in a new tab)</span>
+              </span>
+              <span className="text-[0.625rem] font-medium uppercase tracking-[0.2em] text-white/60">
+                External experience
               </span>
             </div>
           </a>

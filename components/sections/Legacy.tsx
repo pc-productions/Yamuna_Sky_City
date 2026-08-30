@@ -1,19 +1,25 @@
-import { hasLegacyContent, legacyContent, legacyStats } from "@/content/legacy";
+import { legacyContent, legacyStats } from "@/content/legacy";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Stat } from "@/components/ui/Stat";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
- * Renders nothing until verified legacy content exists in
- * content/legacy.ts — no invented figures or placeholder rows are ever
- * shown to visitors. Populate the data and the section appears.
+ * Two rendering states, both driven by content/legacy.ts:
+ * - Content-light (current): a minimal dark editorial statement —
+ *   eyebrow + heading only. Nothing invented, no placeholder figures.
+ * - Full: adds the narrative body and verified stat rows automatically
+ *   once they exist in the data source.
  */
 export function Legacy() {
-  if (!hasLegacyContent()) return null;
+  const hasStats = legacyStats.length > 0;
 
   return (
-    <section id="legacy" className="dark-surface section-pad scroll-mt-18 bg-night text-mist">
+    <section
+      id="legacy"
+      data-header-tone="dark"
+      className="dark-surface section-pad scroll-mt-18 bg-night text-mist"
+    >
       <Container className="flex flex-col gap-16 sm:gap-24">
         <Reveal>
           <SectionHeading
@@ -24,7 +30,7 @@ export function Legacy() {
           />
         </Reveal>
 
-        {legacyStats.length > 0 && (
+        {hasStats && (
           <div className="grid grid-cols-1 gap-x-8 gap-y-12 border-t border-line-dark pt-14 sm:grid-cols-3">
             {legacyStats.map((stat, i) => (
               <Reveal key={stat.label} delayMs={i * 80}>

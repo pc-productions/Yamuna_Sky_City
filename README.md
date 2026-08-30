@@ -37,8 +37,9 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 ## Intentionally unconfigured (resolve before launch)
 
 - **Video**: no cinematic intro or hero footage has been supplied. Both sections render their poster/fallback gracefully; drop real files into `public/media/video/` and set the `src` fields in `content/media.ts`. The entry flow is an explicit state machine (`IntroExperience`: resolving → intro → hero) so the hero video only activates after the intro completes, is skipped, or is ineligible.
-- **Location diagram, private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
-- **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty and their sections render nothing until verified content is added — nothing is invented, no placeholder rows are shown. Restore the Legacy nav link in `content/nav.ts` when that section goes live.
+- **Location artwork**: the approved "Perfectly Connected" connectivity artwork needs to be exported and dropped in via `content/media.ts` (`locationImage.src`). The current SVG placeholder mirrors its landscape composition and verified travel times (source of truth: `content/location.ts`); a mobile-only list renders the same data below the image where the artwork's labels would be unreadable.
+- **Private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
+- **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty; both sections currently render as minimal editorial statements (eyebrow + heading only) and expand to their full presentations automatically once verified entries/figures are added — nothing is invented, no placeholder rows are shown.
 - **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
 - **3D experience URL, production domain** (`content/site.ts`): marked with `TODO` comments.
 - **Privacy Policy / Terms pages** (`app/privacy-policy`, `app/terms`): placeholder copy.

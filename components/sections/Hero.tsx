@@ -14,7 +14,11 @@ import { VideoBackground } from "@/components/ui/VideoBackground";
  */
 export function Hero({ active }: { active: boolean }) {
   return (
-    <section aria-label="Yamuna Sky City" className="relative h-dvh w-full bg-night">
+    <section
+      aria-label="Yamuna Sky City"
+      data-header-tone="video"
+      className="relative h-dvh w-full bg-night"
+    >
       <VideoBackground
         media={active ? heroVideo : { ...heroVideo, src: undefined }}
         priority={active}

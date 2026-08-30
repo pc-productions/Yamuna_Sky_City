@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/Container";
 
 export function Footer() {
   return (
-    <footer className="dark-surface bg-night text-mist">
+    <footer data-header-tone="dark" className="dark-surface bg-night text-mist">
       <Container className="flex flex-col gap-16 pt-20 pb-14 sm:pt-28">
         <div className="flex flex-col justify-between gap-12 lg:flex-row lg:items-start">
           <div className="flex flex-col gap-5">

@@ -7,56 +7,94 @@ import { brand, ctaLabels } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 
 /**
- * Minimal sticky header. On the homepage it starts transparent over the
- * dark hero (light text) and settles onto a solid paper surface once the
- * visitor scrolls; on inner pages it is always solid. One rAF-throttled
- * scroll listener — no animation library.
+ * Header tone follows the section beneath it, so it never clashes with
+ * light or dark content:
+ *
+ *   "video" — fully transparent over full-bleed media (the Hero marks
+ *             itself data-header-tone="video").
+ *   "dark"  — translucent night surface over dark sections (Private
+ *             Viewing, Legacy, Footer mark data-header-tone="dark").
+ *   "light" — solid paper over everything else (the default; light
+ *             sections need no attribute).
+ *
+ * One rAF-throttled scroll/resize probe checks which marked section
+ * currently sits under the header — a handful of getBoundingClientRect
+ * calls per frame, no library, no IntersectionObserver bookkeeping.
+ * Inner pages are always "light".
  */
-export function Header({ onEnquire }: { onEnquire: () => void }) {
-  const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isScrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
+type HeaderTone = "video" | "dark" | "light";
 
-  const overlaysHero = pathname === "/";
+function useHeaderTone(enabled: boolean): HeaderTone {
+  const [tone, setTone] = useState<HeaderTone>(enabled ? "video" : "light");
 
   useEffect(() => {
-    if (!overlaysHero) return;
-    let ticking = false;
-    const update = () => {
-      setScrolled(window.scrollY > 24);
-      ticking = false;
+    if (!enabled) return;
+
+    const probe = () => {
+      const probeY = 36; // vertical middle of the header bar
+      let next: HeaderTone = "light";
+      for (const el of document.querySelectorAll<HTMLElement>("[data-header-tone]")) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= probeY && rect.bottom >= probeY) {
+          next = (el.dataset.headerTone as HeaderTone) ?? "light";
+          break;
+        }
+      }
+      setTone(next);
     };
-    const onScroll = () => {
+
+    let ticking = false;
+    const onScrollOrResize = () => {
       if (!ticking) {
         ticking = true;
-        requestAnimationFrame(update);
+        requestAnimationFrame(() => {
+          probe();
+          ticking = false;
+        });
       }
     };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [overlaysHero]);
 
-  // Solid when: inner page, scrolled, or the mobile menu is open.
-  const solid = !overlaysHero || isScrolled || isMenuOpen;
+    // Initial probe deferred to a frame — no synchronous setState in effect.
+    const frame = requestAnimationFrame(probe);
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, [enabled]);
 
-  const linkTone = solid
-    ? "text-ink-muted hover:text-brand"
-    : "text-white/80 hover:text-white";
+  // Inner pages are always light, regardless of any stale probed tone.
+  return enabled ? tone : "light";
+}
+
+const surfaceByTone: Record<HeaderTone, string> = {
+  video: "border-b border-transparent bg-transparent",
+  dark: "border-b border-white/10 bg-night/70 backdrop-blur-sm",
+  light: "border-b border-line/70 bg-paper/90 backdrop-blur-sm",
+};
+
+export function Header({ onEnquire }: { onEnquire: () => void }) {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const sectionTone = useHeaderTone(pathname === "/");
+
+  // The open mobile menu always sits on a solid paper panel.
+  const tone: HeaderTone = isMenuOpen ? "light" : sectionTone;
+  const onDark = tone !== "light";
+
+  const linkTone = onDark ? "text-white/80 hover:text-white" : "text-ink-muted hover:text-brand";
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ${
-        solid
-          ? "border-b border-line/70 bg-paper/90 backdrop-blur-sm"
-          : "border-b border-transparent bg-transparent"
-      }`}
+      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ${surfaceByTone[tone]}`}
     >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 sm:px-10 lg:px-16">
         <a
           href="#top"
           className={`font-display text-lg tracking-tight transition-colors duration-500 ${
-            solid ? "text-ink" : "text-white"
+            onDark ? "text-white" : "text-ink"
           }`}
         >
           {brand.name}
@@ -75,13 +113,10 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button
-            variant={solid ? "ghost-light" : "ghost-dark"}
-            onClick={onEnquire}
-          >
+          <Button variant={onDark ? "ghost-dark" : "ghost-light"} onClick={onEnquire}>
             {ctaLabels.enquireNow}
           </Button>
-          <Button href="#contact" variant={solid ? "primary" : "outline-light"}>
+          <Button href="#contact" variant={onDark ? "outline-light" : "primary"}>
             {ctaLabels.scheduleViewing}
           </Button>
         </div>
@@ -95,12 +130,12 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           className="flex flex-col gap-1.5 p-2 lg:hidden"
         >
           <span
-            className={`h-px w-6 transition-all duration-300 ${solid ? "bg-ink" : "bg-white"} ${
+            className={`h-px w-6 transition-all duration-300 ${onDark ? "bg-white" : "bg-ink"} ${
               isMenuOpen ? "translate-y-[3.5px] rotate-45" : ""
             }`}
           />
           <span
-            className={`h-px w-6 transition-all duration-300 ${solid ? "bg-ink" : "bg-white"} ${
+            className={`h-px w-6 transition-all duration-300 ${onDark ? "bg-white" : "bg-ink"} ${
               isMenuOpen ? "-translate-y-[3.5px] -rotate-45" : ""
             }`}
           />
