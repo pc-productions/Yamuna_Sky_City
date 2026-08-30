@@ -1,0 +1,57 @@
+import { contributors } from "@/content/people";
+import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
+
+function Initials({ name }: { name: string }) {
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("");
+  return (
+    <div className="flex size-16 shrink-0 items-center justify-center border border-line font-display text-lg text-ink-muted">
+      {initials || "—"}
+    </div>
+  );
+}
+
+/**
+ * Editorial credibility section, driven entirely by content/people.ts —
+ * add/remove/reorder contributors there without touching this component.
+ */
+export function PeopleBehind() {
+  return (
+    <section className="bg-paper py-24 sm:py-32">
+      <Container className="flex flex-col gap-16">
+        <Reveal>
+          <SectionHeading
+            eyebrow="People Behind the Project"
+            heading="Built by a Team of Specialists."
+          />
+        </Reveal>
+
+        <div className="flex flex-col divide-y divide-line border-y border-line">
+          {contributors.map((person, i) => (
+            <Reveal key={`${person.role}-${i}`} delayMs={i * 60}>
+              <div className="flex flex-col gap-6 py-8 sm:flex-row sm:items-start">
+                <Initials name={person.name} />
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
+                    {person.role}
+                  </span>
+                  <h3 className="font-display text-2xl font-medium text-ink">{person.name}</h3>
+                  <p className="text-sm text-ink-muted">{person.organization}</p>
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-faint">
+                    {person.description}
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <radialGradient id="g" cx="30%" cy="30%" r="90%">
+      <stop offset="0%" stop-color="#26469d"/>
+      <stop offset="45%" stop-color="#101a3d"/>
+      <stop offset="100%" stop-color="#0a0d16"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g)"/>
+  <g fill="none" stroke="#e8eaf2" stroke-width="1" opacity="0.15">
+    <line x1="0" y1="900" x2="1920" y2="700"/>
+    <line x1="0" y1="960" x2="1920" y2="780"/>
+    <line x1="0" y1="1020" x2="1920" y2="860"/>
+  </g>
+  <text x="120" y="1000" font-family="Arial, sans-serif" font-size="14" fill="#8d90a1" letter-spacing="5">PROJECT VISUAL — PLACEHOLDER</text>
+</svg>

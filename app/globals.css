@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------- *
+ * Design tokens — Yamuna Sky City
+ *
+ * Single source of truth for color, type and spacing primitives.
+ * Brand blue (#26469D) is used deliberately, not on every element —
+ * see component-level usage for hierarchy.
+ * ---------------------------------------------------------------------- */
+:root {
+  /* Brand */
+  --color-brand: #26469d;
+  --color-brand-dark: #172c66;
+  --color-brand-light: #5b78c4;
+  --color-brand-tint: #eef1f8;
+
+  /* Neutrals — light surface */
+  --color-paper: #faf9f6;
+  --color-paper-muted: #f1efe9;
+  --color-ink: #14161c;
+  --color-ink-muted: #4a4d57;
+  --color-ink-faint: #8a8d97;
+  --color-line: #e2e0d9;
+
+  /* Neutrals — dark surface */
+  --color-night: #0a0d16;
+  --color-night-elevated: #12162350;
+  --color-mist: #d7d9e2;
+  --color-mist-muted: #8d90a1;
+  --color-line-dark: #262b3b;
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
+}
+
+@theme inline {
+  --color-brand: var(--color-brand);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-light: var(--color-brand-light);
+  --color-brand-tint: var(--color-brand-tint);
+
+  --color-paper: var(--color-paper);
+  --color-paper-muted: var(--color-paper-muted);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-faint: var(--color-ink-faint);
+  --color-line: var(--color-line);
+
+  --color-night: var(--color-night);
+  --color-mist: var(--color-mist);
+  --color-mist-muted: var(--color-mist-muted);
+  --color-line-dark: var(--color-line-dark);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: white;
+}
+
+/* Consistent, visible focus ring for keyboard users across dark/light sections */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.dark-surface :focus-visible {
+  outline-color: var(--color-mist);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
