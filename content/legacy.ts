@@ -3,20 +3,27 @@ export type LegacyStat = {
   label: string;
 };
 
+/**
+ * Yamuna's Legacy section content.
+ *
+ * NOT YET SUPPLIED — no verified legacy narrative, history, or figures
+ * have been confirmed. `body` is empty and `legacyStats` is an empty
+ * array; the Legacy section renders nothing while both are empty, so no
+ * invented years/project-counts/square-footage ever reach visitors.
+ * Populate with verified content only; the section appears automatically
+ * once data exists.
+ */
 export const legacyContent = {
   eyebrow: "Yamuna's Legacy",
   heading: "A Legacy Built Over Time.",
-  // PLACEHOLDER — replace with verified narrative copy before launch.
-  body: "Placeholder narrative — confirmed legacy, history and milestone copy to be supplied before launch.",
+  body: "",
 } as const;
 
-/**
- * PLACEHOLDER DATA — no verified legacy figures have been supplied yet.
- * Do not invent years-of-experience, project counts, or scale claims.
- * Replace with confirmed figures before launch.
- */
 export const legacyStats: LegacyStat[] = [
-  { value: "—", label: "Years of Experience" },
-  { value: "—", label: "Projects Delivered" },
-  { value: "—", label: "Sq. Ft. Developed" },
+  // e.g. { value: "…", label: "Years of Experience" } — verified figures only.
 ];
+
+/** True once any real legacy content exists — drives section visibility. */
+export function hasLegacyContent(): boolean {
+  return legacyContent.body.length > 0 || legacyStats.length > 0;
+}

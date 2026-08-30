@@ -60,4 +60,8 @@ export const formCopy = {
   submittingLabel: "Submitting…",
   successMessage: "Thank you. Our team will reach out to you shortly.",
   errorMessageFallback: "Something went wrong. Please try again.",
+  // Shown while no lead backend is configured — an honest state, never a
+  // false "submitted" confirmation.
+  notConfiguredMessage:
+    "Online enquiries are not available just yet. Please check back soon.",
 } as const;

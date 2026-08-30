@@ -11,6 +11,10 @@ import { FormField } from "@/components/forms/FormField";
  * Shared enquiry form UI. Used by the Contact section and the Enquiry
  * modal — same fields, validation, and submission logic; only spacing/
  * tone differ via props so each context can look native to its surface.
+ *
+ * WhatsApp/phone actions render only when configured in content/site.ts.
+ * A missing lead backend surfaces as an honest "not available yet"
+ * message — never a false success confirmation.
  */
 export function EnquiryForm({
   source,
@@ -24,8 +28,10 @@ export function EnquiryForm({
   const { fields, values, errors, status, errorMessage, setField, blurField, handleSubmit } =
     useEnquiryForm(source);
 
+  const whatsappUrl = getWhatsAppUrl();
   const isSubmitting = status === "submitting";
   const labelTone = tone === "dark" ? "text-mist-muted" : "text-ink-muted";
+  const outlineVariant = tone === "dark" ? "outline-light" : "outline-dark";
 
   useEffect(() => {
     if (status === "success") onSuccess?.();
@@ -37,12 +43,11 @@ export function EnquiryForm({
         <p className={`text-lg ${tone === "dark" ? "text-mist" : "text-ink"}`}>
           {formCopy.successMessage}
         </p>
-        <Button
-          href={getWhatsAppUrl()}
-          variant={tone === "dark" ? "outline-light" : "outline-dark"}
-        >
-          {ctaLabels.chatWhatsApp}
-        </Button>
+        {whatsappUrl && (
+          <Button href={whatsappUrl} variant={outlineVariant}>
+            {ctaLabels.chatWhatsApp}
+          </Button>
+        )}
       </div>
     );
   }
@@ -87,24 +92,30 @@ export function EnquiryForm({
         </p>
       )}
 
+      {status === "not_configured" && (
+        <p role="status" className={`text-sm ${labelTone}`}>
+          {formCopy.notConfiguredMessage}
+        </p>
+      )}
+
       <div className="flex flex-col gap-4 pt-2 sm:flex-row">
         <Button type="submit" variant="primary" disabled={isSubmitting} className="sm:flex-1">
           {isSubmitting ? formCopy.submittingLabel : formCopy.submitLabel}
         </Button>
-        <Button
-          href={getWhatsAppUrl()}
-          variant={tone === "dark" ? "outline-light" : "outline-dark"}
-          className="sm:flex-1"
-        >
-          {ctaLabels.chatWhatsApp}
-        </Button>
+        {whatsappUrl && (
+          <Button href={whatsappUrl} variant={outlineVariant} className="sm:flex-1">
+            {ctaLabels.chatWhatsApp}
+          </Button>
+        )}
       </div>
-      <p className={`text-xs ${labelTone}`}>
-        Or call us at{" "}
-        <a href={contact.phoneHref} className="underline underline-offset-2">
-          {contact.phoneDisplay}
-        </a>
-      </p>
+      {contact.phoneDisplay && contact.phoneHref && (
+        <p className={`text-xs ${labelTone}`}>
+          Or call us at{" "}
+          <a href={contact.phoneHref} className="underline underline-offset-2">
+            {contact.phoneDisplay}
+          </a>
+        </p>
+      )}
     </form>
   );
 }

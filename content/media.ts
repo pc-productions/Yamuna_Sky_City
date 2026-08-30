@@ -40,7 +40,7 @@ export const heroVideo: VideoSource = {
 
 export const locationImage = {
   src: "/media/location/connectivity-diagram.svg", // TODO: replace with final designed connectivity diagram.
-  alt: "Connectivity diagram showing Yamuna Sky City at the center with distances to key surrounding landmarks",
+  alt: "Yamuna Sky City connectivity diagram — placeholder pending final artwork",
 };
 
 export const privateViewingBackground = {

@@ -23,19 +23,24 @@ Open http://localhost:3000.
 
 ## Wiring up a lead backend
 
-No CRM/email/API integration exists yet. `lib/actions/submitEnquiry.ts` currently logs submissions server-side and returns success so the UI is fully testable. To connect a real backend:
+No CRM/email/API integration exists yet. While `ENQUIRY_WEBHOOK_URL` is unset, `lib/actions/submitEnquiry.ts` returns an explicit `not_configured` result and the form shows an honest "enquiries not available yet" message — it never fakes a successful submission. To connect a real backend:
 
 1. Set `ENQUIRY_WEBHOOK_URL` (a server-only environment variable — see `.env.example`) to the endpoint that should receive submissions.
 2. That's it — the function already POSTs the payload as JSON once the variable is set. No component changes needed.
 
 Never expose backend credentials via `NEXT_PUBLIC_*` variables; keep integration secrets server-only.
 
-## Known placeholders (must be resolved before launch)
+## Content rules
 
-- **Video**: no cinematic intro or hero footage has been supplied. Both sections render their poster/fallback gracefully; drop real files into `public/media/video/` and set the `src` fields in `content/media.ts`.
+Only verified, explicitly supplied project facts belong in `content/*.ts`. Do not invent locations, addresses, distances, history, statistics, or positioning claims — and do not infer geography from the project name. Fields left empty (`""` / `[]`) are treated as "not configured": the dependent UI (footer contact rows, WhatsApp CTAs, RERA line, the People Behind and Legacy sections) hides itself until real data is added.
+
+## Intentionally unconfigured (resolve before launch)
+
+- **Video**: no cinematic intro or hero footage has been supplied. Both sections render their poster/fallback gracefully; drop real files into `public/media/video/` and set the `src` fields in `content/media.ts`. The entry flow is an explicit state machine (`IntroExperience`: resolving → intro → hero) so the hero video only activates after the intro completes, is skipped, or is ineligible.
 - **Location diagram, private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
-- **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** stats/copy (`content/legacy.ts`): placeholder entries marked "To be confirmed" — no real names, organizations, or figures have been invented. Replace before launch.
-- **Contact details, WhatsApp number, RERA number, legal disclaimer, 3D experience URL, production domain** (`content/site.ts`): marked with `TODO` comments.
+- **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty and their sections render nothing until verified content is added — nothing is invented, no placeholder rows are shown. Restore the Legacy nav link in `content/nav.ts` when that section goes live.
+- **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
+- **3D experience URL, production domain** (`content/site.ts`): marked with `TODO` comments.
 - **Privacy Policy / Terms pages** (`app/privacy-policy`, `app/terms`): placeholder copy.
 - **Lead backend**: see above — not connected by default.
 

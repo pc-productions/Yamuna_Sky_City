@@ -1,13 +1,18 @@
 "use server";
 
 /**
- * Vendor-agnostic lead submission layer.
+ * Vendor-agnostic lead submission layer — the single integration boundary
+ * for whichever lead destination is chosen later (CRM, API endpoint,
+ * email service, Google Sheets, …).
  *
- * No CRM/email/API backend is wired up yet. When one is chosen, set
- * ENQUIRY_WEBHOOK_URL (and any auth headers it needs) as server-only
- * environment variables — never expose them to the client — and this
- * function is the only place that needs to change; the UI layer (the
- * Contact section form and the Enquiry modal) is unaffected.
+ * To connect a backend: set ENQUIRY_WEBHOOK_URL (server-only environment
+ * variable — never expose integration secrets to the client) and this
+ * function POSTs the payload as JSON. Nothing in the UI layer changes.
+ *
+ * IMPORTANT: while no backend is configured this function reports
+ * `not_configured` — it must NOT pretend the enquiry was received. The UI
+ * surfaces an honest "submissions not yet available" state instead of a
+ * false confirmation.
  */
 
 export type EnquiryPayload = {
@@ -16,7 +21,9 @@ export type EnquiryPayload = {
   source: string;
 };
 
-export type SubmitResult = { ok: true } | { ok: false; error: string };
+export type SubmitResult =
+  | { ok: true }
+  | { ok: false; reason: "not_configured" | "failed"; error: string };
 
 export async function submitEnquiry(
   payload: EnquiryPayload,
@@ -24,8 +31,16 @@ export async function submitEnquiry(
   const endpoint = process.env.ENQUIRY_WEBHOOK_URL;
 
   if (!endpoint) {
-    console.log("[enquiry] submission received (no backend configured yet):", payload);
-    return { ok: true };
+    // Log for development visibility only — this is not lead delivery.
+    console.warn(
+      "[enquiry] No submission backend configured (ENQUIRY_WEBHOOK_URL unset). Enquiry NOT delivered:",
+      payload,
+    );
+    return {
+      ok: false,
+      reason: "not_configured",
+      error: "Enquiry submissions are not available yet.",
+    };
   }
 
   try {
@@ -36,10 +51,18 @@ export async function submitEnquiry(
     });
 
     if (!res.ok) {
-      return { ok: false, error: "Submission failed. Please try again." };
+      return {
+        ok: false,
+        reason: "failed",
+        error: "Submission failed. Please try again.",
+      };
     }
     return { ok: true };
   } catch {
-    return { ok: false, error: "Network error. Please try again." };
+    return {
+      ok: false,
+      reason: "failed",
+      error: "Network error. Please try again.",
+    };
   }
 }

@@ -24,15 +24,22 @@ export function Footer() {
             ))}
           </nav>
 
-          <div className="flex flex-col gap-2 text-sm text-mist-muted">
-            <a href={contact.phoneHref} className="hover:text-white">
-              {contact.phoneDisplay}
-            </a>
-            <a href={`mailto:${contact.email}`} className="hover:text-white">
-              {contact.email}
-            </a>
-            <address className="not-italic">{contact.address}</address>
-          </div>
+          {/* Contact rows render only once confirmed values exist in content/site.ts. */}
+          {(contact.phoneDisplay || contact.email || contact.address) && (
+            <div className="flex flex-col gap-2 text-sm text-mist-muted">
+              {contact.phoneDisplay && (
+                <a href={contact.phoneHref} className="hover:text-white">
+                  {contact.phoneDisplay}
+                </a>
+              )}
+              {contact.email && (
+                <a href={`mailto:${contact.email}`} className="hover:text-white">
+                  {contact.email}
+                </a>
+              )}
+              {contact.address && <address className="not-italic">{contact.address}</address>}
+            </div>
+          )}
         </div>
 
         {socialLinks.length > 0 && (
@@ -52,7 +59,7 @@ export function Footer() {
         )}
 
         <div className="flex flex-col gap-3 border-t border-line-dark pt-8 text-xs text-mist-muted">
-          <p>{legal.reraNumber}</p>
+          {legal.reraNumber && <p>{legal.reraNumber}</p>}
           <p className="max-w-3xl leading-relaxed">{legal.disclaimer}</p>
           <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
             <a href="/privacy-policy" className="hover:text-white">

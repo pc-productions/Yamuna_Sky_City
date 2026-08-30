@@ -7,38 +7,59 @@ import { Hero } from "@/components/sections/Hero";
 const SESSION_KEY = "ysc-intro-seen";
 
 /**
- * Coordinates the cinematic intro overlay with the Hero underneath: the
- * Hero is always mounted (so it's ready the instant the intro clears) but
- * only starts loading/playing its own video once the intro is dismissed,
- * so both videos are never competing for bandwidth at once. Skips the
- * intro entirely for reduced-motion visitors and repeat visits in the
- * same session.
+ * Explicit state model for the entry experience:
+ *
+ *   "resolving" — initial state on every load. Neither video is active:
+ *                 the Hero renders its poster only and loads nothing
+ *                 heavy, so the two videos never compete for bandwidth
+ *                 while we decide whether the intro should play.
+ *   "intro"     — the intro overlay is the primary media experience.
+ *                 The Hero stays poster-only underneath it.
+ *   "hero"      — the intro has completed / been skipped / failed, or was
+ *                 never eligible (reduced motion, repeat visit). Only now
+ *                 does the Hero video become active.
+ *
+ * The Hero is mounted throughout (never remounted), so the intro's fade
+ * reveals an already-rendered layer with no layout shift.
  */
+type EntryPhase = "resolving" | "intro" | "hero";
+
 export function IntroExperience() {
-  const [showIntro, setShowIntro] = useState(false);
+  const [phase, setPhase] = useState<EntryPhase>("resolving");
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const alreadySeen = sessionStorage.getItem(SESSION_KEY) === "1";
 
-    if (!prefersReducedMotion && !alreadySeen) {
-      // Deferred via rAF rather than called synchronously in the effect body.
-      const frame = requestAnimationFrame(() => setShowIntro(true));
-      return () => cancelAnimationFrame(frame);
+    let alreadySeen = false;
+    try {
+      alreadySeen = sessionStorage.getItem(SESSION_KEY) === "1";
+    } catch {
+      // Storage unavailable (private mode etc.) — treat as first visit.
     }
+
+    const nextPhase: EntryPhase =
+      prefersReducedMotion || alreadySeen ? "hero" : "intro";
+
+    // Deferred via rAF rather than called synchronously in the effect body.
+    const frame = requestAnimationFrame(() => setPhase(nextPhase));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const completeIntro = () => {
-    sessionStorage.setItem(SESSION_KEY, "1");
-    setShowIntro(false);
+    try {
+      sessionStorage.setItem(SESSION_KEY, "1");
+    } catch {
+      // Best-effort only.
+    }
+    setPhase("hero");
   };
 
   return (
     <>
-      {showIntro && <IntroVideo onComplete={completeIntro} />}
-      <Hero active={!showIntro} />
+      {phase === "intro" && <IntroVideo onComplete={completeIntro} />}
+      <Hero active={phase === "hero"} />
     </>
   );
 }

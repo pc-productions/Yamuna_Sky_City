@@ -20,8 +20,12 @@ function Initials({ name }: { name: string }) {
 /**
  * Editorial credibility section, driven entirely by content/people.ts —
  * add/remove/reorder contributors there without touching this component.
+ * Renders nothing until verified contributor data is supplied, so no
+ * placeholder rows ever reach visitors.
  */
 export function PeopleBehind() {
+  if (contributors.length === 0) return null;
+
   return (
     <section className="bg-paper py-24 sm:py-32">
       <Container className="flex flex-col gap-16">

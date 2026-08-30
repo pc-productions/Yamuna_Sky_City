@@ -5,7 +5,12 @@ import { enquiryFields } from "@/content/form";
 import { submitEnquiry } from "@/lib/actions/submitEnquiry";
 import { validateField, validateForm, type FormErrors, type FormValues } from "@/lib/validation";
 
-export type SubmitStatus = "idle" | "submitting" | "success" | "error";
+export type SubmitStatus =
+  | "idle"
+  | "submitting"
+  | "success"
+  | "error"
+  | "not_configured";
 
 /**
  * Shared enquiry-form state/logic used by both the Contact section form
@@ -63,6 +68,9 @@ export function useEnquiryForm(source: string) {
 
       if (result.ok) {
         setStatus("success");
+      } else if (result.reason === "not_configured") {
+        // No lead backend exists yet — never show a false "submitted" state.
+        setStatus("not_configured");
       } else {
         setStatus("error");
         setErrorMessage(result.error);

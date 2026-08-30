@@ -37,7 +37,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: seo.titleDefault,
     description: seo.description,
-    site: seo.twitterHandle,
+    // Only emitted once a confirmed handle exists in content/site.ts.
+    ...(seo.twitterHandle ? { site: seo.twitterHandle } : {}),
   },
   robots: {
     index: true,

@@ -10,37 +10,13 @@ export type Contributor = {
 /**
  * People and organizations behind the project.
  *
- * PLACEHOLDER DATA — no contributor names/organizations have been supplied
- * yet. Replace each entry below with confirmed details before launch.
- * Do not publish invented names, credentials, or organizations.
+ * NOT YET SUPPLIED — no contributor names or organizations have been
+ * confirmed for this project. The array is intentionally empty: the
+ * PeopleBehind section renders nothing while it is empty, so no invented
+ * or "to be confirmed" rows ever reach visitors. Populate with verified
+ * entries only; the section appears automatically once data exists.
+ *
+ * Example shape:
+ * { name: "…", role: "Architect", organization: "…", description: "…" }
  */
-export const contributors: Contributor[] = [
-  {
-    name: "To be confirmed",
-    role: "Developer / Promoter",
-    organization: "To be confirmed",
-    description:
-      "Placeholder — confirmed developer details to be added before launch.",
-  },
-  {
-    name: "To be confirmed",
-    role: "Architect",
-    organization: "To be confirmed",
-    description:
-      "Placeholder — confirmed architecture partner details to be added before launch.",
-  },
-  {
-    name: "To be confirmed",
-    role: "Structural Consultant",
-    organization: "To be confirmed",
-    description:
-      "Placeholder — confirmed structural consultant details to be added before launch.",
-  },
-  {
-    name: "To be confirmed",
-    role: "Engineering Partner",
-    organization: "To be confirmed",
-    description:
-      "Placeholder — confirmed engineering partner details to be added before launch.",
-  },
-];
+export const contributors: Contributor[] = [];

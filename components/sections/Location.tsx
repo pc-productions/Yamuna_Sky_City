@@ -14,11 +14,9 @@ export function Location() {
     <section id="location" className="scroll-mt-18 bg-paper-muted py-24 sm:py-32">
       <Container className="flex flex-col gap-14">
         <Reveal>
-          <SectionHeading
-            eyebrow="Location"
-            heading="Positioned at the Center of Everything."
-            supportingLine="Yamuna Sky City sits within easy reach of the city's essential landmarks and infrastructure."
-          />
+          {/* Neutral framing only — connectivity/positioning claims belong in
+              the final approved diagram artwork, not invented copy here. */}
+          <SectionHeading eyebrow="Location" heading="The Location." />
         </Reveal>
 
         <Reveal delayMs={100}>

@@ -4,9 +4,11 @@ export type ProjectFact = {
 };
 
 export const projectIntro = {
-  eyebrow: "Yamuna Sky City",
-  supportingLine:
-    "A landmark residence rising from the Yamuna riverfront — engineered at scale, designed for a life above the city.",
+  eyebrow: "The Project",
+  // Left empty until approved editorial copy is supplied — the section
+  // renders without a supporting line while this is "".
+  // Do not add location or positioning claims here without confirmation.
+  supportingLine: "",
 } as const;
 
 /**

@@ -11,6 +11,8 @@ export const navLinks: NavLink[] = [
   { label: "Project", href: "#project" },
   { label: "Location", href: "#location" },
   { label: "3D Experience", href: "#explore-3d" },
-  { label: "Legacy", href: "#legacy" },
+  // The Legacy section is hidden until verified content exists in
+  // content/legacy.ts — restore this link when the section goes live:
+  // { label: "Legacy", href: "#legacy" },
   { label: "Contact", href: "#contact" },
 ];
