@@ -61,10 +61,9 @@ export const heroVideo: VideoSource = {
 };
 
 export const locationImage = {
-  // TODO: replace with the final exported "Perfectly Connected" artwork
-  // (landscape). The placeholder mirrors its composition and data.
-  src: "/media/location/connectivity-diagram.svg",
-  alt: "Connectivity diagram showing Yamuna Sky City at the center with travel times to the beach, National Highway 66, International School, A. J. Hospital, City Mall, City Centre and Mangalore International Airport",
+  // Approved "Perfectly Connected" artwork (client-supplied, 1600×900).
+  src: "/media/location/perfectly-connected.jpg",
+  alt: "Perfectly Connected — Yamuna Sky City at the center of an aerial seaside view, with travel times to the beach (2 min), National Highway 66 (5 min), International School (6 min), A. J. Hospital (7 min), City Mall (8 min), City Centre (15 min) and Mangalore International Airport (20 min)",
   /** Aspect ratio of the artwork — keeps loading stable across swaps. */
   aspect: "16 / 9",
 };

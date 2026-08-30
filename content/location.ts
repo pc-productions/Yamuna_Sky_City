@@ -13,10 +13,9 @@ export const locationContent = {
 } as const;
 
 /**
- * Landmark travel times from the approved artwork. Currently rendered
- * inside the placeholder diagram (public/media/location/
- * connectivity-diagram.svg); kept here as the verified source of truth
- * so the data survives asset swaps.
+ * Landmark travel times from the approved artwork (which renders them
+ * itself on larger screens); this is the verified source of truth and
+ * drives the mobile-only list where the artwork's labels are too small.
  */
 export const connectivity = [
   { label: "Beach", minutes: 2 },

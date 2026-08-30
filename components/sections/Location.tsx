@@ -18,11 +18,13 @@ export function Location() {
     <section id="location" className="section-pad scroll-mt-18 bg-paper-muted">
       <Container>
         <Reveal>
-          <SectionHeading
-            eyebrow={locationContent.eyebrow}
-            heading={locationContent.heading}
-            supportingLine={locationContent.supportingLine}
-          />
+          <SectionHeading eyebrow={locationContent.eyebrow} heading={locationContent.heading} />
+          {/* The artwork carries this copy itself on larger screens; the
+              HTML version renders only on mobile, where the artwork's
+              baked-in text is too small to read. */}
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-muted sm:hidden">
+            {locationContent.supportingLine}
+          </p>
         </Reveal>
 
         <Reveal delayMs={100} className="mt-16 sm:mt-24">
