@@ -9,8 +9,10 @@
  */
 
 export type VideoSource = {
-  /** Path under /public/media/video. Undefined = poster/fallback only. */
+  /** MP4 (H.264) path under /public/media/video. Undefined = poster/fallback only. */
   src?: string;
+  /** Optional WebM (VP9) variant — preferred by browsers that support it. */
+  webmSrc?: string;
   poster: string;
   /** object-position per breakpoint, so embedded video framing/text is never cropped. */
   objectPosition?: {
@@ -29,11 +31,20 @@ export const introVideo: VideoSource = {
 export const introFallbackDurationMs = 6000;
 
 export const heroVideo: VideoSource = {
-  src: undefined, // TODO: 5–6s looping hero film, already contains on-screen text.
-  poster: "/media/posters/hero-poster.svg",
+  // Supplied hero film (12s loop, 16:9). Optimized from the 4K master to
+  // 1080p30 h264, muted, faststart. Poster is the film's first frame so
+  // playback starts without a visual jump.
+  src: "/media/video/hero-1080.mp4",
+  webmSrc: "/media/video/hero-1080.webm",
+  poster: "/media/posters/hero-poster.jpg",
+  // The film's embedded titles sit around the tower at frame center, so
+  // every breakpoint keeps center framing. On narrow portrait screens a
+  // 16:9 crop trims the flanking words — if that matters, supply a
+  // portrait cut and branch on `src` here; the component already accepts
+  // per-breakpoint positioning.
   objectPosition: {
-    mobile: "center 30%",
-    tablet: "center 40%",
+    mobile: "center",
+    tablet: "center",
     desktop: "center",
   },
 };

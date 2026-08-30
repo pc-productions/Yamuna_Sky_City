@@ -50,7 +50,6 @@ export function VideoBackground({
         <video
           ref={videoRef}
           className={`h-full w-full object-cover ${hasCustomPosition ? positionClass : ""}`}
-          src={media.src}
           poster={media.poster}
           autoPlay
           muted
@@ -58,7 +57,12 @@ export function VideoBackground({
           playsInline
           preload={priority ? "auto" : "metadata"}
           onEnded={onEnded}
-        />
+        >
+          {/* WebM (VP9) first where provided — smaller for supporting
+              browsers; the H.264 MP4 is the universal fallback. */}
+          {media.webmSrc && <source src={media.webmSrc} type="video/webm" />}
+          <source src={media.src} type="video/mp4" />
+        </video>
       ) : (
         <Image
           src={media.poster}
