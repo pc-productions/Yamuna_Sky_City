@@ -18,7 +18,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function ProjectFacts() {
   return (
-    <section id="project" className="scroll-mt-16 bg-pearl-ivory xl:scroll-mt-18">
+    <section id="project" className="scroll-mt-16 bg-white xl:scroll-mt-18">
       <Container className="pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pb-40">
         {/* Section identifier */}
         <Reveal>
