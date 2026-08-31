@@ -85,7 +85,7 @@ export function Explore3D() {
   }
 
   return (
-    <section id="explore-3d" className="section-pad scroll-mt-18 bg-paper">
+    <section id="explore-3d" className="section-pad scroll-mt-18 xl:scroll-mt-20 bg-paper">
       <Container>
         <Reveal>
           <SectionHeading

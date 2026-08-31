@@ -10,7 +10,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function ProjectFacts() {
   return (
-    <section id="project" className="section-pad scroll-mt-18 bg-paper">
+    <section id="project" className="section-pad scroll-mt-18 xl:scroll-mt-20 bg-paper">
       <Container>
         <Reveal>
           <span className="eyebrow text-brand">{projectIntro.eyebrow}</span>

@@ -15,7 +15,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function Location() {
   return (
-    <section id="location" className="section-pad scroll-mt-18 bg-paper-muted">
+    <section id="location" className="section-pad scroll-mt-18 xl:scroll-mt-20 bg-paper-muted">
       <Container>
         <Reveal>
           <SectionHeading eyebrow={locationContent.eyebrow} heading={locationContent.heading} />

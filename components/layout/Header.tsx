@@ -70,7 +70,10 @@ function useHeaderTone(enabled: boolean): HeaderTone {
 }
 
 const surfaceByTone: Record<HeaderTone, string> = {
-  video: "border-b border-transparent bg-transparent",
+  // A soft top scrim (fading to transparent) keeps light text legible
+  // over bright video frames without putting a bar over the film.
+  video:
+    "border-b border-transparent bg-gradient-to-b from-night/40 via-night/10 to-transparent",
   dark: "border-b border-white/10 bg-night/70 backdrop-blur-sm",
   light: "border-b border-line/70 bg-paper/90 backdrop-blur-sm",
 };
@@ -90,17 +93,26 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ${surfaceByTone[tone]}`}
     >
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 sm:px-10 lg:px-16">
+      {/* Three-zone composition: brand left, nav optically centered in the
+          space between brand and actions (flex-1 — can never overlap its
+          neighbours), actions right with a hairline divider so the quiet
+          Enquire CTA doesn't read as another nav link. The full desktop
+          bar needs ~1280px to breathe, so it appears from xl; below that
+          the hamburger + mobile bottom bar take over. */}
+      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 sm:px-10 lg:px-16 xl:h-20">
         <a
           href="#top"
-          className={`font-display text-lg tracking-tight transition-colors duration-500 ${
+          className={`shrink-0 whitespace-nowrap font-display text-lg tracking-tight transition-colors duration-500 ${
             onDark ? "text-white" : "text-ink"
           }`}
         >
           {brand.name}
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
+        <nav
+          aria-label="Primary"
+          className="hidden flex-1 items-center justify-center gap-7 whitespace-nowrap px-6 xl:flex 2xl:gap-9"
+        >
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -112,10 +124,16 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden shrink-0 items-center xl:flex">
           <Button variant={onDark ? "ghost-dark" : "ghost-light"} onClick={onEnquire}>
             {ctaLabels.enquireNow}
           </Button>
+          <span
+            aria-hidden="true"
+            className={`mx-4 h-4 w-px transition-colors duration-500 ${
+              onDark ? "bg-white/25" : "bg-ink/15"
+            }`}
+          />
           <Button href="#contact" variant={onDark ? "outline-light" : "primary"}>
             {ctaLabels.scheduleViewing}
           </Button>
@@ -127,7 +145,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           aria-expanded={isMenuOpen}
           aria-controls="mobile-nav"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="flex flex-col gap-1.5 p-2 lg:hidden"
+          className="flex flex-col gap-1.5 p-2 xl:hidden"
         >
           <span
             className={`h-px w-6 transition-all duration-300 ${onDark ? "bg-white" : "bg-ink"} ${
@@ -146,7 +164,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className="flex flex-col border-t border-line/70 bg-paper px-6 py-6 lg:hidden"
+          className="flex flex-col border-t border-line/70 bg-paper px-6 py-6 xl:hidden"
         >
           {navLinks.map((link) => (
             <a

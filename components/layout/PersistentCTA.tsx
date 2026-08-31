@@ -8,7 +8,7 @@ import { ctaLabels } from "@/content/site";
 export function PersistentCTA({ onEnquire }: { onEnquire: () => void }) {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-night/95 backdrop-blur-sm lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 flex border-t border-white/10 bg-night/95 backdrop-blur-sm xl:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <button
