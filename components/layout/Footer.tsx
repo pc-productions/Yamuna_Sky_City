@@ -1,15 +1,17 @@
 import { navLinks } from "@/content/nav";
 import { brand, contact, legal, socialLinks } from "@/content/site";
 import { Container } from "@/components/ui/Container";
+import { Logo } from "@/components/ui/Logo";
 
 export function Footer() {
   return (
     <footer data-header-tone="dark" className="dark-surface bg-night text-mist">
       <Container className="flex flex-col gap-16 pt-20 pb-14 sm:pt-28">
         <div className="flex flex-col justify-between gap-12 lg:flex-row lg:items-start">
-          <div className="flex flex-col gap-5">
-            <span className="font-display text-2xl text-white">{brand.name}</span>
-            <p className="max-w-xs text-sm leading-relaxed text-mist-muted">{brand.tagline}</p>
+          {/* Dark-application lockup with the tagline directly beneath it,
+              per the tagline lockup rules; generous clearance around it. */}
+          <div className="py-2">
+            <Logo type="lockup" variant="dark" height={56} withTagline />
           </div>
 
           <nav aria-label="Footer" className="flex flex-wrap gap-x-9 gap-y-4">

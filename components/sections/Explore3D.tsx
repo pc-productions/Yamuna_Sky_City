@@ -26,10 +26,10 @@ export function Explore3D() {
       }`}
     >
       <span
-        className={`border px-6 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-white transition-all duration-300 sm:px-10 sm:py-[1.125rem] bg-night/65 backdrop-blur-[4px] shadow-lg ${
+        className={`font-display border px-6 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-paper transition-all duration-300 sm:px-10 sm:py-[1.125rem] bg-night/65 backdrop-blur-[4px] ${
           isConfigured
-            ? "border-white/60 group-hover:border-white group-hover:bg-white group-hover:text-night"
-            : "border-white/40 text-white/80"
+            ? "border-paper/70 group-hover:border-paper group-hover:bg-paper group-hover:text-ink"
+            : "border-paper/40 text-paper/80"
         }`}
       >
         {isConfigured ? (
@@ -46,7 +46,7 @@ export function Explore3D() {
         )}
       </span>
       {isConfigured && (
-        <span className="text-[0.625rem] font-medium uppercase tracking-[0.2em] text-white/75 drop-shadow-sm">
+        <span className="eyebrow text-[0.625rem] text-paper/75 drop-shadow-sm">
           External experience
         </span>
       )}

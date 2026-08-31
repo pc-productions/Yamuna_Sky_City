@@ -81,13 +81,13 @@ export function EnquiryForm({
         </label>
       </div>
       {errors.consent && (
-        <p id="consent-error" role="alert" className="-mt-4 text-xs text-red-600">
+        <p id="consent-error" role="alert" className="-mt-4 text-xs text-brand">
           {errors.consent}
         </p>
       )}
 
       {status === "error" && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-brand">
           {errorMessage ?? formCopy.errorMessageFallback}
         </p>
       )}

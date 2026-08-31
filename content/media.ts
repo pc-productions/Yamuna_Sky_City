@@ -68,11 +68,6 @@ export const locationImage = {
   aspect: "16 / 9",
 };
 
-export const privateViewingBackground = {
-  src: "/media/posters/private-viewing-bg.svg", // TODO: replace with a project render / cinematic still.
-  alt: "",
-};
-
 export const explore3dPreview = {
   src: "/media/posters/explore-3d-preview.jpg",
   alt: "Aerial 3D location and master plan overview for Yamuna Sky City",

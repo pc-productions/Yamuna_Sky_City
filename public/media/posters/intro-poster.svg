@@ -1,22 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <!-- TEMPORARY intro frame — replace when the final cinematic intro film
-       is supplied (see content/media.ts introVideo). Deliberately neutral:
-       wordmark only, no development labels visible to visitors. -->
+       is supplied (see content/media.ts introVideo). Brand-toned black
+       field; the approved logo is overlaid by the IntroVideo component,
+       so no artwork is baked in here. -->
   <defs>
-    <radialGradient id="g" cx="50%" cy="42%" r="75%">
-      <stop offset="0%" stop-color="#1a2b5c"/>
-      <stop offset="55%" stop-color="#0d1330"/>
-      <stop offset="100%" stop-color="#0a0d16"/>
+    <radialGradient id="g" cx="50%" cy="42%" r="80%">
+      <stop offset="0%" stop-color="#1c1c1c"/>
+      <stop offset="60%" stop-color="#0c0c0c"/>
+      <stop offset="100%" stop-color="#000000"/>
     </radialGradient>
   </defs>
   <rect width="1920" height="1080" fill="url(#g)"/>
-  <g stroke="#5b78c4" stroke-width="1" opacity="0.35">
-    <line x1="860" y1="1080" x2="900" y2="260"/>
-    <line x1="920" y1="1080" x2="945" y2="300"/>
-    <line x1="980" y1="1080" x2="990" y2="220"/>
-    <line x1="1040" y1="1080" x2="1035" y2="280"/>
-    <line x1="1100" y1="1080" x2="1080" y2="340"/>
-  </g>
-  <!-- Kept narrow and centered so it survives object-cover cropping on tall/narrow (mobile) viewports. -->
-  <text x="960" y="560" text-anchor="middle" font-family="Georgia, serif" font-size="40" fill="#e8eaf2" letter-spacing="1">YAMUNA SKY CITY</text>
 </svg>

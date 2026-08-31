@@ -48,7 +48,7 @@ export function FormField({
         className={`border-b py-2.5 text-base outline-none transition-colors ${baseInput}`}
       />
       {error && (
-        <p id={errorId} role="alert" className="text-xs text-red-600">
+        <p id={errorId} role="alert" className="text-xs text-brand">
           {error}
         </p>
       )}

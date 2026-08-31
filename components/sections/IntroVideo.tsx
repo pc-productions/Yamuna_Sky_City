@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { introVideo, introFallbackDurationMs } from "@/content/media";
-import { brand, ctaLabels } from "@/content/site";
+import { ctaLabels } from "@/content/site";
 import { VideoBackground } from "@/components/ui/VideoBackground";
+import { Logo } from "@/components/ui/Logo";
 
 /**
  * Full-viewport cinematic intro overlay. Sits above the Hero (already
@@ -74,16 +75,17 @@ export function IntroVideo({ onComplete }: { onComplete: () => void }) {
         />
       </div>
 
-      {/* Quiet wordmark — the film stays the dominant experience. */}
-      <span className="absolute left-6 top-6 z-10 font-display text-base tracking-tight text-white/85 sm:left-12 sm:top-10">
-        {brand.name}
+      {/* Approved dark-application lockup — the film stays the dominant
+          experience; generous clearance, no other UI near it. */}
+      <span className="absolute left-6 top-6 z-10 sm:left-12 sm:top-10">
+        <Logo type="lockup" variant="dark" height={30} />
       </span>
 
       {/* Discreet skip control, bottom-right. */}
       <button
         type="button"
         onClick={finish}
-        className="absolute bottom-8 right-6 z-10 border-b border-white/30 pb-1 text-[0.6875rem] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors duration-300 hover:border-white hover:text-white sm:bottom-12 sm:right-12"
+        className="font-display absolute bottom-8 right-6 z-10 border-b border-paper/30 pb-1 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-paper/80 transition-colors duration-300 hover:border-paper hover:text-paper sm:bottom-12 sm:right-12"
       >
         {ctaLabels.skipIntro}
       </button>

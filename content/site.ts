@@ -13,8 +13,8 @@
 export const brand = {
   name: "Yamuna Sky City",
   shortName: "YSC",
-  // Derived strictly from approved project facts (content/facts.ts).
-  tagline: "296 residences across 60 levels.",
+  // Official tagline from the brand guidelines (see content/brand.ts).
+  tagline: "The Pinnacle of South India",
 } as const;
 
 export const seo = {

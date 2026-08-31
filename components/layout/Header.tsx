@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/content/nav";
-import { brand, ctaLabels } from "@/content/site";
+import { ctaLabels } from "@/content/site";
 import { Button } from "@/components/ui/Button";
+import { Logo } from "@/components/ui/Logo";
 
 /**
  * Header tone follows the section beneath it, so it never clashes with
@@ -100,13 +101,24 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
       {/* h-16 base / h-18 (72px) at xl gives the CTAs real air above and
           below; max-w-7xl lets the three zones breathe laterally. */}
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-12 xl:h-18">
-        <a
-          href="#top"
-          className={`shrink-0 whitespace-nowrap font-display text-lg tracking-tight transition-colors duration-500 ${
-            onDark ? "text-white" : "text-ink"
-          }`}
-        >
-          {brand.name}
+        {/* Approved lockup artwork — the dark-application asset over
+            video/black surfaces, the primary asset on ivory. Both are
+            mounted and cross-faded so the swap never flashes; each is the
+            real approved file, never a CSS-recoloured one. */}
+        <a href="#top" className="relative block shrink-0" aria-label="Yamuna Sky City — top">
+          <span
+            className={`block transition-opacity duration-500 ${onDark ? "opacity-0" : "opacity-100"}`}
+          >
+            <Logo type="lockup" variant="primary" height={34} priority />
+          </span>
+          <span
+            aria-hidden="true"
+            className={`absolute inset-0 transition-opacity duration-500 ${
+              onDark ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Logo type="lockup" variant="dark" height={34} priority />
+          </span>
         </a>
 
         <nav
