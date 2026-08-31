@@ -11,7 +11,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function Contact() {
   return (
-    <section id="contact" className="section-pad scroll-mt-14 xl:scroll-mt-16 bg-paper-muted">
+    <section id="contact" className="section-pad scroll-mt-16 xl:scroll-mt-18 bg-paper-muted">
       <Container>
         <div className="grid gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
           <Reveal>

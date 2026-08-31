@@ -31,7 +31,7 @@ function useHeaderTone(enabled: boolean): HeaderTone {
     if (!enabled) return;
 
     const probe = () => {
-      const probeY = 28; // vertical middle of the header bar
+      const probeY = 32; // vertical middle of the header bar
       let next: HeaderTone = "light";
       for (const el of document.querySelectorAll<HTMLElement>("[data-header-tone]")) {
         const rect = el.getBoundingClientRect();
@@ -97,7 +97,9 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           Enquire CTA doesn't read as another nav link. The full desktop
           bar needs ~1280px to breathe, so it appears from xl; below that
           the hamburger + mobile bottom bar take over. */}
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 sm:px-8 lg:px-12 xl:h-16">
+      {/* h-16 base / h-18 (72px) at xl gives the CTAs real air above and
+          below; max-w-7xl lets the three zones breathe laterally. */}
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-12 xl:h-18">
         <a
           href="#top"
           className={`shrink-0 whitespace-nowrap font-display text-lg tracking-tight transition-colors duration-500 ${
@@ -109,7 +111,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
 
         <nav
           aria-label="Primary"
-          className="hidden flex-1 items-center justify-center gap-7 whitespace-nowrap px-6 xl:flex 2xl:gap-9"
+          className="hidden flex-1 items-center justify-center gap-8 whitespace-nowrap px-8 xl:flex 2xl:gap-10"
         >
           {navLinks.map((link) => (
             <a
@@ -128,7 +130,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           </Button>
           <span
             aria-hidden="true"
-            className={`mx-4 h-4 w-px transition-colors duration-500 ${
+            className={`mx-5 h-4 w-px transition-colors duration-500 ${
               onDark ? "bg-white/25" : "bg-ink/15"
             }`}
           />
@@ -162,7 +164,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className="flex max-h-[calc(100dvh-4.5rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-6 py-6 xl:hidden"
+          className="flex max-h-[calc(100dvh-4rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-6 py-6 xl:hidden"
         >
           {navLinks.map((link) => (
             <a
