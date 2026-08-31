@@ -40,7 +40,7 @@ export function ProjectFacts() {
         {/* Main headline — the page's primary heading. Poppins Semibold,
             uppercase and tight tracking come from the base h1 styles. */}
         <Reveal delayMs={100}>
-          <h1 className="mt-5 max-w-5xl text-[clamp(2.5rem,4.8vw,4.25rem)] leading-[1.06] text-ink sm:mt-6">
+          <h1 className="mt-6 max-w-6xl text-[clamp(2.5rem,5vw,4.375rem)] leading-[1.06] text-ink sm:mt-7">
             {projectIntro.headlineLines.map((line) => (
               <span key={line} className="block">
                 {line}
@@ -52,10 +52,10 @@ export function ProjectFacts() {
         {/* Supporting factual copy — two columns with a hairline divider */}
         <Reveal delayMs={160} className="mt-12 sm:mt-16">
           <div className="grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-0">
-            <p className="text-[1.0625rem] leading-[1.7] text-ink-muted lg:pr-14">
+            <p className="text-[1.0625rem] leading-[1.7] text-ink/80 lg:pr-14">
               {projectIntro.descriptionLeft}
             </p>
-            <p className="text-[1.0625rem] leading-[1.7] text-ink-muted lg:border-l lg:border-mist-grey lg:pl-14">
+            <p className="text-[1.0625rem] leading-[1.7] text-ink/80 lg:border-l lg:border-mist-grey lg:pl-14">
               {projectIntro.descriptionRight}
             </p>
           </div>
@@ -75,7 +75,7 @@ export function ProjectFacts() {
                 <span className="font-display text-[clamp(2.5rem,4.5vw,4rem)] font-semibold leading-none tracking-[-0.02em] text-ink">
                   {fact.value}
                 </span>
-                <span className="text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-ink-faint">
+                <span className="text-xs font-medium uppercase tracking-[0.14em] text-ink/60">
                   {fact.label}
                 </span>
               </div>
