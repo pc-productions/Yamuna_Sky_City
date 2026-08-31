@@ -48,7 +48,7 @@
   --color-line-dark: #1f2937;
 
   --font-display: var(--font-poppins);
-  --font-serif: var(--font-serif);
+  --font-serif: var(--font-cormorant);
   --font-body: var(--font-inter);
 }
 
@@ -139,21 +139,25 @@ body {
 }
 
 /* Brand headings: Poppins, uppercase, tight tracking.
-   H1-level = Semibold (600); H2-level and below = Medium (500). */
-h1,
-h2 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: -0.025em;
-}
+   H1-level = Semibold (600); H2-level and below = Medium (500).
+   Layered as base so per-component utilities (font-serif, normal-case,
+   font-normal, …) can override them where a section needs to. */
+@layer base {
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+  }
 
-h3,
-h4 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
 }
 
 ::selection {
