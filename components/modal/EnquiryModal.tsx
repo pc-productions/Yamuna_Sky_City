@@ -16,7 +16,7 @@ export function EnquiryModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6">
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-6">
       <button
         type="button"
         aria-label="Close"
@@ -29,7 +29,7 @@ export function EnquiryModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="enquiry-modal-heading"
-        className="relative flex max-h-[92vh] w-full flex-col overflow-y-auto bg-paper px-8 py-10 sm:max-w-md sm:px-12 sm:py-14"
+        className="relative flex max-h-[90dvh] w-full flex-col overflow-y-auto bg-paper px-6 py-8 sm:max-w-md sm:px-12 sm:py-14"
       >
         <button
           type="button"

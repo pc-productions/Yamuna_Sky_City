@@ -75,7 +75,7 @@ export function IntroVideo({ onComplete }: { onComplete: () => void }) {
       </div>
 
       {/* Quiet wordmark — the film stays the dominant experience. */}
-      <span className="absolute left-8 top-8 z-10 font-display text-base tracking-tight text-white/85 sm:left-12 sm:top-10">
+      <span className="absolute left-6 top-6 z-10 font-display text-base tracking-tight text-white/85 sm:left-12 sm:top-10">
         {brand.name}
       </span>
 
@@ -83,7 +83,7 @@ export function IntroVideo({ onComplete }: { onComplete: () => void }) {
       <button
         type="button"
         onClick={finish}
-        className="absolute bottom-10 right-8 z-10 border-b border-white/30 pb-1 text-[0.6875rem] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors duration-300 hover:border-white hover:text-white sm:bottom-12 sm:right-12"
+        className="absolute bottom-8 right-6 z-10 border-b border-white/30 pb-1 text-[0.6875rem] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors duration-300 hover:border-white hover:text-white sm:bottom-12 sm:right-12"
       >
         {ctaLabels.skipIntro}
       </button>

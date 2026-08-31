@@ -64,33 +64,33 @@
  * ---------------------------------------------------------------------- */
 @theme {
   /* Hero-scale project title */
-  --text-display-xl: clamp(3.25rem, 8vw, 6.5rem);
-  --text-display-xl--line-height: 1;
+  --text-display-xl: clamp(2.5rem, 7vw, 6.5rem);
+  --text-display-xl--line-height: 1.02;
   --text-display-xl--letter-spacing: -0.02em;
 
   /* Primary section headings */
-  --text-display-lg: clamp(2.5rem, 4.5vw, 4rem);
-  --text-display-lg--line-height: 1.08;
+  --text-display-lg: clamp(1.875rem, 4.5vw, 4rem);
+  --text-display-lg--line-height: 1.1;
   --text-display-lg--letter-spacing: -0.015em;
 
   /* Secondary display (modal headings, sub-compositions) */
-  --text-display-md: clamp(1.875rem, 3vw, 2.5rem);
+  --text-display-md: clamp(1.5rem, 3vw, 2.5rem);
   --text-display-md--line-height: 1.15;
   --text-display-md--letter-spacing: -0.01em;
 
   /* Project fact values — architectural numerals */
-  --text-stat-lg: clamp(3.25rem, 6.5vw, 5.75rem);
+  --text-stat-lg: clamp(2.25rem, 5.5vw, 5.75rem);
   --text-stat-lg--line-height: 1;
   --text-stat-lg--letter-spacing: -0.02em;
 
-  --text-stat-md: clamp(2.25rem, 4vw, 3.5rem);
+  --text-stat-md: clamp(1.75rem, 3.5vw, 3.5rem);
   --text-stat-md--line-height: 1.05;
   --text-stat-md--letter-spacing: -0.015em;
 }
 
-/* Consistent section vertical rhythm — tune the whole site here. */
+/* Consistent section vertical rhythm — tuned for both mobile and laptop */
 @utility section-pad {
-  padding-block: clamp(5.5rem, 11vw, 10rem);
+  padding-block: clamp(4rem, 8vw, 9rem);
 }
 
 /* Understated editorial eyebrow label. */

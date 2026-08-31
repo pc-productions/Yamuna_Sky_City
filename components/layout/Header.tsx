@@ -31,7 +31,7 @@ function useHeaderTone(enabled: boolean): HeaderTone {
     if (!enabled) return;
 
     const probe = () => {
-      const probeY = 36; // vertical middle of the header bar
+      const probeY = 28; // vertical middle of the header bar
       let next: HeaderTone = "light";
       for (const el of document.querySelectorAll<HTMLElement>("[data-header-tone]")) {
         const rect = el.getBoundingClientRect();
@@ -70,12 +70,10 @@ function useHeaderTone(enabled: boolean): HeaderTone {
 }
 
 const surfaceByTone: Record<HeaderTone, string> = {
-  // A soft top scrim (fading to transparent) keeps light text legible
-  // over bright video frames without putting a bar over the film.
-  video:
-    "border-b border-transparent bg-gradient-to-b from-night/40 via-night/10 to-transparent",
-  dark: "border-b border-white/10 bg-night/70 backdrop-blur-sm",
-  light: "border-b border-line/70 bg-paper/90 backdrop-blur-sm",
+  // Dark frosted glass blur over video/hero matching luxury reference style
+  video: "border-b border-white/10 bg-night/75 backdrop-blur-md",
+  dark: "border-b border-white/10 bg-night/85 backdrop-blur-md",
+  light: "border-b border-line/70 bg-paper/90 backdrop-blur-md",
 };
 
 export function Header({ onEnquire }: { onEnquire: () => void }) {
@@ -99,7 +97,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           Enquire CTA doesn't read as another nav link. The full desktop
           bar needs ~1280px to breathe, so it appears from xl; below that
           the hamburger + mobile bottom bar take over. */}
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 sm:px-10 lg:px-16 xl:h-20">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 sm:px-8 lg:px-12 xl:h-16">
         <a
           href="#top"
           className={`shrink-0 whitespace-nowrap font-display text-lg tracking-tight transition-colors duration-500 ${
@@ -164,7 +162,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className="flex flex-col border-t border-line/70 bg-paper px-6 py-6 xl:hidden"
+          className="flex max-h-[calc(100dvh-4.5rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-6 py-6 xl:hidden"
         >
           {navLinks.map((link) => (
             <a
@@ -176,6 +174,26 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
               {link.label}
             </a>
           ))}
+          <div className="mt-4 flex flex-col gap-3 border-t border-line pt-6">
+            <Button
+              variant="primary"
+              onClick={() => {
+                setMenuOpen(false);
+                onEnquire();
+              }}
+              className="w-full justify-center"
+            >
+              {ctaLabels.enquireNow}
+            </Button>
+            <Button
+              href="#contact"
+              variant="outline-dark"
+              onClick={() => setMenuOpen(false)}
+              className="w-full justify-center"
+            >
+              {ctaLabels.scheduleViewing}
+            </Button>
+          </div>
         </nav>
       )}
     </header>

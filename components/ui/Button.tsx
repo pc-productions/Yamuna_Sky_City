@@ -20,8 +20,8 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  default: "px-7 py-3.5",
-  large: "px-10 py-[1.125rem] text-xs tracking-[0.24em]",
+  default: "px-5 py-3 sm:px-7 sm:py-3.5",
+  large: "px-7 py-3.5 sm:px-10 sm:py-[1.125rem] text-xs tracking-[0.24em]",
 };
 
 type CommonProps = {

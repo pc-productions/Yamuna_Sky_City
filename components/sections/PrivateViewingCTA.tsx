@@ -14,7 +14,7 @@ export function PrivateViewingCTA() {
   return (
     <section
       data-header-tone="dark"
-      className="dark-surface relative flex min-h-[85svh] items-center overflow-hidden bg-night"
+      className="dark-surface relative flex min-h-[70svh] items-center overflow-hidden bg-night sm:min-h-[85svh]"
     >
       <Image
         src={privateViewingBackground.src}

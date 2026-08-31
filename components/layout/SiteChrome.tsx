@@ -12,7 +12,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
   return (
     <>
       <Header onEnquire={() => setModalOpen(true)} />
-      <main id="top" className="flex-1 pb-16 xl:pb-0">
+      <main id="top" className="flex-1 pb-20 xl:pb-0">
         {children}
       </main>
       <Footer />
