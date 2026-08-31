@@ -74,6 +74,6 @@ export const privateViewingBackground = {
 };
 
 export const explore3dPreview = {
-  src: "/media/posters/explore-3d-preview.svg", // TODO: replace with a screenshot of the 3D experience.
-  alt: "Preview of the immersive 3D location experience for Yamuna Sky City",
+  src: "/media/posters/explore-3d-preview.jpg",
+  alt: "Aerial 3D location and master plan overview for Yamuna Sky City",
 };

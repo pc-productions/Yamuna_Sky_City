@@ -21,12 +21,12 @@ export function Explore3D() {
 
   const overlay = (
     <div
-      className={`absolute inset-0 flex flex-col items-center justify-center gap-4 bg-night/25 transition-colors duration-500 ${
-        isConfigured ? "group-hover:bg-night/40" : ""
+      className={`absolute inset-0 flex flex-col items-center justify-center gap-4 bg-night/35 backdrop-blur-[2.5px] transition-all duration-500 ${
+        isConfigured ? "group-hover:bg-night/45 group-hover:backdrop-blur-[4px]" : ""
       }`}
     >
       <span
-        className={`border px-10 py-[1.125rem] text-xs font-semibold uppercase tracking-[0.24em] text-white transition-colors duration-300 ${
+        className={`border px-6 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-white transition-all duration-300 sm:px-10 sm:py-[1.125rem] bg-night/65 backdrop-blur-[4px] shadow-lg ${
           isConfigured
             ? "border-white/60 group-hover:border-white group-hover:bg-white group-hover:text-night"
             : "border-white/40 text-white/80"
@@ -46,7 +46,7 @@ export function Explore3D() {
         )}
       </span>
       {isConfigured && (
-        <span className="text-[0.625rem] font-medium uppercase tracking-[0.2em] text-white/60">
+        <span className="text-[0.625rem] font-medium uppercase tracking-[0.2em] text-white/75 drop-shadow-sm">
           External experience
         </span>
       )}
@@ -85,7 +85,7 @@ export function Explore3D() {
   }
 
   return (
-    <section id="explore-3d" className="section-pad scroll-mt-18 xl:scroll-mt-20 bg-paper">
+    <section id="explore-3d" className="section-pad scroll-mt-14 xl:scroll-mt-16 bg-paper">
       <Container>
         <Reveal>
           <SectionHeading
