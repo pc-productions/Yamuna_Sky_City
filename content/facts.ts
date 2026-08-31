@@ -1,13 +1,16 @@
 export type ProjectFact = {
   value: string;
   label: string;
+  /** Renders the value in SkyCity Ember — use for at most one signature fact. */
+  emphasis?: boolean;
 };
 
 export const projectIntro = {
-  eyebrow: "PROJECT OVERVIEW",
-  headingMain: "South India's Tallest",
-  headingItalic: "Sea View",
-  headingSuffix: "Tower",
+  eyebrow: "Project Overview",
+  /* Deliberate two-line headline composition — rendered uppercase in
+     Poppins Semibold. Wording per the approved claim; do not add
+     adjectives. */
+  headlineLines: ["South India's Tallest", "Sea-View Tower"],
   descriptionLeft:
     "A landmark residential development on the NH-66 corridor of New Mangalore — combining scale, architectural precision, and uninterrupted sea views into a single iconic address. Yamuna Sky City is not just a building. It is a new definition of coastal luxury.",
   descriptionRight:
@@ -18,5 +21,5 @@ export const projectFacts: ProjectFact[] = [
   { value: "296", label: "LUXURY APARTMENTS" },
   { value: "GF+60", label: "FLOORS ABOVE GROUND" },
   { value: "3+", label: "ACRES OF GREENERY" },
-  { value: "300m", label: "FROM THE ARABIAN SEA" },
+  { value: "300m", label: "FROM THE ARABIAN SEA", emphasis: true },
 ];
