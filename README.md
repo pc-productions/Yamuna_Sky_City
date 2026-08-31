@@ -2,6 +2,14 @@
 
 Production website for Yamuna Sky City — Next.js (App Router) + TypeScript + Tailwind CSS v4.
 
+## Brand system
+
+The official Brand Guidelines PDF is the single source of truth for identity.
+
+- **Palette**: SkyCity Ember `#B42810`, Pearl Ivory `#F7F0E6`, Black `#000000`, Mist Grey `#C6C7C8` — defined once in `app/globals.css` behind semantic tokens (`brand`, `paper`, `ink`, `night`, `line`, …). Composition principle: the site reads ~60% Ivory / 30% Ember / 7% Black / 3% Mist Grey overall.
+- **Typography**: Poppins (Semibold/Medium, UPPERCASE, tight tracking) for headings; Inter (Regular/Medium, sentence case) for body/UI. Hierarchy reference: H1 48px / H2 32px, scaled responsively.
+- **Logo**: approved artwork extracted from the guidelines lives in `public/media/brand/` (mark / wordmark / lockup × primary / reversed / dark / mono). Render marks only through `components/ui/Logo.tsx` — never text recreations, never CSS recolouring. The header cross-fades primary ↔ dark-application assets per background; the footer carries the dark lockup with the official tagline ("The Pinnacle of South India") beneath it.
+
 ## Getting started
 
 ```bash
