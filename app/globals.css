@@ -48,6 +48,7 @@
   --color-line-dark: #1f2937;
 
   --font-display: var(--font-poppins);
+  --font-serif: var(--font-serif);
   --font-body: var(--font-inter);
 }
 
@@ -72,6 +73,7 @@
   --color-line-dark: var(--color-line-dark);
 
   --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
   --font-body: var(--font-body);
 }
 

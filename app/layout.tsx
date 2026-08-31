@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Poppins, Cormorant_Garamond } from "next/font/google";
 import { seo } from "@/content/site";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
-// Brand typography: Poppins (headings — Medium/Semibold only) and
-// Inter (body/UI — Regular/Medium). No other weights are loaded.
+// Brand typography: Poppins (headings), Inter (body/UI), and Cormorant Garamond (editorial serif)
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
@@ -15,6 +14,13 @@ const poppins = Poppins({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -50,7 +56,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${poppins.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col bg-paper text-ink">
         <SiteChrome>{children}</SiteChrome>
       </body>

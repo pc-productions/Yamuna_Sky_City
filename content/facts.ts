@@ -4,21 +4,19 @@ export type ProjectFact = {
 };
 
 export const projectIntro = {
-  eyebrow: "The Project",
-  // Left empty until approved editorial copy is supplied — the section
-  // renders without a supporting line while this is "".
-  // Do not add location or positioning claims here without confirmation.
-  supportingLine: "",
+  eyebrow: "PROJECT OVERVIEW",
+  headingMain: "South India's Tallest",
+  headingItalic: "Sea View",
+  headingSuffix: "Tower",
+  descriptionLeft:
+    "A landmark residential development on the NH-66 corridor of New Mangalore — combining scale, architectural precision, and uninterrupted sea views into a single iconic address. Yamuna Sky City is not just a building. It is a new definition of coastal luxury.",
+  descriptionRight:
+    "Developed by Yamuna Homes and Design Pvt. Ltd. — a trusted name in Karnataka real estate for over 30 years. GF+60 floors. 296 all-sea-facing units. One tower. No compromises.",
 } as const;
 
-/**
- * Hard facts only. Sourced from project specifications — update here,
- * not in the component. Do not add unverified figures.
- */
 export const projectFacts: ProjectFact[] = [
-  { value: "60", label: "Levels" },
-  { value: "296", label: "Residences" },
-  { value: "2, 3, 4 & 5", label: "BHK Configurations" },
-  { value: "898,965", label: "Sq. Ft. Saleable Area" },
-  { value: "459", label: "Parking Spaces" },
+  { value: "296", label: "LUXURY APARTMENTS" },
+  { value: "GF+60", label: "FLOORS ABOVE GROUND" },
+  { value: "3+", label: "ACRES OF GREENERY" },
+  { value: "300m", label: "FROM THE ARABIAN SEA" },
 ];
