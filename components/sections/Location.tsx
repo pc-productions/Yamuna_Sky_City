@@ -15,7 +15,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function Location() {
   return (
-    <section id="location" className="section-pad scroll-mt-16 xl:scroll-mt-18 bg-paper-muted">
+    <section id="location" className="scroll-mt-14 bg-paper-muted pt-20 pb-0 sm:pt-28 xl:scroll-mt-16">
       <Container>
         <Reveal>
           <SectionHeading eyebrow={locationContent.eyebrow} heading={locationContent.heading} />
@@ -26,28 +26,30 @@ export function Location() {
             {locationContent.supportingLine}
           </p>
         </Reveal>
+      </Container>
 
-        <Reveal delayMs={100} className="mt-16 sm:mt-24">
-          <div
-            className="relative w-full overflow-hidden"
-            style={{ aspectRatio: locationImage.aspect }}
-          >
-            <Image
-              src={locationImage.src}
-              alt={locationImage.alt}
-              fill
-              sizes="(min-width: 1280px) 1152px, 100vw"
-              className="object-cover"
-              loading="lazy"
-            />
-          </div>
-        </Reveal>
+      {/* Full-bleed edge-to-edge artwork flush with the next section */}
+      <Reveal delayMs={100} className="mt-12 block w-full sm:mt-16">
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ aspectRatio: locationImage.aspect }}
+        >
+          <Image
+            src={locationImage.src}
+            alt={locationImage.alt}
+            fill
+            sizes="100vw"
+            className="w-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </Reveal>
 
-        {/* The artwork's labels are too small to read on phones, so the
-            same verified travel times (content/location.ts) render as a
-            quiet list on mobile only — the image stays the sole carrier
-            of this data on larger screens. */}
-        <Reveal delayMs={150} className="mt-12 sm:hidden">
+      {/* The artwork's labels are too small to read on phones, so the
+          same verified travel times (content/location.ts) render as a
+          quiet list on mobile only. */}
+      <Container className="py-10 sm:hidden">
+        <Reveal delayMs={150}>
           <ul>
             {connectivity.map((item) => (
               <li
