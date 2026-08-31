@@ -1,8 +1,6 @@
 export type ProjectFact = {
   value: string;
   label: string;
-  /** Renders the value in SkyCity Ember — use for at most one signature fact. */
-  emphasis?: boolean;
 };
 
 export const projectIntro = {
@@ -21,5 +19,5 @@ export const projectFacts: ProjectFact[] = [
   { value: "296", label: "LUXURY APARTMENTS" },
   { value: "GF+60", label: "FLOORS ABOVE GROUND" },
   { value: "3+", label: "ACRES OF GREENERY" },
-  { value: "300m", label: "FROM THE ARABIAN SEA", emphasis: true },
+  { value: "300m", label: "FROM THE ARABIAN SEA" },
 ];
