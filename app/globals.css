@@ -22,9 +22,12 @@
   /* Official brand palette */
   --color-skycity-ember: #b42810;
   --color-white: #ffffff;
-  --color-pearl-ivory: #ffffff;
+  /* True guideline values — sections that want the warm brand surfaces
+     use these directly (bg-pearl-ivory, border-mist-grey); the global
+     paper/line aliases below stay on the white/grey scheme. */
+  --color-pearl-ivory: #f7f0e6;
   --color-black: #000000;
-  --color-mist-grey: #e5e7eb;
+  --color-mist-grey: #c6c7c8;
 
   /* Semantic aliases used across components */
   --color-brand: var(--color-skycity-ember);
