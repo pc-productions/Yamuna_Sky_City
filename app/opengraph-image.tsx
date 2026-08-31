@@ -1,10 +1,19 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
-import { brand } from "@/content/site";
+import { tagline } from "@/content/brand";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
+// Pearl Ivory field with the approved primary lockup and the official
+// tagline beneath it — generated at build time from the real asset.
+export default async function OpengraphImage() {
+  const lockup = await readFile(
+    path.join(process.cwd(), "public/media/brand/lockup-primary.png"),
+  );
+  const lockupSrc = `data:image/png;base64,${lockup.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -15,16 +24,19 @@ export default function OpengraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background:
-            "radial-gradient(circle at 50% 35%, #1a2b5c 0%, #0d1330 55%, #0a0d16 100%)",
-          color: "#e8eaf2",
+          background: "#F7F0E6",
         }}
       >
-        <div style={{ fontSize: 64, letterSpacing: 4, fontFamily: "Georgia, serif" }}>
-          {brand.name.toUpperCase()}
-        </div>
-        <div style={{ marginTop: 20, fontSize: 20, letterSpacing: 6, color: "#8d90a1" }}>
-          {brand.tagline.toUpperCase()}
+        <img src={lockupSrc} width={562} height={200} alt="" />
+        <div
+          style={{
+            marginTop: 36,
+            fontSize: 30,
+            fontWeight: 600,
+            color: "#B42810",
+          }}
+        >
+          {tagline}
         </div>
       </div>
     ),
