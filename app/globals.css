@@ -1,45 +1,62 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------- *
- * Design tokens — Yamuna Sky City
+ * Design tokens — Yamuna Sky City (official brand guidelines)
  *
- * Single source of truth for color, type and spacing primitives.
- * Brand blue (#26469D) is used deliberately, not on every element —
- * luxury comes from typography, proportion and restraint, with the blue
- * reserved for identity moments (eyebrows, primary CTAs, selection).
+ * SINGLE SOURCE OF TRUTH for the brand system:
+ *
+ *   SkyCity Ember  #B42810   primary brand accent / CTAs / brand blocks
+ *   Pearl Ivory    #F7F0E6   dominant light surfaces
+ *   Black          #000000   high-contrast type / dark sections
+ *   Mist Grey      #C6C7C8   sparing structural lines / muted UI
+ *
+ * Composition principle: ~60% Ivory, ~30% Ember, 7% Black, 3% Mist Grey
+ * across the site as a whole (not per section).
+ *
+ * Semantic aliases (brand/paper/ink/night/line/mist) are kept so
+ * components reference meaning, not hex values. The few derived shades
+ * below (hover ember, muted greys, deep-ivory surface) are functional
+ * derivatives of the four brand colours — never new hues.
  * ---------------------------------------------------------------------- */
 :root {
-  /* Brand */
-  --color-brand: #26469d;
-  --color-brand-dark: #1b3474;
-  --color-brand-light: #5b78c4;
-  --color-brand-tint: #eef1f8;
+  /* Official brand palette */
+  --color-skycity-ember: #b42810;
+  --color-pearl-ivory: #f7f0e6;
+  --color-black: #000000;
+  --color-mist-grey: #c6c7c8;
 
-  /* Neutrals — light surface */
-  --color-paper: #faf9f6;
-  --color-paper-muted: #f2f0eb;
-  --color-ink: #14161c;
-  --color-ink-muted: #4a4d57;
-  /* Darkest "faint" that still reads quiet — keeps small labels at
-     ≥4.5:1 contrast on paper surfaces. */
-  --color-ink-faint: #6d707c;
-  --color-line: #e4e2db;
+  /* Semantic aliases used across components */
+  --color-brand: var(--color-skycity-ember);
+  /* Functional hover/pressed shade of Ember */
+  --color-brand-dark: #8d1f0c;
 
-  /* Neutrals — dark surface */
-  --color-night: #0a0d16;
-  --color-mist: #d7d9e2;
-  --color-mist-muted: #8d90a1;
-  --color-line-dark: #232838;
+  --color-paper: var(--color-pearl-ivory);
+  /* Slightly deepened Ivory for alternating surfaces */
+  --color-paper-muted: #f0e7d8;
 
-  --font-display: var(--font-fraunces);
+  --color-ink: var(--color-black);
+  /* Functional greys between Black and Mist Grey for secondary text */
+  --color-ink-muted: #3d3d3d;
+  --color-ink-faint: #6b6b6b;
+  --color-line: var(--color-mist-grey);
+
+  /* Dark surfaces are pure brand Black; light-on-dark text is Ivory */
+  --color-night: var(--color-black);
+  --color-mist: var(--color-pearl-ivory);
+  --color-mist-muted: var(--color-mist-grey);
+  --color-line-dark: #2c2c2c;
+
+  --font-display: var(--font-poppins);
   --font-body: var(--font-inter);
 }
 
 @theme inline {
+  --color-skycity-ember: var(--color-skycity-ember);
+  --color-pearl-ivory: var(--color-pearl-ivory);
+  --color-mist-grey: var(--color-mist-grey);
+
   --color-brand: var(--color-brand);
   --color-brand-dark: var(--color-brand-dark);
-  --color-brand-light: var(--color-brand-light);
-  --color-brand-tint: var(--color-brand-tint);
 
   --color-paper: var(--color-paper);
   --color-paper-muted: var(--color-paper-muted);
@@ -58,34 +75,37 @@
 }
 
 /* ---------------------------------------------------------------------- *
- * Typography scale — editorial display sizes (fluid).
- * Generates text-display-* / text-stat-* utilities via Tailwind v4 theme.
- * Keep this the only place display sizes are defined.
+ * Typography scale — brand hierarchy reference: H1 48px Poppins Semibold,
+ * H2 32px Poppins Medium, generous Inter body. Fluid clamps keep the
+ * H1 > H2 > body relationship on every viewport; desktop lands on the
+ * reference sizes. Headings are UPPERCASE with tight tracking (the
+ * guideline's -25 tracking ≈ -0.025em).
  * ---------------------------------------------------------------------- */
 @theme {
-  /* Hero-scale project title */
-  --text-display-xl: clamp(2.5rem, 7vw, 6.5rem);
-  --text-display-xl--line-height: 1.02;
-  --text-display-xl--letter-spacing: -0.02em;
+  /* Oversized brand statement (project title) — beyond H1, per the
+     large-format applications in the guidelines. */
+  --text-display-xl: clamp(2.5rem, 6.5vw, 5.5rem);
+  --text-display-xl--line-height: 1.05;
+  --text-display-xl--letter-spacing: -0.025em;
 
-  /* Primary section headings */
-  --text-display-lg: clamp(1.875rem, 4.5vw, 4rem);
-  --text-display-lg--line-height: 1.1;
-  --text-display-lg--letter-spacing: -0.015em;
+  /* H1 — Poppins Semibold, 48px reference */
+  --text-display-lg: clamp(1.75rem, 3.4vw, 3rem);
+  --text-display-lg--line-height: 1.12;
+  --text-display-lg--letter-spacing: -0.025em;
 
-  /* Secondary display (modal headings, sub-compositions) */
-  --text-display-md: clamp(1.5rem, 3vw, 2.5rem);
-  --text-display-md--line-height: 1.15;
-  --text-display-md--letter-spacing: -0.01em;
+  /* H2 — Poppins Medium, 32px reference */
+  --text-display-md: clamp(1.375rem, 2.4vw, 2rem);
+  --text-display-md--line-height: 1.2;
+  --text-display-md--letter-spacing: -0.02em;
 
-  /* Project fact values — architectural numerals */
-  --text-stat-lg: clamp(2.25rem, 5.5vw, 5.75rem);
+  /* Project fact values — architectural Poppins numerals */
+  --text-stat-lg: clamp(2.25rem, 5.5vw, 5rem);
   --text-stat-lg--line-height: 1;
-  --text-stat-lg--letter-spacing: -0.02em;
+  --text-stat-lg--letter-spacing: -0.025em;
 
-  --text-stat-md: clamp(1.75rem, 3.5vw, 3.5rem);
+  --text-stat-md: clamp(1.75rem, 3.5vw, 3rem);
   --text-stat-md--line-height: 1.05;
-  --text-stat-md--letter-spacing: -0.015em;
+  --text-stat-md--letter-spacing: -0.02em;
 }
 
 /* Consistent section vertical rhythm — tuned for both mobile and laptop */
@@ -93,11 +113,14 @@
   padding-block: clamp(4rem, 8vw, 9rem);
 }
 
-/* Understated editorial eyebrow label. */
+/* Understated label — Poppins Medium, uppercase. Small sizes need
+   positive tracking for legibility; the tight -25 tracking applies to
+   display headings, not micro labels. */
 @utility eyebrow {
+  font-family: var(--font-display);
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -109,33 +132,42 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body);
-  font-feature-settings: "ss01";
   -webkit-font-smoothing: antialiased;
 }
 
+/* Brand headings: Poppins, uppercase, tight tracking.
+   H1-level = Semibold (600); H2-level and below = Medium (500). */
 h1,
-h2,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 450;
-  letter-spacing: -0.015em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
 }
 
 ::selection {
-  background: var(--color-brand);
-  color: white;
+  background: var(--color-skycity-ember);
+  color: var(--color-pearl-ivory);
 }
 
-/* Consistent, visible focus ring for keyboard users across dark/light sections */
+/* Consistent, visible focus ring for keyboard users across surfaces —
+   SkyCity Ember on light, Ivory on dark/Ember surfaces. */
 :focus-visible {
-  outline: 2px solid var(--color-brand);
+  outline: 2px solid var(--color-skycity-ember);
   outline-offset: 3px;
   border-radius: 1px;
 }
 
 .dark-surface :focus-visible {
-  outline-color: var(--color-mist);
+  outline-color: var(--color-pearl-ivory);
 }
 
 @media (prefers-reduced-motion: reduce) {
