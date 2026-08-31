@@ -24,7 +24,7 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#F7F0E6",
+          background: "#FFFFFF",
         }}
       >
         <img src={lockupSrc} width={562} height={200} alt="" />

@@ -21,30 +21,31 @@
 :root {
   /* Official brand palette */
   --color-skycity-ember: #b42810;
-  --color-pearl-ivory: #f7f0e6;
+  --color-white: #ffffff;
+  --color-pearl-ivory: #ffffff;
   --color-black: #000000;
-  --color-mist-grey: #c6c7c8;
+  --color-mist-grey: #e5e7eb;
 
   /* Semantic aliases used across components */
   --color-brand: var(--color-skycity-ember);
   /* Functional hover/pressed shade of Ember */
   --color-brand-dark: #8d1f0c;
 
-  --color-paper: var(--color-pearl-ivory);
-  /* Slightly deepened Ivory for alternating surfaces */
-  --color-paper-muted: #f0e7d8;
+  --color-paper: #ffffff;
+  /* Subtle clean off-white for alternating surfaces */
+  --color-paper-muted: #f9fafb;
 
   --color-ink: var(--color-black);
-  /* Functional greys between Black and Mist Grey for secondary text */
-  --color-ink-muted: #3d3d3d;
-  --color-ink-faint: #6b6b6b;
-  --color-line: var(--color-mist-grey);
+  /* Functional greys for crisp typography */
+  --color-ink-muted: #374151;
+  --color-ink-faint: #6b7280;
+  --color-line: #e5e7eb;
 
-  /* Dark surfaces are pure brand Black; light-on-dark text is Ivory */
+  /* Dark surfaces are pure brand Black; light-on-dark text is White */
   --color-night: var(--color-black);
-  --color-mist: var(--color-pearl-ivory);
-  --color-mist-muted: var(--color-mist-grey);
-  --color-line-dark: #2c2c2c;
+  --color-mist: #ffffff;
+  --color-mist-muted: #9ca3af;
+  --color-line-dark: #1f2937;
 
   --font-display: var(--font-poppins);
   --font-body: var(--font-inter);
