@@ -274,14 +274,14 @@ export function LocationConnectivity() {
           rows on a restrained translucent card. Mobile gets these rows
           in its own flow block below the image instead. */}
       <div
-        className="absolute bottom-[6%] left-[3%] z-[8] hidden transition-all duration-700 ease-out lg:block"
+        className="absolute bottom-[15%] left-[3%] z-[8] hidden transition-all duration-700 ease-out lg:block"
         style={{
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "translateY(0)" : "translateY(12px)",
           transitionDelay: "1250ms",
         }}
       >
-        <LocationHighlightRows className="w-[clamp(19rem,23vw,23rem)] rounded-[20px] border border-white/50 bg-white/85 px-6 py-1.5 shadow-[0_10px_36px_rgba(0,0,0,0.16)] backdrop-blur-[10px]" />
+        <LocationHighlightRows className="w-[clamp(15rem,18.5vw,19rem)] rounded-2xl border border-white/50 bg-white/85 px-5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.15)] backdrop-blur-[10px] [&_li]:gap-3 [&_li]:py-2.5 [&_li_span:first-child]:h-4 [&_li_span:first-child]:w-4 [&_li_span:last-child]:text-[0.6875rem]" />
       </div>
     </div>
   );
