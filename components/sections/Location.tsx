@@ -41,13 +41,18 @@ export function Location() {
             className="w-full object-cover"
             loading="lazy"
           />
-          {/* Section label baked over the artwork (sm+ only — mobile has
-              its own HTML heading above). Same eyebrow style, Container
-              alignment and navbar offset (pt-8 sm:pt-10) as every other
-              section, without adding whitespace above the image. */}
+          {/* Section label + heading baked over the artwork (sm+ only —
+              mobile has its own HTML heading above). Reuses SectionHeading
+              with the shared Container alignment and navbar offset
+              (pt-8 sm:pt-10), so the typography and spacing are identical
+              to every other section without adding whitespace above the
+              image. */}
           <div className="absolute inset-x-0 top-0 z-10 hidden pt-8 sm:block sm:pt-10">
             <Container>
-              <span className="eyebrow block text-brand">{locationContent.eyebrow}</span>
+              <SectionHeading
+                eyebrow={locationContent.eyebrow}
+                heading={locationContent.heading}
+              />
             </Container>
           </div>
         </div>
