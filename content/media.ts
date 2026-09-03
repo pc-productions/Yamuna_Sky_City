@@ -65,7 +65,9 @@ export const locationImage = {
   src: "/media/location/perfectly-connected.jpg",
   alt: "Perfectly Connected — Yamuna Sky City at the center of an aerial seaside view, with travel times to the beach (2 min), National Highway 66 (5 min), International School (6 min), A. J. Hospital (7 min), City Mall (8 min), City Centre (15 min) and Mangalore International Airport (20 min)",
   /** Aspect ratio of the artwork — keeps loading stable across swaps. */
-  aspect: "16 / 9",
+  /* Must match the asset's true ratio (currently 1672×904) — a mismatch
+     makes object-cover crop the baked text and badges at the edges. */
+  aspect: "1672 / 904",
 };
 
 export const explore3dPreview = {
