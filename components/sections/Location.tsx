@@ -61,11 +61,11 @@ export function Location() {
               WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
             }}
           />
-          {/* Soft light wash on the left third so the ink heading and
-              copy stay readable over the photograph (sm+ only). */}
+          {/* Localized readability wash behind the heading/copy only —
+              soft enough that the landscape stays visible through it. */}
           <div
             aria-hidden="true"
-            className="absolute inset-y-0 left-0 z-[2] hidden w-[44%] bg-gradient-to-r from-white/85 via-white/40 to-transparent sm:block"
+            className="absolute inset-y-0 left-0 z-[2] hidden w-[30%] bg-gradient-to-r from-white/65 via-white/25 to-transparent sm:block"
           />
 
           {/* Rings, connection lines and destination markers — all

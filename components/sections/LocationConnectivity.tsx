@@ -1,41 +1,33 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import {
-  connectivity,
-  connectivityMap,
-  locationHighlights,
-  type ConnectivityId,
-} from "@/content/location";
+import { connectivity, connectivityMap, type ConnectivityId } from "@/content/location";
 import { useReveal } from "@/lib/hooks/useReveal";
 
 /**
- * Programmatic recreation of the approved "Perfectly Connected"
- * composition over the clean aerial render: white circular icon chips
- * with a red connector dot on their tower-facing edge, dotted white
- * lines running inward, large circular rings around the tower, ink
- * landmark names with red travel times, and the frosted highlight
- * panel at the lower left. Nothing is baked into the image.
+ * Quiet connectivity annotation over the aerial photograph. The tower
+ * and landscape stay dominant; the overlay is a restrained annotation
+ * layer: small white icon markers, ink names with Ember travel times,
+ * hairline connection lines running toward the tower, and two or three
+ * barely-there rings for structure. No cards, no endpoint dots, no
+ * network-topology styling.
  *
  * Geometry lives in content/location.ts on a normalized coordinate
  * system mirroring the image's aspect; the SVG stretches to the image
- * box and the HTML chips use the same coordinates as percentages, so
- * the composition stays glued to the photograph at every width.
+ * box and the HTML markers use the same coordinates as percentages, so
+ * the annotation stays glued to the photograph at every width.
  *
- * Choreography on scroll (one IntersectionObserver, CSS only): the
- * photograph settles from a gentle zoom → rings breathe in → dotted
- * lines draw inward from each chip (masked dash sweep) with a streak
- * of light travelling each once → chips pop in with their labels,
- * staggered → the highlight panel rises last. Hovering a chip lifts it
- * and brightens its line. Reduced motion shows the finished
- * composition instantly.
+ * Reveal on scroll (one IntersectionObserver, CSS only): rings fade in
+ * → hairlines draw outward from the centre → markers and labels appear
+ * with a light stagger. Once settled, nothing moves. Reduced motion
+ * shows the finished composition instantly.
  */
 
 const { viewBox, center, rings, chipRadius, lineEndRadius, nodes } = connectivityMap;
 
 const byId = Object.fromEntries(connectivity.map((c) => [c.id, c]));
 
-/** Unit vector from a chip centre toward the ring centre. */
+/** Unit vector from a marker centre toward the ring centre. */
 function towardCenter(x: number, y: number) {
   const dx = center.x - x;
   const dy = center.y - y;
@@ -43,18 +35,17 @@ function towardCenter(x: number, y: number) {
   return { ux: dx / len, uy: dy / len, len };
 }
 
-/** Red connector dot on the chip's tower-facing edge. */
-function edgePoint(x: number, y: number) {
-  const { ux, uy } = towardCenter(x, y);
-  return { x: x + ux * chipRadius, y: y + uy * chipRadius };
-}
-
-/** Dotted line from the chip edge inward, ending near the tower. */
+/** Hairline from just outside the tower to the marker's edge. */
 function connectionLine(x: number, y: number) {
   const { ux, uy, len } = towardCenter(x, y);
-  const start = edgePoint(x, y);
-  const endLen = Math.max(len - lineEndRadius, chipRadius + 8);
-  return { x1: start.x, y1: start.y, x2: x + ux * endLen, y2: y + uy * endLen };
+  const endLen = Math.max(len - lineEndRadius, chipRadius + 6);
+  return {
+    // x1/y1 = inner end (near the tower) so the draw starts there.
+    x1: x + ux * endLen,
+    y1: y + uy * endLen,
+    x2: x + ux * chipRadius,
+    y2: y + uy * chipRadius,
+  };
 }
 
 /* Minimal line icons matching the approved artwork's motifs. */
@@ -104,29 +95,6 @@ const icons: Record<ConnectivityId, ReactNode> = {
   ),
 };
 
-/* Legend icons for the highlight panel (waves / pin / sparkle). */
-const highlightIcons: Record<(typeof locationHighlights)[number]["id"], ReactNode> = {
-  seaside: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" className="h-full w-full">
-      <path d="M3 7.5c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
-      <path d="M3 12c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
-      <path d="M3 16.5c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
-    </svg>
-  ),
-  connectivity: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-full w-full">
-      <path d="M12 21s-6.5-5.4-6.5-10.2A6.5 6.5 0 0 1 12 4.5a6.5 6.5 0 0 1 6.5 6.3C18.5 15.6 12 21 12 21Z" />
-      <circle cx="12" cy="10.8" r="2.2" />
-    </svg>
-  ),
-  reach: (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-full w-full">
-      <path d="M12 2.5 13.9 9 20.5 11l-6.6 2L12 19.5 10.1 13 3.5 11l6.6-2L12 2.5Z" />
-      <circle cx="18.7" cy="4.6" r="1.1" />
-    </svg>
-  ),
-};
-
 export function LocationConnectivity() {
   const { ref, isVisible } = useReveal<HTMLDivElement>(0.35);
   const [hovered, setHovered] = useState<ConnectivityId | null>(null);
@@ -137,40 +105,34 @@ export function LocationConnectivity() {
       data-visible={isVisible}
       className="pointer-events-none absolute inset-0 hidden sm:block"
     >
-      {/* Rings + dotted connection lines — decorative; the information
-          is real DOM text in the chips and the mobile list. */}
+      {/* Rings + connection hairlines — decorative; the information is
+          real DOM text in the markers and the mobile list. */}
       <svg
         aria-hidden="true"
         className="absolute inset-0 z-[6] h-full w-full"
         viewBox={`0 0 ${viewBox.w} ${viewBox.h}`}
         preserveAspectRatio="none"
       >
-        {/* Large circular rings around the tower */}
+        {/* Barely-there structural rings */}
         <g
-          className="transition-all duration-[1500ms] ease-out"
-          style={{
-            transformOrigin: `${center.x}px ${center.y}px`,
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "scale(1)" : "scale(0.92)",
-            transitionDelay: "100ms",
-          }}
+          className="transition-opacity duration-[1500ms] ease-out"
+          style={{ opacity: isVisible ? 1 : 0, transitionDelay: "150ms" }}
         >
-          {rings.map((r, i) => (
+          {rings.slice(0, 3).map((r, i) => (
             <circle
               key={r}
               cx={center.x}
               cy={center.y}
               r={r}
               fill="none"
-              stroke={`rgba(255,255,255,${[0.7, 0.5, 0.35][i] ?? 0.35})`}
-              strokeWidth={i === 0 ? 1.5 : 1}
+              stroke={`rgba(255,255,255,${[0.28, 0.2, 0.13][i] ?? 0.13})`}
+              strokeWidth="1"
               vectorEffect="non-scaling-stroke"
             />
           ))}
         </g>
 
-        {/* Dotted lines drawing inward from each chip, with a one-time
-            travelling streak (the hero cue's gesture). */}
+        {/* Hairlines drawing outward from the tower toward each marker */}
         <defs>
           {nodes.map((node, i) => {
             const l = connectionLine(node.x, node.y);
@@ -180,12 +142,12 @@ export function LocationConnectivity() {
                   {...l}
                   pathLength={1}
                   stroke="#fff"
-                  strokeWidth="8"
+                  strokeWidth="6"
                   className="transition-[stroke-dashoffset] duration-[800ms] ease-out"
                   style={{
                     strokeDasharray: 1,
                     strokeDashoffset: isVisible ? 0 : 1,
-                    transitionDelay: `${400 + i * 90}ms`,
+                    transitionDelay: `${400 + i * 80}ms`,
                   }}
                 />
               </mask>
@@ -194,61 +156,24 @@ export function LocationConnectivity() {
         </defs>
         {nodes.map((node, i) => {
           const l = connectionLine(node.x, node.y);
-          const isHovered = hovered === node.id;
           return (
-            <g key={node.id}>
-              <line
-                {...l}
-                mask={`url(#conn-mask-${i})`}
-                stroke={isHovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.85)"}
-                strokeWidth={isHovered ? 2.5 : 2}
-                strokeLinecap="round"
-                strokeDasharray="0.5 7"
-                vectorEffect="non-scaling-stroke"
-                className="transition-[stroke,stroke-width] duration-300"
-              />
-              {isVisible && (
-                <line
-                  {...l}
-                  pathLength={1}
-                  stroke="rgba(255,255,255,0.95)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  vectorEffect="non-scaling-stroke"
-                  className="animate-conn-streak"
-                  style={
-                    {
-                      strokeDasharray: "0.2 1",
-                      "--streak-delay": `${1150 + i * 90}ms`,
-                    } as React.CSSProperties
-                  }
-                />
-              )}
-              {/* Red connector dot on the chip's tower-facing edge */}
-              {(() => {
-                const p = edgePoint(node.x, node.y);
-                return (
-                  <circle
-                    cx={p.x}
-                    cy={p.y}
-                    r="5"
-                    fill="#DA2B1D"
-                    stroke="rgba(255,255,255,0.95)"
-                    strokeWidth="1.5"
-                    className="transition-opacity duration-500"
-                    style={{
-                      opacity: isVisible ? 1 : 0,
-                      transitionDelay: `${750 + i * 90}ms`,
-                    }}
-                  />
-                );
-              })()}
-            </g>
+            <line
+              key={node.id}
+              {...l}
+              mask={`url(#conn-mask-${i})`}
+              stroke={
+                hovered === node.id ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.42)"
+              }
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+              className="transition-[stroke] duration-300"
+            />
           );
         })}
       </svg>
 
-      {/* White icon chips + labels — real text on the same coordinates */}
+      {/* Small white icon markers + quiet labels — real text on the
+          same normalized coordinates as the SVG. */}
       <div className="absolute inset-0 z-[7]">
         {nodes.map((node, i) => {
           const item = byId[node.id];
@@ -256,23 +181,23 @@ export function LocationConnectivity() {
           return (
             <div
               key={node.id}
-              /* Top-anchored so the CHIP's centre (not the stack's) sits
-                 exactly on the node point the SVG geometry uses. */
+              /* Top-anchored so the MARKER's centre (not the stack's)
+                 sits exactly on the node point the SVG geometry uses. */
               className="absolute flex -translate-x-1/2 flex-col items-center transition-all duration-700 ease-out"
               style={{
                 left: `${(node.x / viewBox.w) * 100}%`,
                 top: `${((node.y - chipRadius) / viewBox.h) * 100}%`,
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible
-                  ? "translateX(-50%) scale(1)"
-                  : "translateX(-50%) scale(0.8)",
-                transitionDelay: `${700 + i * 90}ms`,
+                  ? "translateX(-50%) translateY(0)"
+                  : "translateX(-50%) translateY(6px)",
+                transitionDelay: `${750 + i * 80}ms`,
               }}
             >
               <div
                 onMouseEnter={() => setHovered(node.id)}
                 onMouseLeave={() => setHovered(null)}
-                className="pointer-events-auto flex aspect-square w-[5.2vw] items-center justify-center rounded-full bg-white text-ink shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition-transform duration-300 hover:-translate-y-0.5 hover:scale-[1.04]"
+                className="pointer-events-auto flex aspect-square w-[3.4vw] items-center justify-center rounded-full bg-white/95 text-ink shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:scale-105"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -282,54 +207,24 @@ export function LocationConnectivity() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden="true"
-                  className="w-[46%]"
+                  className="w-1/2"
                 >
                   {icons[node.id]}
                 </svg>
               </div>
               <span
-                className={`mt-[0.55vw] text-center text-[clamp(0.625rem,0.9vw,0.9375rem)] leading-tight font-semibold tracking-[0.06em] text-ink uppercase [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.8),0_1px_2px_rgba(255,255,255,0.9)] ${
-                  item.label.length > 22 ? "max-w-[14vw]" : "whitespace-nowrap"
+                className={`mt-[0.45vw] text-center text-[clamp(0.5625rem,0.78vw,0.8125rem)] leading-tight font-semibold tracking-[0.04em] text-ink uppercase [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_14px_rgba(255,255,255,0.8),0_1px_2px_rgba(255,255,255,0.9)] ${
+                  item.label.length > 22 ? "max-w-[12vw]" : "whitespace-nowrap"
                 }`}
               >
                 {item.label}
               </span>
-              <span className="font-display text-[clamp(0.6875rem,1vw,1.0625rem)] font-semibold tracking-[0.04em] text-[#DA2B1D] [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.75)]">
+              <span className="font-display text-[clamp(0.625rem,0.85vw,0.875rem)] font-semibold text-brand [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_12px_rgba(255,255,255,0.8)]">
                 {item.minutes} MIN
               </span>
             </div>
           );
         })}
-      </div>
-
-      {/* Frosted highlight panel, lower left — programmatic, never
-          baked. From lg up: tablet widths are too tight to share the
-          lower-left corner with the hospital chip. */}
-      <div
-        className="absolute bottom-[7%] left-[3%] z-[8] hidden transition-all duration-1000 ease-out lg:block"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? "translateY(0)" : "translateY(14px)",
-          transitionDelay: "900ms",
-        }}
-      >
-        <ul className="w-[clamp(13rem,20vw,22rem)] rounded-2xl border border-white/50 bg-white/70 px-[1.4vw] py-[0.6vw] shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-md">
-          {locationHighlights.map((h, i) => (
-            <li
-              key={h.id}
-              className={`flex items-center gap-[0.9vw] py-[0.75vw] ${
-                i > 0 ? "border-t border-ink/10" : ""
-              }`}
-            >
-              <span className="h-[clamp(1rem,1.5vw,1.625rem)] w-[clamp(1rem,1.5vw,1.625rem)] shrink-0 text-[#DA2B1D]">
-                {highlightIcons[h.id]}
-              </span>
-              <span className="text-[clamp(0.6875rem,1vw,1.0625rem)] font-medium text-ink/90">
-                {h.label}
-              </span>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );

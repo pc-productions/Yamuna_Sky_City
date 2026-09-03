@@ -74,11 +74,11 @@ export const connectivityMap = {
   /** Circle ring radii, in viewBox units. */
   rings: [148, 188, 228],
   /** Chip radius in viewBox units — MUST match the CSS chip diameter
-      (w-[5.2vw] → 52 viewBox units), so connector dots sit exactly on
-      chip edges. */
-  chipRadius: 26,
-  /** Connection lines end this far from the ring centre. */
-  lineEndRadius: 120,
+      (w-[3.4vw] → 34 viewBox units), so lines meet chip edges exactly. */
+  chipRadius: 17,
+  /** Connection lines end this far from the ring centre, keeping the
+      tower itself clear of graphics. */
+  lineEndRadius: 150,
   nodes: [
     { id: "beach", x: 379, y: 106 },
     { id: "nh66", x: 776, y: 108 },
