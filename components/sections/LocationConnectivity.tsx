@@ -163,7 +163,7 @@ export function LocationConnectivity() {
   useEffect(() => {
     if (!isVisible) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setTimeout(() => setOrbiting(true), 1500);
+    const t = window.setTimeout(() => setOrbiting(true), 1100);
     return () => window.clearTimeout(t);
   }, [isVisible]);
 
@@ -192,8 +192,10 @@ export function LocationConnectivity() {
     const tick = (now: number) => {
       const dt = Math.min(now - last, 100);
       last = now;
-      const target = hoveredRef.current ? 0.1 : 1;
-      speed += (target - speed) * Math.min(1, dt / 600);
+      // Hovering slows the orbit noticeably but never to an apparent
+      // standstill — a resting cursor must not make it look broken.
+      const target = hoveredRef.current ? 0.3 : 1;
+      speed += (target - speed) * Math.min(1, dt / 450);
       angle += omega * dt * speed;
       for (let i = 0; i < orbitParams.length; i++) {
         const q = orbitParams[i];
