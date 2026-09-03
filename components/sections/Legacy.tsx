@@ -18,7 +18,7 @@ export function Legacy() {
     <section
       id="legacy"
       data-header-tone="dark"
-      className="dark-surface scroll-mt-6 bg-night text-mist pt-8 pb-16 sm:pt-10 sm:pb-24 xl:scroll-mt-8"
+      className="dark-surface scroll-mt-16 bg-night text-mist pt-8 pb-16 sm:pt-10 sm:pb-24 xl:scroll-mt-18"
     >
       <Container className="flex flex-col gap-16 sm:gap-24">
         <Reveal>
