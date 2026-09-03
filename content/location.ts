@@ -12,17 +12,59 @@ export const locationContent = {
     "Yamuna Sky City places you right where life happens. Be it the beach, the city, the highway or the best schools — everything is just minutes away.",
 } as const;
 
+export type ConnectivityId =
+  | "beach"
+  | "nh66"
+  | "school"
+  | "hospital"
+  | "mall"
+  | "cityCentre"
+  | "airport";
+
 /**
- * Landmark travel times from the approved artwork (which renders them
- * itself on larger screens); this is the verified source of truth and
- * drives the mobile-only list where the artwork's labels are too small.
+ * Landmark travel times from the approved artwork — the verified source
+ * of truth. Drives both the desktop connectivity overlay and the mobile
+ * list. Do not change labels or minutes without client approval.
  */
-export const connectivity = [
-  { label: "Beach", minutes: 2 },
-  { label: "National Highway 66", minutes: 5 },
-  { label: "International School", minutes: 6 },
-  { label: "A. J. Hospital", minutes: 7 },
-  { label: "City Mall", minutes: 8 },
-  { label: "City Centre", minutes: 15 },
-  { label: "Mangalore International Airport", minutes: 20 },
+export const connectivity: ReadonlyArray<{
+  id: ConnectivityId;
+  label: string;
+  minutes: number;
+}> = [
+  { id: "beach", label: "Beach", minutes: 2 },
+  { id: "nh66", label: "National Highway 66", minutes: 5 },
+  { id: "school", label: "International School", minutes: 6 },
+  { id: "hospital", label: "A. J. Hospital", minutes: 7 },
+  { id: "mall", label: "City Mall", minutes: 8 },
+  { id: "cityCentre", label: "City Centre", minutes: 15 },
+  { id: "airport", label: "Mangalore International Airport", minutes: 20 },
 ] as const;
+
+/**
+ * PRESENTATION GEOMETRY for the desktop connectivity overlay.
+ *
+ * All coordinates are normalized to the aerial image via `viewBox`
+ * (1000 wide; height follows the image's 1672×941 ratio). The SVG layer
+ * and the HTML markers share this system, so everything stays attached
+ * to the same spot on the photograph at every viewport width.
+ *
+ * To move a marker, change its x/y here. To drop one from the overlay,
+ * remove its node (the travel-time list still shows every entry). The
+ * node order below is the reveal-animation order.
+ */
+export const connectivityMap = {
+  viewBox: { w: 1000, h: 563 },
+  /** Ring centre — the tower's visual centre in the aerial image. */
+  center: { x: 530, y: 250 },
+  /** Concentric ring radii, in viewBox units. */
+  rings: [130, 215, 300],
+  nodes: [
+    { id: "beach", x: 380, y: 96 },
+    { id: "nh66", x: 778, y: 100 },
+    { id: "school", x: 835, y: 262 },
+    { id: "hospital", x: 360, y: 420 },
+    { id: "mall", x: 318, y: 260 },
+    { id: "airport", x: 556, y: 474 },
+    { id: "cityCentre", x: 756, y: 438 },
+  ] as ReadonlyArray<{ id: ConnectivityId; x: number; y: number }>,
+} as const;

@@ -61,13 +61,16 @@ export const heroVideo: VideoSource = {
 };
 
 export const locationImage = {
-  // Approved "Perfectly Connected" artwork (client-supplied, 1600×900).
-  src: "/media/location/perfectly-connected.jpg",
-  alt: "Perfectly Connected — Yamuna Sky City at the center of an aerial seaside view, with travel times to the beach (2 min), National Highway 66 (5 min), International School (6 min), A. J. Hospital (7 min), City Mall (8 min), City Centre (15 min) and Mangalore International Airport (20 min)",
-  /** Aspect ratio of the artwork — keeps loading stable across swaps. */
-  /* Must match the asset's true ratio (currently 1672×904) — a mismatch
-     makes object-cover crop the baked text and badges at the edges. */
-  aspect: "1672 / 904",
+  // Clean aerial render (client-supplied, 1672×941) — the connectivity
+  // labels, rings and lines are rendered programmatically on top of it
+  // (see components/sections/LocationConnectivity.tsx); nothing is baked
+  // into the asset.
+  src: "/media/location/tower-aerial.jpg",
+  alt: "Aerial view of the Yamuna Sky City tower rising from coastal greenery, with National Highway 66 and a river bridge to the right and the Arabian Sea beach in the foreground",
+  /** Aspect ratio of the artwork — keeps loading stable across swaps.
+      Must match the asset's true ratio, and connectivityMap.viewBox in
+      content/location.ts must follow it, or overlay markers drift. */
+  aspect: "1672 / 941",
 };
 
 export const explore3dPreview = {

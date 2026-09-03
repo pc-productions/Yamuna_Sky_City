@@ -4,14 +4,17 @@ import { connectivity, locationContent } from "@/content/location";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { LocationConnectivity } from "@/components/sections/LocationConnectivity";
 
 /**
- * Location is presented as a designed static image asset (not a live/
- * interactive map) — the approved "Perfectly Connected" connectivity
- * artwork is the centerpiece; the surrounding typography stays quiet.
- * Copy lives in content/location.ts; swap `locationImage.src` in
- * content/media.ts to drop in the final export. The fixed aspect-ratio
- * frame keeps loading stable and distortion-free.
+ * Location — the clean aerial render is the immutable base layer; every
+ * piece of connectivity information (rings, connection lines, markers,
+ * travel times, heading, copy) is programmatic overlay, so content edits
+ * never require touching the image. Layering: image → readability
+ * scrims → SVG rings/lines → markers → heading/copy. Data lives in
+ * content/location.ts (values + normalized overlay geometry); the image
+ * path/aspect in content/media.ts. Mobile swaps the marker overlay for
+ * the structured travel-time list below the image.
  */
 export function Location() {
   return (
@@ -58,15 +61,22 @@ export function Location() {
               WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
             }}
           />
-          {/* Section label + heading over the artwork (sm+ only — mobile
-              has its own HTML heading above). Anchored to the artwork's
-              own text column (3% inset, where its baked title sits) and
-              styled to match the artwork's title treatment — compact
-              uppercase red (sampled from the artwork), sparkle, hairline
-              underline — with the font scaling with the image so it can
-              never collide with the baked badges at any viewport width.
-              The top offset keeps the same navbar rhythm as every other
-              section. */}
+          {/* Soft light wash on the left third so the ink heading and
+              copy stay readable over the photograph (sm+ only). */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 left-0 z-[2] hidden w-[44%] bg-gradient-to-r from-white/85 via-white/40 to-transparent sm:block"
+          />
+
+          {/* Rings, connection lines and destination markers — all
+              programmatic, sharing one normalized coordinate system. */}
+          <LocationConnectivity />
+
+          {/* Section label, heading and supporting copy over the image
+              (sm+ only — mobile has its own HTML heading above). Anchored
+              to the image's left column; type scales with the image so
+              the block clears the overlay markers at every width. The
+              top offset keeps the same navbar rhythm as other sections. */}
           <div className="absolute top-0 left-[3%] z-10 hidden pt-8 sm:block sm:pt-10">
             <span className="eyebrow block text-brand">{locationContent.eyebrow}</span>
             <div className="mt-6 inline-block">
@@ -78,6 +88,9 @@ export function Location() {
               </h2>
               <div className="mt-2.5 h-[2px] w-full bg-[#DA2B1D]" />
             </div>
+            <p className="mt-[2vw] max-w-[23vw] text-[clamp(0.6875rem,1vw,1.0625rem)] leading-[1.65] text-ink/85">
+              {locationContent.supportingLine}
+            </p>
           </div>
         </div>
       </Reveal>
