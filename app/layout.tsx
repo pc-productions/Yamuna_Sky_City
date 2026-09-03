@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Cormorant_Garamond } from "next/font/google";
-import { seo } from "@/content/site";
+import { isSiteUrlConfigured, seo } from "@/content/site";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
@@ -48,9 +48,10 @@ export const metadata: Metadata = {
     // Only emitted once a confirmed handle exists in content/site.ts.
     ...(seo.twitterHandle ? { site: seo.twitterHandle } : {}),
   },
+  // Mirrors app/robots.ts: indexable only once the real domain is set.
   robots: {
-    index: true,
-    follow: true,
+    index: isSiteUrlConfigured,
+    follow: isSiteUrlConfigured,
   },
 };
 
@@ -61,6 +62,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${poppins.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-paper text-ink">
+        {/* Minimal, purely factual structured data; emitted only once the
+            real domain is configured so search engines never receive
+            placeholder URLs. */}
+        {isSiteUrlConfigured && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: seo.titleDefault,
+                url: seo.siteUrl,
+              }),
+            }}
+          />
+        )}
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>

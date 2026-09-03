@@ -17,14 +17,24 @@ export const brand = {
   tagline: "The Pinnacle of South India",
 } as const;
 
+/**
+ * Canonical production origin, e.g. "https://www.yamunaskycity.com".
+ * Set NEXT_PUBLIC_SITE_URL in the deploy environment (see .env.example).
+ * While unset, the fallback origin below is used for URL construction and
+ * the site serves noindex robots — a deploy without the confirmed domain
+ * can never be indexed with broken canonical/OG/sitemap URLs.
+ */
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+export const isSiteUrlConfigured = Boolean(configuredSiteUrl);
+
 export const seo = {
   titleDefault: "Yamuna Sky City",
   titleTemplate: "%s | Yamuna Sky City",
   // Built only from approved facts — no location or positioning claims.
   description:
     "Yamuna Sky City — 60 levels, 296 residences across 2, 3, 4 & 5 BHK configurations. Schedule a private viewing.",
-  // TODO: replace with the confirmed production domain before launch.
-  siteUrl: "https://www.yamunaskycity.example",
+  siteUrl: configuredSiteUrl ?? "https://www.yamunaskycity.example",
   // TODO: set the confirmed handle, or leave empty to omit the tag.
   twitterHandle: "",
 } as const;
