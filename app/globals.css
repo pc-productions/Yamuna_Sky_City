@@ -194,21 +194,20 @@ body {
   }
 }
 
-@keyframes scroll-pulse {
+/* Hero scroll cue: a streak of light travelling down a hairline track.
+   The streak eases through the visible track, then the timeline rests
+   until the loop restarts — an unhurried, architectural rhythm rather
+   than a bounce. The track container clips it at both ends. */
+@keyframes scroll-descend {
   0% {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateY(-100%);
   }
-  50% {
-    transform: translateY(8px);
-    opacity: 0.25;
-  }
+  55%,
   100% {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateY(100%);
   }
 }
 
-.animate-scroll-pulse {
-  animation: scroll-pulse 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+.animate-scroll-descend {
+  animation: scroll-descend 2.6s cubic-bezier(0.77, 0, 0.175, 1) infinite;
 }

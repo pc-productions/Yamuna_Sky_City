@@ -26,18 +26,20 @@ export function Hero({ active }: { active: boolean }) {
         />
       </div>
 
-      {/* Premium subtle scroll indicator */}
+      {/* Scroll cue — editorial treatment matching the brand's rectangular
+          geometry: tracked-out label over a hairline track with a light
+          streak descending through it. */}
       <a
         href="#project"
         aria-label="Scroll to Project Overview"
-        className="group absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2 text-white/70 transition-colors duration-300 hover:text-white sm:bottom-8"
+        className="group absolute bottom-7 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3 sm:bottom-9"
       >
-        <span className="text-[0.625rem] font-medium uppercase tracking-[0.28em] text-white/75 drop-shadow-sm transition-colors group-hover:text-white">
+        <span className="pl-[0.32em] text-[0.625rem] font-medium uppercase tracking-[0.32em] text-white/70 drop-shadow-sm transition-colors duration-500 group-hover:text-white">
           Scroll
         </span>
-        <div className="flex h-8 w-4.5 items-start justify-center rounded-full border border-white/30 p-1 backdrop-blur-[2px] transition-colors group-hover:border-white/80">
-          <span className="h-1.5 w-1 rounded-full bg-white/90 animate-scroll-pulse" />
-        </div>
+        <span className="relative block h-12 w-px overflow-hidden bg-white/20 transition-colors duration-500 group-hover:bg-white/35 sm:h-14">
+          <span className="absolute inset-0 animate-scroll-descend bg-gradient-to-b from-transparent via-white/80 to-white" />
+        </span>
       </a>
     </section>
   );
