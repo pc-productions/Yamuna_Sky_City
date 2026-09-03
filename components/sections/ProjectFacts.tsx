@@ -18,8 +18,8 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function ProjectFacts() {
   return (
-    <section id="project" className="scroll-mt-16 bg-white xl:scroll-mt-18">
-      <Container className="pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pb-40">
+    <section id="project" className="scroll-mt-6 bg-white xl:scroll-mt-8">
+      <Container className="pt-8 pb-20 sm:pt-10 sm:pb-28 lg:pb-36">
         {/* Section identifier */}
         <Reveal>
           <div className="h-[2px] w-12 bg-brand" />

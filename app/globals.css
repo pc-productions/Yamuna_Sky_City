@@ -193,3 +193,22 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes scroll-pulse {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-scroll-pulse {
+  animation: scroll-pulse 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}

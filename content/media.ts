@@ -54,9 +54,9 @@ export const heroVideo: VideoSource = {
   // portrait cut and branch on `src` here; the component already accepts
   // per-breakpoint positioning.
   objectPosition: {
-    mobile: "center",
-    tablet: "center",
-    desktop: "center",
+    mobile: "center top",
+    tablet: "center top",
+    desktop: "center top",
   },
 };
 
