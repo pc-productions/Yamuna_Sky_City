@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { connectivity, connectivityMap, type ConnectivityId } from "@/content/location";
+import {
+  connectivity,
+  connectivityMap,
+  locationHighlights,
+  type ConnectivityId,
+} from "@/content/location";
 import { useReveal } from "@/lib/hooks/useReveal";
 
 /**
@@ -95,6 +100,29 @@ const icons: Record<ConnectivityId, ReactNode> = {
   ),
 };
 
+/* Legend icons for the information box (waves / pin / sparkle). */
+const highlightIcons: Record<(typeof locationHighlights)[number]["id"], ReactNode> = {
+  seaside: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true" className="h-full w-full">
+      <path d="M3 7.5c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
+      <path d="M3 12c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
+      <path d="M3 16.5c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
+    </svg>
+  ),
+  connectivity: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-full w-full">
+      <path d="M12 21s-6.5-5.4-6.5-10.2A6.5 6.5 0 0 1 12 4.5a6.5 6.5 0 0 1 6.5 6.3C18.5 15.6 12 21 12 21Z" />
+      <circle cx="12" cy="10.8" r="2.2" />
+    </svg>
+  ),
+  reach: (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-full w-full">
+      <path d="M12 2.5 13.9 9 20.5 11l-6.6 2L12 19.5 10.1 13 3.5 11l6.6-2L12 2.5Z" />
+      <circle cx="18.7" cy="4.6" r="1.1" />
+    </svg>
+  ),
+};
+
 export function LocationConnectivity() {
   const { ref, isVisible } = useReveal<HTMLDivElement>(0.35);
   const [hovered, setHovered] = useState<ConnectivityId | null>(null);
@@ -157,17 +185,32 @@ export function LocationConnectivity() {
         {nodes.map((node, i) => {
           const l = connectionLine(node.x, node.y);
           return (
-            <line
-              key={node.id}
-              {...l}
-              mask={`url(#conn-mask-${i})`}
-              stroke={
-                hovered === node.id ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.42)"
-              }
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-              className="transition-[stroke] duration-300"
-            />
+            <g key={node.id}>
+              <line
+                {...l}
+                mask={`url(#conn-mask-${i})`}
+                stroke={
+                  hovered === node.id ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.45)"
+                }
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+                className="transition-[stroke] duration-300"
+              />
+              {/* Small sharp Ember anchor where the line meets the marker */}
+              <circle
+                cx={l.x2}
+                cy={l.y2}
+                r="3.4"
+                fill="#B42810"
+                stroke="rgba(255,255,255,0.9)"
+                strokeWidth="1"
+                className="transition-opacity duration-500"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transitionDelay: `${900 + i * 80}ms`,
+                }}
+              />
+            </g>
           );
         })}
       </svg>
@@ -197,7 +240,7 @@ export function LocationConnectivity() {
               <div
                 onMouseEnter={() => setHovered(node.id)}
                 onMouseLeave={() => setHovered(null)}
-                className="pointer-events-auto flex aspect-square w-[3.4vw] items-center justify-center rounded-full bg-white/95 text-ink shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:scale-105"
+                className="pointer-events-auto flex aspect-square w-[3.4vw] items-center justify-center rounded-full bg-white text-[#0B1B33] shadow-[0_5px_18px_rgba(0,0,0,0.22)] transition-transform duration-300 hover:scale-105"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -213,19 +256,57 @@ export function LocationConnectivity() {
                 </svg>
               </div>
               <span
-                className={`mt-[0.45vw] text-center text-[clamp(0.5625rem,0.78vw,0.8125rem)] leading-tight font-semibold tracking-[0.04em] text-ink uppercase [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_14px_rgba(255,255,255,0.8),0_1px_2px_rgba(255,255,255,0.9)] ${
+                className={`mt-[0.5vw] text-center text-[clamp(0.6875rem,1.05vw,1.0625rem)] leading-tight font-bold tracking-[0.015em] text-[#0B1B33] uppercase [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.85),0_1px_2px_rgba(255,255,255,0.95)] ${
                   item.label.length > 22 ? "max-w-[12vw]" : "whitespace-nowrap"
                 }`}
               >
                 {item.label}
               </span>
-              <span className="font-display text-[clamp(0.625rem,0.85vw,0.875rem)] font-semibold text-brand [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_12px_rgba(255,255,255,0.8)]">
+              <span className="mt-0.5 font-display text-[clamp(0.75rem,1.15vw,1.125rem)] font-bold text-brand [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_14px_rgba(255,255,255,0.85)]">
                 {item.minutes} MIN
               </span>
             </div>
           );
         })}
       </div>
+
+      {/* Information box, lower left (lg+): three approved highlight
+          rows on a restrained translucent card. Mobile gets these rows
+          in its own flow block below the image instead. */}
+      <div
+        className="absolute bottom-[6%] left-[3%] z-[8] hidden transition-all duration-700 ease-out lg:block"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(12px)",
+          transitionDelay: "1250ms",
+        }}
+      >
+        <LocationHighlightRows className="w-[clamp(19rem,23vw,23rem)] rounded-[20px] border border-white/50 bg-white/85 px-6 py-1.5 shadow-[0_10px_36px_rgba(0,0,0,0.16)] backdrop-blur-[10px]" />
+      </div>
     </div>
+  );
+}
+
+/**
+ * The three approved highlight rows — used by the desktop information
+ * box above and by the mobile flow block in Location.tsx.
+ */
+export function LocationHighlightRows({ className = "" }: { className?: string }) {
+  return (
+    <ul className={className}>
+      {locationHighlights.map((h, i) => (
+        <li
+          key={h.id}
+          className={`flex items-center gap-3.5 py-3.5 ${
+            i > 0 ? "border-t border-[#0B1B33]/10" : ""
+          }`}
+        >
+          <span className="h-5 w-5 shrink-0 text-brand">{highlightIcons[h.id]}</span>
+          <span className="text-[0.8125rem] font-semibold tracking-[0.05em] text-[#0B1B33] uppercase">
+            {h.label}
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 }

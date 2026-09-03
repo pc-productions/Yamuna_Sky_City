@@ -4,7 +4,10 @@ import { connectivity, locationContent } from "@/content/location";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { LocationConnectivity } from "@/components/sections/LocationConnectivity";
+import {
+  LocationConnectivity,
+  LocationHighlightRows,
+} from "@/components/sections/LocationConnectivity";
 
 /**
  * Location — the clean aerial render is the immutable base layer; every
@@ -115,6 +118,10 @@ export function Location() {
               </li>
             ))}
           </ul>
+        </Reveal>
+        <Reveal delayMs={200}>
+          {/* Same approved highlights as the desktop information box */}
+          <LocationHighlightRows className="mt-8 rounded-2xl border border-line bg-paper px-5 py-1" />
         </Reveal>
       </Container>
     </section>
