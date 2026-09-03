@@ -258,20 +258,27 @@ body {
   animation: cue-letter 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
+/* Streaks and chevrons are attached only while the cue is visible, so
+   each entrance restarts their shared clock from zero. The 0.7s base
+   delay lets the track finish drawing itself before the first light
+   passes; the elements carry base opacity-0, so nothing shows during
+   the delay. Chevron delays stay phase-locked to the streak's clock. */
 .animate-cue-streak {
   animation: cue-streak 3s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation-delay: 0.7s;
 }
 
 .animate-cue-streak-2 {
   animation: cue-streak 3s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-  animation-delay: 0.4s;
+  animation-delay: 1.1s;
 }
 
 .animate-cue-chevron {
   animation: cue-chevron 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: 0.7s;
 }
 
 .animate-cue-chevron-2 {
   animation: cue-chevron 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-  animation-delay: 0.14s;
+  animation-delay: 0.84s;
 }

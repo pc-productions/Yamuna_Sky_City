@@ -15,6 +15,7 @@ export function Hero({ active }: { active: boolean }) {
   const [showCue, setShowCue] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const prevTimeRef = useRef(0);
+  const cueVisible = showCue && !scrolled;
 
   // The cue's job is done once the visitor starts moving: retreat as soon
   // as they scroll, return if they come back to the very top.
@@ -74,22 +75,25 @@ export function Hero({ active }: { active: boolean }) {
 
       {/* Scroll cue — one choreographed gesture: letter shimmer → glowing
           streak descending the track → chevrons blooming as it lands.
-          Appears after the first video loop, staged bottom-up; retreats
-          the moment the visitor starts scrolling. */}
+          Entry fades in top-down (label, track draws itself, chevrons);
+          exit fades out bottom-up in reverse. The animation classes are
+          only attached while visible, so every entrance restarts the
+          shared cycle from zero — the first streak always begins cleanly
+          at the top of the track. */}
       <a
         href="#project"
         aria-label="Scroll to Project Overview"
-        className={`group absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2.5 transition-all duration-1000 ease-out sm:bottom-8 ${
-          showCue && !scrolled
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-3 opacity-0"
+        className={`group absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2.5 transition-transform duration-1000 ease-out sm:bottom-8 ${
+          cueVisible ? "translate-y-0" : "pointer-events-none translate-y-2"
         }`}
       >
         {/* Label — each letter carries a phase-shifted shimmer so a wave
             of light reads across the word once per cycle. */}
         <span
           aria-hidden="true"
-          className="flex pl-[0.3em] text-[0.5625rem] font-medium uppercase text-white/70 transition-colors duration-500 group-hover:text-white"
+          className={`flex pl-[0.3em] text-[0.5625rem] font-medium uppercase text-white/70 transition-[opacity,color] duration-700 ease-out group-hover:text-white ${
+            cueVisible ? "opacity-100 delay-100" : "opacity-0 delay-300"
+          }`}
         >
           {["S", "C", "R", "O", "L", "L"].map((ch, i) => (
             <span
@@ -102,20 +106,35 @@ export function Hero({ active }: { active: boolean }) {
           ))}
         </span>
 
-        {/* Hairline track: draws itself downward on entrance; a glowing
-            streak and a fainter echo descend through it. */}
+        {/* Hairline track: draws itself downward on entrance, folds back
+            up on exit; a glowing streak and a fainter echo descend
+            through it. */}
         <span
-          className={`relative block h-12 w-px origin-top overflow-hidden bg-white/15 transition-all delay-200 duration-700 ease-out group-hover:bg-white/30 sm:h-14 ${
-            showCue && !scrolled ? "scale-y-100" : "scale-y-0"
+          className={`relative block h-12 w-px origin-top overflow-hidden bg-white/15 transition-[scale,opacity,background-color] duration-700 ease-out group-hover:bg-white/30 sm:h-14 ${
+            cueVisible
+              ? "scale-y-100 opacity-100 delay-300"
+              : "scale-y-0 opacity-0 delay-150"
           }`}
         >
-          <span className="animate-cue-streak absolute inset-x-0 h-1/2 bg-gradient-to-b from-transparent via-white to-white shadow-[0_0_10px_rgba(255,255,255,0.7)]" />
-          <span className="animate-cue-streak-2 absolute inset-x-0 h-1/2 bg-gradient-to-b from-transparent via-white/40 to-transparent" />
+          {/* Base opacity-0 so the streaks only ever exist as animated
+              light — never a static bar before their delayed cycle
+              starts or after the classes detach on exit. */}
+          <span
+            className={`absolute inset-x-0 h-1/2 bg-gradient-to-b from-transparent via-white to-white opacity-0 shadow-[0_0_10px_rgba(255,255,255,0.7)] ${cueVisible ? "animate-cue-streak" : ""}`}
+          />
+          <span
+            className={`absolute inset-x-0 h-1/2 bg-gradient-to-b from-transparent via-white/40 to-transparent opacity-0 ${cueVisible ? "animate-cue-streak-2" : ""}`}
+          />
         </span>
 
         {/* Twin chevrons — bloom in sequence exactly as the streak lands,
-            then exit downward, handing the motion off the screen. */}
-        <span className="flex flex-col items-center -space-y-[3px] text-white/70 transition-colors duration-500 group-hover:text-white">
+            then exit downward, handing the motion off the screen. First
+            to fade on exit, last to arrive on entry. */}
+        <span
+          className={`flex flex-col items-center -space-y-[3px] text-white/70 transition-[opacity,color] duration-700 ease-out group-hover:text-white ${
+            cueVisible ? "opacity-100 delay-500" : "opacity-0 delay-0"
+          }`}
+        >
           {["animate-cue-chevron", "animate-cue-chevron-2"].map((anim) => (
             <svg
               key={anim}
@@ -124,7 +143,7 @@ export function Hero({ active }: { active: boolean }) {
               viewBox="0 0 10 6"
               fill="none"
               aria-hidden="true"
-              className={anim}
+              className={`opacity-0 ${cueVisible ? anim : ""}`}
             >
               <path
                 d="M1 1l4 4 4-4"
