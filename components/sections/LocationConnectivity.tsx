@@ -1,102 +1,65 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { connectivity, connectivityMap, type ConnectivityId } from "@/content/location";
 import { useReveal } from "@/lib/hooks/useReveal";
 
 /**
- * Programmatic connectivity overlay for the Location section, in the
- * site's own design language: hairline geometry, dark frosted-glass
- * tags, tracked uppercase micro-labels, disciplined Ember accents.
+ * Radial proximity overlay for the Location section — a quiet radar
+ * diagram laid over the aerial photograph. Every destination's dot sits
+ * on its own concentric ground-plane ring around the tower; ring radius
+ * grows with travel time, so nearness is legible at a glance. Nodes are
+ * ember dots with a two-line label (name, tracked travel time) — no
+ * boxes, no icons, no clutter.
  *
- * Everything renders on the shared normalized coordinate system from
- * content/location.ts (`connectivityMap.viewBox`, mirroring the aerial
- * image's aspect): the SVG stretches to the image box, and the HTML
- * tags use the same coordinates as percentages — so lines and labels
- * stay attached to the photograph at every viewport width.
+ * Geometry lives in content/location.ts on a normalized coordinate
+ * system mirroring the image's aspect; the SVG stretches to the image
+ * box and HTML labels use the same coordinates as percentages, so the
+ * diagram stays glued to the photograph at every width.
  *
- * Choreography on scroll (one IntersectionObserver, CSS only):
- *   1. the photograph settles from a gentle zoom (globals.css, via the
- *      `.location-figure` wrapper watching [data-visible]),
- *   2. concentric rings breathe in around the tower,
- *   3. hairlines draw outward from the beacon (masked dash sweep),
- *   4. a streak of light travels each line once — the same gesture as
- *      the hero scroll cue,
- *   5. anchor dots and glass tags rise in, staggered per destination.
- * The tower beacon keeps a slow expanding-ring pulse afterwards — the
- * one continuously living element. Hovering a tag brightens it and its
- * line together. The global prefers-reduced-motion kill-switch
- * collapses everything to the finished state.
+ * Choreography on scroll (one IntersectionObserver, CSS only): the
+ * photograph settles from a gentle zoom (globals.css watches
+ * [data-visible]) → the rings breathe in → hairlines draw outward from
+ * the tower's centre ring → a streak of light travels each line once
+ * (the hero cue's gesture) → dots and labels rise in, nearest first.
+ * The tower beacon keeps a slow expanding pulse — the one continuously
+ * living element. Hovering a label brightens its line and rings a halo
+ * around its dot. Reduced motion collapses everything to the finished
+ * state instantly.
  */
 
-const { viewBox, center, rings, nodes } = connectivityMap;
-
-/** Gap (viewBox units) between a line's end and its anchor dot. */
-const LINE_TRIM = 14;
-/** Radius around the beacon where lines start, clearing the tower. */
-const CENTER_TRIM = 18;
+const { viewBox, center, ringSquash, centerRing, nodes } = connectivityMap;
 
 const byId = Object.fromEntries(connectivity.map((c) => [c.id, c]));
 
-function trimmedLine(x: number, y: number) {
+/** Ring radius on which a node sits (ellipse squashed by ringSquash). */
+function nodeRadius(x: number, y: number) {
+  const dx = x - center.x;
+  const dy = (y - center.y) / ringSquash;
+  return Math.hypot(dx, dy);
+}
+
+/** Line from the centre ring's edge to just short of the node's dot. */
+function connectionLine(x: number, y: number) {
   const dx = x - center.x;
   const dy = y - center.y;
   const len = Math.hypot(dx, dy);
   const ux = dx / len;
   const uy = dy / len;
+  // Start on the centre ring (squashed), end just before the dot.
+  const startLen = Math.hypot(centerRing * ux, centerRing * ringSquash * uy);
   return {
-    x1: center.x + ux * CENTER_TRIM,
-    y1: center.y + uy * CENTER_TRIM,
-    x2: x - ux * LINE_TRIM,
-    y2: y - uy * LINE_TRIM,
+    x1: center.x + ux * startLen,
+    y1: center.y + uy * startLen,
+    x2: x - ux * 12,
+    y2: y - uy * 12,
   };
 }
 
-/* Minimal 24×24 line icons, consistent 1.5 stroke — no icon library. */
-const icons: Record<ConnectivityId, ReactNode> = {
-  beach: (
-    <>
-      <circle cx="12" cy="8" r="3" />
-      <path d="M3 15c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
-      <path d="M3 19c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
-    </>
-  ),
-  nh66: (
-    <>
-      <path d="M8 4 5 20M16 4l3 16" />
-      <path d="M12 5v3M12 11v3M12 17v3" />
-    </>
-  ),
-  school: (
-    <>
-      <path d="m12 5-9 4 9 4 9-4-9-4Z" />
-      <path d="M6.5 11v4.5c0 1 2.5 2.5 5.5 2.5s5.5-1.5 5.5-2.5V11" />
-    </>
-  ),
-  hospital: (
-    <>
-      <rect x="4" y="4" width="16" height="16" rx="2" />
-      <path d="M12 8.5v7M8.5 12h7" />
-    </>
-  ),
-  mall: (
-    <>
-      <path d="M5 8h14l-1 12H6L5 8Z" />
-      <path d="M9 10V6.5a3 3 0 0 1 6 0V10" />
-    </>
-  ),
-  cityCentre: (
-    <>
-      <path d="M4 20V9h6v11M14 20V4h6v16" />
-      <path d="M6.5 12h1M6.5 15h1M16.5 8h1M16.5 12h1M16.5 16h1M2.5 20h19" />
-    </>
-  ),
-  airport: (
-    <>
-      <path d="M10.5 20.5 12 15l4.5-4.5c1.5-1.5 3-4 2.5-5.5-1.5-.5-4 1-5.5 2.5L9 12l-5.5 1.5L5 15l4-1 1.5 1.5-1 4 1 1Z" />
-    </>
-  ),
-};
+/* Nodes sorted nearest-first so the reveal ripples outward. */
+const orderedNodes = [...nodes].sort(
+  (a, b) => nodeRadius(a.x, a.y) - nodeRadius(b.x, b.y),
+);
 
 export function LocationConnectivity() {
   const { ref, isVisible } = useReveal<HTMLDivElement>(0.35);
@@ -108,8 +71,21 @@ export function LocationConnectivity() {
       data-visible={isVisible}
       className="pointer-events-none absolute inset-0 hidden sm:block"
     >
+      {/* Soft radial dusk over the diagram area so the hairline rings
+          and white labels lift off the photograph — the quiet dark
+          ground the radial layout needs, without flattening the image. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-[5] transition-opacity duration-[1400ms]"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          background:
+            "radial-gradient(ellipse 62% 80% at 53% 44%, rgba(2,8,18,0.5) 0%, rgba(2,8,18,0.26) 48%, rgba(2,8,18,0) 74%)",
+        }}
+      />
+
       {/* Rings, beacon and connection lines — decorative; the same
-          information is real DOM text in the tags below and in the
+          information is real DOM text in the labels below and in the
           mobile travel-time list. */}
       <svg
         aria-hidden="true"
@@ -117,36 +93,62 @@ export function LocationConnectivity() {
         viewBox={`0 0 ${viewBox.w} ${viewBox.h}`}
         preserveAspectRatio="none"
       >
-        {/* Concentric rings breathing in around the tower */}
+        {/* One ground-plane ring per destination, radius = its distance */}
         <g
-          className="transition-all duration-[1400ms] ease-out"
+          className="transition-all duration-[1600ms] ease-out"
           style={{
             transformOrigin: `${center.x}px ${center.y}px`,
             opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "scale(1)" : "scale(0.9)",
+            transform: isVisible ? "scale(1)" : "scale(0.88)",
             transitionDelay: "100ms",
           }}
         >
-          {rings.map((r) => (
-            <ellipse
-              key={r}
-              cx={center.x}
-              cy={center.y}
-              rx={r}
-              ry={r * 0.78}
-              fill="none"
-              stroke="rgba(255,255,255,0.38)"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-            />
-          ))}
+          {orderedNodes.map((node) => {
+            const r = nodeRadius(node.x, node.y);
+            return (
+              <ellipse
+                key={node.id}
+                cx={center.x}
+                cy={center.y}
+                rx={r}
+                ry={r * ringSquash}
+                fill="none"
+                stroke={
+                  hovered === node.id ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.32)"
+                }
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+                className="transition-[stroke] duration-300"
+              />
+            );
+          })}
         </g>
 
-        {/* Tower beacon: ember core, hairline halo, slow expanding pulse */}
+        {/* Centre: double ring around the tower + ember beacon */}
         <g
           className="transition-opacity duration-700"
-          style={{ opacity: isVisible ? 1 : 0, transitionDelay: "250ms" }}
+          style={{ opacity: isVisible ? 1 : 0, transitionDelay: "300ms" }}
         >
+          <ellipse
+            cx={center.x}
+            cy={center.y}
+            rx={centerRing}
+            ry={centerRing * ringSquash}
+            fill="none"
+            stroke="rgba(255,255,255,0.75)"
+            strokeWidth="1.5"
+            vectorEffect="non-scaling-stroke"
+          />
+          <ellipse
+            cx={center.x}
+            cy={center.y}
+            rx={centerRing - 9}
+            ry={(centerRing - 9) * ringSquash}
+            fill="none"
+            stroke="rgba(255,255,255,0.35)"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
           {isVisible && (
             <>
               <circle
@@ -172,15 +174,15 @@ export function LocationConnectivity() {
               />
             </>
           )}
-          <circle cx={center.x} cy={center.y} r="10" fill="rgba(255,255,255,0.85)" />
-          <circle cx={center.x} cy={center.y} r="5.5" fill="#B42810" />
+          <circle cx={center.x} cy={center.y} r="8" fill="rgba(255,255,255,0.9)" />
+          <circle cx={center.x} cy={center.y} r="4.5" fill="#B42810" />
         </g>
 
         {/* Hairlines drawing outward, then a streak of light travelling
             each one once — the hero cue's gesture, mapped outward. */}
         <defs>
-          {nodes.map((node, i) => {
-            const l = trimmedLine(node.x, node.y);
+          {orderedNodes.map((node, i) => {
+            const l = connectionLine(node.x, node.y);
             return (
               <mask key={node.id} id={`conn-mask-${i}`} maskUnits="userSpaceOnUse">
                 <line
@@ -192,22 +194,22 @@ export function LocationConnectivity() {
                   style={{
                     strokeDasharray: 1,
                     strokeDashoffset: isVisible ? 0 : 1,
-                    transitionDelay: `${450 + i * 110}ms`,
+                    transitionDelay: `${500 + i * 110}ms`,
                   }}
                 />
               </mask>
             );
           })}
         </defs>
-        {nodes.map((node, i) => {
-          const l = trimmedLine(node.x, node.y);
+        {orderedNodes.map((node, i) => {
+          const l = connectionLine(node.x, node.y);
           const isHovered = hovered === node.id;
           return (
             <g key={node.id}>
               <line
                 {...l}
                 mask={`url(#conn-mask-${i})`}
-                stroke={isHovered ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.55)"}
+                stroke={isHovered ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.45)"}
                 strokeWidth={isHovered ? 1.5 : 1}
                 vectorEffect="non-scaling-stroke"
                 className="transition-[stroke,stroke-width] duration-300"
@@ -224,7 +226,7 @@ export function LocationConnectivity() {
                   style={
                     {
                       strokeDasharray: "0.18 1",
-                      "--streak-delay": `${1350 + i * 110}ms`,
+                      "--streak-delay": `${1400 + i * 110}ms`,
                     } as React.CSSProperties
                   }
                 />
@@ -234,61 +236,51 @@ export function LocationConnectivity() {
         })}
       </svg>
 
-      {/* Anchor dots + frosted glass tags — real text, positioned on the
-          same normalized coordinates as the SVG. */}
+      {/* Ember dots + quiet two-line labels — real text on the same
+          normalized coordinates as the SVG. */}
       <div className="absolute inset-0 z-[7]">
-        {nodes.map((node, i) => {
+        {orderedNodes.map((node, i) => {
           const item = byId[node.id];
           if (!item) return null;
-          const tagBelow = node.labelSide === "bottom";
+          const isHovered = hovered === node.id;
           return (
             <div
               key={node.id}
-              className={`absolute flex -translate-x-1/2 -translate-y-1/2 items-center transition-all duration-700 ease-out ${
-                tagBelow ? "flex-col" : "flex-col-reverse"
-              }`}
+              className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center transition-all duration-700 ease-out"
               style={{
                 left: `${(node.x / viewBox.w) * 100}%`,
                 top: `${(node.y / viewBox.h) * 100}%`,
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible
                   ? "translate(-50%,-50%) translateY(0)"
-                  : `translate(-50%,-50%) translateY(${tagBelow ? "10px" : "-10px"})`,
-                transitionDelay: `${1050 + i * 110}ms`,
+                  : "translate(-50%,-50%) translateY(8px)",
+                transitionDelay: `${1150 + i * 110}ms`,
               }}
             >
-              {/* Anchor dot pinned to the exact location */}
-              <span
-                aria-hidden="true"
-                className="h-2 w-2 rounded-full bg-brand shadow-[0_0_0_3px_rgba(255,255,255,0.85),0_1px_6px_rgba(0,0,0,0.35)]"
-              />
-              {/* Frosted glass tag */}
+              {/* Anchor dot with a halo that rings it on hover */}
+              <span className="relative flex items-center justify-center">
+                <span
+                  aria-hidden="true"
+                  className={`absolute h-6 w-6 rounded-full border border-white/70 transition-all duration-300 ${
+                    isHovered ? "scale-100 opacity-100" : "scale-50 opacity-0"
+                  }`}
+                />
+                <span
+                  aria-hidden="true"
+                  className="h-2.5 w-2.5 rounded-full bg-brand shadow-[0_0_0_2px_rgba(255,255,255,0.9),0_0_12px_2px_rgba(255,255,255,0.45)]"
+                />
+              </span>
+              {/* Two-line label: sentence-case name, tracked time */}
               <div
                 onMouseEnter={() => setHovered(node.id)}
                 onMouseLeave={() => setHovered(null)}
-                className={`pointer-events-auto flex items-center gap-2.5 border border-white/20 bg-night/55 px-3 py-2 whitespace-nowrap backdrop-blur-md transition-all duration-300 hover:border-white/45 hover:bg-night/75 ${
-                  tagBelow ? "mt-2.5" : "mb-2.5"
-                }`}
+                className="pointer-events-auto mt-2 flex flex-col items-center gap-1 text-center"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                  className="h-[clamp(0.75rem,1vw,1rem)] w-[clamp(0.75rem,1vw,1rem)] shrink-0 text-white/85"
-                >
-                  {icons[node.id]}
-                </svg>
-                <span className="text-[clamp(0.5625rem,0.72vw,0.71875rem)] font-medium tracking-[0.14em] text-white/90 uppercase">
+                <span className="text-[clamp(0.6875rem,0.95vw,0.9375rem)] leading-tight font-medium whitespace-nowrap text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.65),0_2px_14px_rgba(0,0,0,0.55)]">
                   {item.label}
                 </span>
-                <span aria-hidden="true" className="h-3 w-px bg-white/25" />
-                <span className="font-display text-[clamp(0.6875rem,0.9vw,0.9375rem)] font-semibold text-white">
-                  {item.minutes}
-                  <span className="pl-0.5 text-[0.75em] font-medium text-white/70">min</span>
+                <span className="font-display text-[clamp(0.5625rem,0.7vw,0.6875rem)] font-medium tracking-[0.28em] text-pearl-ivory uppercase [text-shadow:0_1px_3px_rgba(0,0,0,0.7),0_2px_12px_rgba(0,0,0,0.6)]">
+                  {item.minutes}&nbsp;min
                 </span>
               </div>
             </div>

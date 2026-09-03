@@ -56,21 +56,25 @@ export const connectivityMap = {
   viewBox: { w: 1000, h: 563 },
   /** Ring centre — the tower's visual centre in the aerial image. */
   center: { x: 530, y: 250 },
-  /** Concentric ring radii, in viewBox units. */
-  rings: [130, 215, 300],
-  /** labelSide: where the glass tag floats relative to its anchor dot. */
+  /** Vertical squash of the rings so they lie on the aerial ground plane. */
+  ringSquash: 0.78,
+  /** Radius of the double ring around the tower where lines begin. */
+  centerRing: 52,
+  /**
+   * Radial proximity layout: each destination's dot sits on its own
+   * concentric ring, whose radius grows with travel time (nearest =
+   * innermost) — the rings themselves are drawn from these positions.
+   * Angles are chosen so dots and labels clear the tower silhouette,
+   * the heading copy and each other. Move a node by editing x/y; its
+   * ring follows automatically.
+   */
   nodes: [
-    { id: "beach", x: 380, y: 96, labelSide: "bottom" },
-    { id: "nh66", x: 778, y: 100, labelSide: "bottom" },
-    { id: "school", x: 835, y: 262, labelSide: "bottom" },
-    { id: "hospital", x: 360, y: 420, labelSide: "top" },
-    { id: "mall", x: 340, y: 306, labelSide: "bottom" },
-    { id: "airport", x: 556, y: 474, labelSide: "top" },
-    { id: "cityCentre", x: 756, y: 438, labelSide: "top" },
-  ] as ReadonlyArray<{
-    id: ConnectivityId;
-    x: number;
-    y: number;
-    labelSide: "top" | "bottom";
-  }>,
+    { id: "beach", x: 616, y: 322 },
+    { id: "nh66", x: 662, y: 195 },
+    { id: "school", x: 694, y: 261 },
+    { id: "hospital", x: 356, y: 238 },
+    { id: "mall", x: 388, y: 157 },
+    { id: "cityCentre", x: 366, y: 392 },
+    { id: "airport", x: 580, y: 473 },
+  ] as ReadonlyArray<{ id: ConnectivityId; x: number; y: number }>,
 } as const;
