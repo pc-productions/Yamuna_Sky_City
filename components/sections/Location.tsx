@@ -41,19 +41,26 @@ export function Location() {
             className="w-full object-cover"
             loading="lazy"
           />
-          {/* Section label + heading baked over the artwork (sm+ only —
-              mobile has its own HTML heading above). Reuses SectionHeading
-              with the shared Container alignment and navbar offset
-              (pt-8 sm:pt-10), so the typography and spacing are identical
-              to every other section without adding whitespace above the
-              image. */}
-          <div className="absolute inset-x-0 top-0 z-10 hidden pt-8 sm:block sm:pt-10">
-            <Container>
-              <SectionHeading
-                eyebrow={locationContent.eyebrow}
-                heading={locationContent.heading}
-              />
-            </Container>
+          {/* Section label + heading over the artwork (sm+ only — mobile
+              has its own HTML heading above). Anchored to the artwork's
+              own text column (3% inset, where its baked title sits) and
+              styled to match the artwork's title treatment — compact
+              uppercase red (sampled from the artwork), sparkle, hairline
+              underline — with the font scaling with the image so it can
+              never collide with the baked badges at any viewport width.
+              The top offset keeps the same navbar rhythm as every other
+              section. */}
+          <div className="absolute top-0 left-[3%] z-10 hidden pt-8 sm:block sm:pt-10">
+            <span className="eyebrow block text-brand">{locationContent.eyebrow}</span>
+            <div className="mt-6 inline-block">
+              <h2 className="font-display text-[clamp(0.8125rem,1.2vw,1.4375rem)] font-semibold uppercase tracking-[0.04em] text-[#DA2B1D]">
+                {locationContent.heading}
+                <span aria-hidden="true" className="pl-[0.5em] text-[0.8em]">
+                  ✦
+                </span>
+              </h2>
+              <div className="mt-2.5 h-[2px] w-full bg-[#DA2B1D]" />
+            </div>
           </div>
         </div>
       </Reveal>
