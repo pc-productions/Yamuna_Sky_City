@@ -33,7 +33,7 @@ export function Location() {
       {/* Full-bleed edge-to-edge artwork flush with the next section */}
       <Reveal delayMs={100} className="mt-12 block w-full sm:mt-0">
         <div
-          className="relative w-full overflow-hidden"
+          className="location-figure relative w-full overflow-hidden"
           style={{ aspectRatio: locationImage.aspect }}
         >
           <Image
@@ -88,7 +88,9 @@ export function Location() {
               </h2>
               <div className="mt-2.5 h-[2px] w-full bg-[#DA2B1D]" />
             </div>
-            <p className="mt-[2vw] max-w-[23vw] text-[clamp(0.6875rem,1vw,1.0625rem)] leading-[1.65] text-ink/85">
+            {/* Supporting copy joins from lg up — at tablet widths the
+                left column is too tight to share with the glass tags. */}
+            <p className="mt-[2vw] hidden max-w-[23vw] text-[clamp(0.6875rem,1vw,1.0625rem)] leading-[1.65] text-ink/85 lg:block">
               {locationContent.supportingLine}
             </p>
           </div>

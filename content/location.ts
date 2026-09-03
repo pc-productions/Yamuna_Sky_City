@@ -58,13 +58,19 @@ export const connectivityMap = {
   center: { x: 530, y: 250 },
   /** Concentric ring radii, in viewBox units. */
   rings: [130, 215, 300],
+  /** labelSide: where the glass tag floats relative to its anchor dot. */
   nodes: [
-    { id: "beach", x: 380, y: 96 },
-    { id: "nh66", x: 778, y: 100 },
-    { id: "school", x: 835, y: 262 },
-    { id: "hospital", x: 360, y: 420 },
-    { id: "mall", x: 318, y: 260 },
-    { id: "airport", x: 556, y: 474 },
-    { id: "cityCentre", x: 756, y: 438 },
-  ] as ReadonlyArray<{ id: ConnectivityId; x: number; y: number }>,
+    { id: "beach", x: 380, y: 96, labelSide: "bottom" },
+    { id: "nh66", x: 778, y: 100, labelSide: "bottom" },
+    { id: "school", x: 835, y: 262, labelSide: "bottom" },
+    { id: "hospital", x: 360, y: 420, labelSide: "top" },
+    { id: "mall", x: 340, y: 306, labelSide: "bottom" },
+    { id: "airport", x: 556, y: 474, labelSide: "top" },
+    { id: "cityCentre", x: 756, y: 438, labelSide: "top" },
+  ] as ReadonlyArray<{
+    id: ConnectivityId;
+    x: number;
+    y: number;
+    labelSide: "top" | "bottom";
+  }>,
 } as const;
