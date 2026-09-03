@@ -71,8 +71,11 @@ function useHeaderTone(enabled: boolean): HeaderTone {
 }
 
 const surfaceByTone: Record<HeaderTone, string> = {
-  // Dark frosted glass blur over video/hero matching luxury reference style
-  video: "border-b border-white/10 bg-night/75 backdrop-blur-md",
+  // TRIAL: header over the hero video renders as the light treatment
+  // (white frosted bar + Ember primary CTA) instead of dark glass.
+  // To revert, restore: "border-b border-white/10 bg-night/75 backdrop-blur-md"
+  // here and `tone !== "light"` for onDark below.
+  video: "border-b border-line/70 bg-paper/90 backdrop-blur-md",
   dark: "border-b border-white/10 bg-night/85 backdrop-blur-md",
   light: "border-b border-line/70 bg-paper/90 backdrop-blur-md",
 };
@@ -84,7 +87,8 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
 
   // The open mobile menu always sits on a solid paper panel.
   const tone: HeaderTone = isMenuOpen ? "light" : sectionTone;
-  const onDark = tone !== "light";
+  // TRIAL (paired with surfaceByTone above): "video" counts as light.
+  const onDark = tone === "dark";
 
   const linkTone = onDark ? "text-white/80 hover:text-white" : "text-ink-muted hover:text-brand";
 
