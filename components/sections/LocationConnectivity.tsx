@@ -294,13 +294,7 @@ export function LocationConnectivity() {
                 transitionDelay: `${750 + i * 80}ms`,
               }}
             >
-              {/* Soft dark halo behind the whole cluster lifts the
-                  white typography off the bright photograph. */}
-              <span
-                aria-hidden="true"
-                className="absolute top-1/2 left-1/2 -z-10 h-[135%] w-[165%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/45 blur-2xl"
-              />
-              <div className="flex aspect-square w-[3.4vw] items-center justify-center rounded-full bg-white text-[#0B1B33] shadow-[0_5px_18px_rgba(0,0,0,0.3)] transition-[translate,box-shadow] duration-300 ease-out group-hover:-translate-y-[3px] group-hover:shadow-[0_10px_26px_rgba(0,0,0,0.36)] group-focus-visible:-translate-y-[3px]">
+              <div className="flex aspect-square w-[3.4vw] items-center justify-center rounded-full bg-white text-[#0B1B33] shadow-[0_5px_16px_rgba(0,0,0,0.22)] transition-[translate,box-shadow] duration-300 ease-out group-hover:-translate-y-[3px] group-hover:shadow-[0_10px_24px_rgba(0,0,0,0.3)] group-focus-visible:-translate-y-[3px]">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -315,13 +309,13 @@ export function LocationConnectivity() {
                 </svg>
               </div>
               <span
-                className={`mt-[0.5vw] text-center text-[clamp(0.6875rem,1.05vw,1.0625rem)] leading-tight font-bold tracking-[0.02em] text-white/95 uppercase transition-colors duration-300 group-hover:text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.65),0_2px_14px_rgba(0,0,0,0.55)] ${
+                className={`mt-[0.5vw] text-center text-[clamp(0.6875rem,1.05vw,1.0625rem)] leading-tight font-bold tracking-[0.02em] text-white/95 uppercase transition-colors duration-300 group-hover:text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.75),0_2px_8px_rgba(0,0,0,0.35)] ${
                   item.label.length > 22 ? "max-w-[12vw]" : "whitespace-nowrap"
                 }`}
               >
                 {item.label}
               </span>
-              <span className="mt-0.5 font-display text-[clamp(0.75rem,1.15vw,1.125rem)] font-bold text-[#DA2B1D] transition-colors duration-300 group-hover:text-[#ff3a28] [text-shadow:0_1px_3px_rgba(0,0,0,0.6),0_2px_12px_rgba(0,0,0,0.5)]">
+              <span className="mt-0.5 font-display text-[clamp(0.75rem,1.15vw,1.125rem)] font-bold text-[#DA2B1D] transition-colors duration-300 group-hover:text-[#ff3a28] [text-shadow:0_1px_3px_rgba(0,0,0,0.55)]">
                 {item.minutes}
                 <span className="pl-0.5 text-[0.72em] font-semibold opacity-80">MIN</span>
               </span>
