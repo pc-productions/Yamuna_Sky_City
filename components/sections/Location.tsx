@@ -41,6 +41,21 @@ export function Location() {
             className="w-full object-cover"
             loading="lazy"
           />
+          {/* Soft veil at the top of the artwork: a white fade plus a
+              gently masked blur so the overview section melts into the
+              image instead of meeting it at a hard edge. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-20 bg-gradient-to-b from-white via-white/45 to-transparent sm:h-28"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-20 backdrop-blur-[3px] sm:h-28"
+            style={{
+              maskImage: "linear-gradient(to bottom, black, transparent)",
+              WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
+            }}
+          />
           {/* Section label + heading over the artwork (sm+ only — mobile
               has its own HTML heading above). Anchored to the artwork's
               own text column (3% inset, where its baked title sits) and
