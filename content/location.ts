@@ -41,40 +41,51 @@ export const connectivity: ReadonlyArray<{
 ] as const;
 
 /**
+ * Highlight legend shown in the frosted panel over the artwork —
+ * client-approved copy from the "Perfectly Connected" composition.
+ */
+export const locationHighlights: ReadonlyArray<{
+  id: "seaside" | "connectivity" | "reach";
+  label: string;
+}> = [
+  { id: "seaside", label: "Unmatched Seaside Living" },
+  { id: "connectivity", label: "Seamless City Connectivity" },
+  { id: "reach", label: "Everything Within Reach" },
+] as const;
+
+/**
  * PRESENTATION GEOMETRY for the desktop connectivity overlay.
  *
  * All coordinates are normalized to the aerial image via `viewBox`
  * (1000 wide; height follows the image's 1672×941 ratio). The SVG layer
- * and the HTML markers share this system, so everything stays attached
- * to the same spot on the photograph at every viewport width.
+ * and the HTML chips share this system, so everything stays attached to
+ * the same spot on the photograph at every viewport width. The viewBox
+ * height matches the image aspect, so <circle> elements render as true
+ * circles on screen.
  *
- * To move a marker, change its x/y here. To drop one from the overlay,
- * remove its node (the travel-time list still shows every entry). The
- * node order below is the reveal-animation order.
+ * nodes: chip centres, mirroring the approved artwork's arrangement.
+ * rings: large circles centred on the tower.
+ * Move a chip by editing x/y; its connection line follows.
  */
 export const connectivityMap = {
   viewBox: { w: 1000, h: 563 },
   /** Ring centre — the tower's visual centre in the aerial image. */
-  center: { x: 530, y: 250 },
-  /** Vertical squash of the rings so they lie on the aerial ground plane. */
-  ringSquash: 0.78,
-  /** Radius of the double ring around the tower where lines begin. */
-  centerRing: 52,
-  /**
-   * Radial proximity layout: each destination's dot sits on its own
-   * concentric ring, whose radius grows with travel time (nearest =
-   * innermost) — the rings themselves are drawn from these positions.
-   * Angles are chosen so dots and labels clear the tower silhouette,
-   * the heading copy and each other. Move a node by editing x/y; its
-   * ring follows automatically.
-   */
+  center: { x: 533, y: 252 },
+  /** Circle ring radii, in viewBox units. */
+  rings: [148, 188, 228],
+  /** Chip radius in viewBox units — MUST match the CSS chip diameter
+      (w-[5.2vw] → 52 viewBox units), so connector dots sit exactly on
+      chip edges. */
+  chipRadius: 26,
+  /** Connection lines end this far from the ring centre. */
+  lineEndRadius: 120,
   nodes: [
-    { id: "beach", x: 616, y: 322 },
-    { id: "nh66", x: 662, y: 195 },
-    { id: "school", x: 694, y: 261 },
-    { id: "hospital", x: 356, y: 238 },
-    { id: "mall", x: 388, y: 157 },
-    { id: "cityCentre", x: 366, y: 392 },
-    { id: "airport", x: 580, y: 473 },
+    { id: "beach", x: 379, y: 106 },
+    { id: "nh66", x: 776, y: 108 },
+    { id: "mall", x: 319, y: 248 },
+    { id: "school", x: 834, y: 245 },
+    { id: "hospital", x: 358, y: 405 },
+    { id: "airport", x: 555, y: 452 },
+    { id: "cityCentre", x: 755, y: 428 },
   ] as ReadonlyArray<{ id: ConnectivityId; x: number; y: number }>,
 } as const;
