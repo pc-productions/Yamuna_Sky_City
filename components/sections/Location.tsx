@@ -80,7 +80,7 @@ export function Location() {
               to the image's left column; type scales with the image so
               the block clears the overlay markers at every width. The
               top offset keeps the same navbar rhythm as other sections. */}
-          <div className="absolute top-0 left-[3%] z-10 hidden pt-8 sm:block sm:pt-10">
+          <div data-parallax="content" className="absolute top-0 left-[3%] z-10 hidden pt-8 sm:block sm:pt-10">
             <span className="eyebrow block text-brand">{locationContent.eyebrow}</span>
             <div className="mt-6 inline-block">
               <h2 className="font-display text-[clamp(0.8125rem,1.44vw,1.725rem)] font-semibold uppercase tracking-[0.04em] text-[#DA2B1D]">
@@ -93,7 +93,7 @@ export function Location() {
             </div>
             {/* Supporting copy joins from lg up — at tablet widths the
                 left column is too tight to share with the glass tags. */}
-            <p className="mt-[2vw] hidden max-w-[23vw] text-[clamp(0.6875rem,1vw,1.0625rem)] leading-[1.65] text-ink/85 lg:block">
+            <p className="mt-[2vw] hidden max-w-[21vw] text-[clamp(0.6875rem,1vw,1.0625rem)] leading-[1.7] text-[#0B1B33]/90 lg:block">
               {locationContent.supportingLine}
             </p>
           </div>

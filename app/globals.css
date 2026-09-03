@@ -304,3 +304,54 @@ body {
 .animate-conn-streak {
   animation: conn-streak 1.3s cubic-bezier(0.45, 0, 0.55, 1) var(--streak-delay, 0s) 1 both;
 }
+
+/* Location section — ambient life. Outer rings drift imperceptibly
+   (long-period rotation made visible by their dash pattern), the red
+   destination nodes breathe with a tiny staggered pulse, and a scroll
+   progress variable (--loc-drift, set from JS, [-1,1]) offsets the ring
+   layer and the editorial content at different rates for quiet depth.
+   Markers and the tower stay still. All transform/opacity only. */
+@keyframes ring-drift {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-ring-drift,
+.animate-ring-drift-reverse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ring-drift 48s linear infinite;
+}
+.animate-ring-drift-reverse {
+  animation-duration: 72s;
+  animation-direction: reverse;
+}
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+.animate-node-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: node-pulse 3.2s ease-in-out infinite;
+}
+
+.location-figure [data-parallax="rings"] {
+  transform: translateY(calc(var(--loc-drift, 0) * -9px));
+  will-change: transform;
+}
+.location-figure [data-parallax="content"] {
+  transform: translateY(calc(var(--loc-drift, 0) * 12px));
+  will-change: transform;
+}

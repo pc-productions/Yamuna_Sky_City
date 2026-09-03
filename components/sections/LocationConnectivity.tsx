@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   connectivity,
   connectivityMap,
@@ -127,6 +127,36 @@ export function LocationConnectivity() {
   const { ref, isVisible } = useReveal<HTMLDivElement>(0.35);
   const [hovered, setHovered] = useState<ConnectivityId | null>(null);
 
+  // Quiet depth: expose scroll progress as --loc-drift on the figure;
+  // globals.css offsets the ring layer and the editorial content at
+  // different rates (markers and the tower stay still). rAF-throttled,
+  // transform-only, skipped entirely under prefers-reduced-motion.
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const figure = root.parentElement;
+    if (!figure) return;
+    let raf = 0;
+    const update = () => {
+      const r = figure.getBoundingClientRect();
+      const p = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
+      figure.style.setProperty("--loc-drift", Math.max(-1, Math.min(1, p)).toFixed(3));
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [ref]);
+
   return (
     <div
       ref={ref}
@@ -137,6 +167,7 @@ export function LocationConnectivity() {
           real DOM text in the markers and the mobile list. */}
       <svg
         aria-hidden="true"
+        data-parallax="rings"
         className="absolute inset-0 z-[6] h-full w-full"
         viewBox={`0 0 ${viewBox.w} ${viewBox.h}`}
         preserveAspectRatio="none"
@@ -156,6 +187,16 @@ export function LocationConnectivity() {
               stroke={`rgba(255,255,255,${[0.28, 0.2, 0.13][i] ?? 0.13})`}
               strokeWidth="1"
               vectorEffect="non-scaling-stroke"
+              /* Outer rings carry long dash arcs and drift imperceptibly
+                 (48s / 72s counter-rotation) — ambient, not mechanical. */
+              strokeDasharray={i === 1 ? "150 90" : i === 2 ? "110 140" : undefined}
+              className={
+                i === 1
+                  ? "animate-ring-drift"
+                  : i === 2
+                    ? "animate-ring-drift-reverse"
+                    : undefined
+              }
             />
           ))}
         </g>
@@ -196,20 +237,27 @@ export function LocationConnectivity() {
                 vectorEffect="non-scaling-stroke"
                 className="transition-[stroke] duration-300"
               />
-              {/* Small sharp Ember anchor where the line meets the marker */}
-              <circle
-                cx={l.x2}
-                cy={l.y2}
-                r="3.4"
-                fill="#B42810"
-                stroke="rgba(255,255,255,0.9)"
-                strokeWidth="1"
+              {/* Small sharp Ember anchor where the line meets the
+                  marker; after entrance it breathes with a tiny
+                  staggered pulse. */}
+              <g
                 className="transition-opacity duration-500"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transitionDelay: `${900 + i * 80}ms`,
                 }}
-              />
+              >
+                <circle
+                  cx={l.x2}
+                  cy={l.y2}
+                  r="3.4"
+                  fill={hovered === node.id ? "#DA2B1D" : "#B42810"}
+                  stroke="rgba(255,255,255,0.9)"
+                  strokeWidth="1"
+                  className={isVisible ? "animate-node-pulse" : undefined}
+                  style={{ animationDelay: `${1.8 + i * 0.45}s` }}
+                />
+              </g>
             </g>
           );
         })}
@@ -225,8 +273,17 @@ export function LocationConnectivity() {
             <div
               key={node.id}
               /* Top-anchored so the MARKER's centre (not the stack's)
-                 sits exactly on the node point the SVG geometry uses. */
-              className="absolute flex -translate-x-1/2 flex-col items-center transition-all duration-700 ease-out"
+                 sits exactly on the node point the SVG geometry uses.
+                 The whole stack is one hover/focus group, keyboard
+                 reachable, with the destination as its accessible name. */
+              role="group"
+              tabIndex={0}
+              aria-label={`${item.label} — ${item.minutes} minutes away`}
+              onMouseEnter={() => setHovered(node.id)}
+              onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(node.id)}
+              onBlur={() => setHovered(null)}
+              className="group pointer-events-auto absolute flex -translate-x-1/2 flex-col items-center transition-all duration-700 ease-out"
               style={{
                 left: `${(node.x / viewBox.w) * 100}%`,
                 top: `${((node.y - chipRadius) / viewBox.h) * 100}%`,
@@ -237,11 +294,7 @@ export function LocationConnectivity() {
                 transitionDelay: `${750 + i * 80}ms`,
               }}
             >
-              <div
-                onMouseEnter={() => setHovered(node.id)}
-                onMouseLeave={() => setHovered(null)}
-                className="pointer-events-auto flex aspect-square w-[3.4vw] items-center justify-center rounded-full bg-white text-[#0B1B33] shadow-[0_5px_18px_rgba(0,0,0,0.22)] transition-transform duration-300 hover:scale-105"
-              >
+              <div className="flex aspect-square w-[3.4vw] items-center justify-center rounded-full bg-white text-[#0B1B33] shadow-[0_5px_18px_rgba(0,0,0,0.22)] transition-[translate,box-shadow] duration-300 ease-out group-hover:-translate-y-[3px] group-hover:shadow-[0_10px_26px_rgba(0,0,0,0.28)] group-focus-visible:-translate-y-[3px]">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -256,14 +309,15 @@ export function LocationConnectivity() {
                 </svg>
               </div>
               <span
-                className={`mt-[0.5vw] text-center text-[clamp(0.6875rem,1.05vw,1.0625rem)] leading-tight font-bold tracking-[0.015em] text-[#0B1B33] uppercase [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.85),0_1px_2px_rgba(255,255,255,0.95)] ${
+                className={`mt-[0.5vw] text-center text-[clamp(0.6875rem,1.05vw,1.0625rem)] leading-tight font-bold tracking-[0.015em] text-[#0B1B33]/90 uppercase transition-colors duration-300 group-hover:text-[#0B1B33] [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.85),0_1px_2px_rgba(255,255,255,0.95)] ${
                   item.label.length > 22 ? "max-w-[12vw]" : "whitespace-nowrap"
                 }`}
               >
                 {item.label}
               </span>
-              <span className="mt-0.5 font-display text-[clamp(0.75rem,1.15vw,1.125rem)] font-bold text-brand [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_14px_rgba(255,255,255,0.85)]">
-                {item.minutes} MIN
+              <span className="mt-0.5 font-display text-[clamp(0.75rem,1.15vw,1.125rem)] font-bold text-brand transition-colors duration-300 group-hover:text-brand-dark [text-shadow:0_0_6px_rgba(255,255,255,0.95),0_0_14px_rgba(255,255,255,0.85)]">
+                {item.minutes}
+                <span className="pl-0.5 text-[0.72em] font-semibold opacity-80">MIN</span>
               </span>
             </div>
           );
