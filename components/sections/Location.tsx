@@ -53,7 +53,7 @@ export function Location() {
           <div className="absolute top-0 left-[3%] z-10 hidden pt-8 sm:block sm:pt-10">
             <span className="eyebrow block text-brand">{locationContent.eyebrow}</span>
             <div className="mt-6 inline-block">
-              <h2 className="font-display text-[clamp(0.8125rem,1.2vw,1.4375rem)] font-semibold uppercase tracking-[0.04em] text-[#DA2B1D]">
+              <h2 className="font-display text-[clamp(0.8125rem,1.44vw,1.725rem)] font-semibold uppercase tracking-[0.04em] text-[#DA2B1D]">
                 {locationContent.heading}
                 <span aria-hidden="true" className="pl-[0.5em] text-[0.8em]">
                   ✦
