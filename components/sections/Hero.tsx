@@ -13,7 +13,24 @@ import { VideoBackground } from "@/components/ui/VideoBackground";
 export function Hero({ active }: { active: boolean }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showCue, setShowCue] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const prevTimeRef = useRef(0);
+
+  // The cue's job is done once the visitor starts moving: retreat as soon
+  // as they scroll, return if they come back to the very top.
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setScrolled(window.scrollY > 60));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   useEffect(() => {
     if (!active) return;
@@ -55,43 +72,69 @@ export function Hero({ active }: { active: boolean }) {
         />
       </div>
 
-      {/* Compact scroll cue — fades in after first video loop */}
+      {/* Scroll cue — one choreographed gesture: letter shimmer → glowing
+          streak descending the track → chevrons blooming as it lands.
+          Appears after the first video loop, staged bottom-up; retreats
+          the moment the visitor starts scrolling. */}
       <a
         href="#project"
         aria-label="Scroll to Project Overview"
-        className={`group absolute bottom-6 left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-1000 sm:bottom-8 ${
-          showCue ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
+        className={`group absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2.5 transition-all duration-1000 ease-out sm:bottom-8 ${
+          showCue && !scrolled
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-3 opacity-0"
         }`}
       >
-        {/* Tiny tracked label */}
-        <span className="text-[0.5625rem] font-medium uppercase tracking-[0.3em] text-white/55 transition-colors duration-300 group-hover:text-white/90">
-          Scroll
+        {/* Label — each letter carries a phase-shifted shimmer so a wave
+            of light reads across the word once per cycle. */}
+        <span
+          aria-hidden="true"
+          className="flex pl-[0.3em] text-[0.5625rem] font-medium uppercase text-white/70 transition-colors duration-500 group-hover:text-white"
+        >
+          {["S", "C", "R", "O", "L", "L"].map((ch, i) => (
+            <span
+              key={i}
+              className="animate-cue-letter inline-block tracking-[0.3em]"
+              style={{ animationDelay: `${i * 110}ms` }}
+            >
+              {ch}
+            </span>
+          ))}
         </span>
 
-        {/* Short hairline track + dual streaks */}
-        <span className="relative block h-10 w-px overflow-hidden bg-white/15 transition-colors duration-300 group-hover:bg-white/30">
-          <span className="absolute inset-x-0 h-full bg-gradient-to-b from-transparent via-white to-transparent animate-scroll-descend" />
-          <span className="absolute inset-x-0 h-full bg-gradient-to-b from-transparent via-white/40 to-transparent animate-scroll-descend-2" />
+        {/* Hairline track: draws itself downward on entrance; a glowing
+            streak and a fainter echo descend through it. */}
+        <span
+          className={`relative block h-12 w-px origin-top overflow-hidden bg-white/15 transition-all delay-200 duration-700 ease-out group-hover:bg-white/30 sm:h-14 ${
+            showCue && !scrolled ? "scale-y-100" : "scale-y-0"
+          }`}
+        >
+          <span className="animate-cue-streak absolute inset-x-0 h-1/2 bg-gradient-to-b from-transparent via-white to-white shadow-[0_0_10px_rgba(255,255,255,0.7)]" />
+          <span className="animate-cue-streak-2 absolute inset-x-0 h-1/2 bg-gradient-to-b from-transparent via-white/40 to-transparent" />
         </span>
 
-        {/* Chevron */}
-        <span className="animate-chevron-pulse">
-          <svg
-            width="8"
-            height="5"
-            viewBox="0 0 8 5"
-            fill="none"
-            aria-hidden="true"
-            className="text-white/55 transition-colors duration-300 group-hover:text-white/90"
-          >
-            <path
-              d="M1 1l3 3 3-3"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+        {/* Twin chevrons — bloom in sequence exactly as the streak lands,
+            then exit downward, handing the motion off the screen. */}
+        <span className="flex flex-col items-center -space-y-[3px] text-white/70 transition-colors duration-500 group-hover:text-white">
+          {["animate-cue-chevron", "animate-cue-chevron-2"].map((anim) => (
+            <svg
+              key={anim}
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              aria-hidden="true"
+              className={anim}
+            >
+              <path
+                d="M1 1l4 4 4-4"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          ))}
         </span>
       </a>
     </section>

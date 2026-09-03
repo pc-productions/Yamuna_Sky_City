@@ -194,64 +194,84 @@ body {
   }
 }
 
-/* Hero scroll cue: two staggered streaks of light descending a hairline
-   track, giving the impression of continuous downward motion.
-   Primary streak fires first; secondary follows with a delay.
-   A chevron below the track fades in and out, reinforcing direction.
-   All three share the same slow architectural timing. */
-@keyframes scroll-descend {
-  0% {
-    transform: translateY(-100%);
-    opacity: 0;
+/* Hero scroll cue — one choreographed 3s timeline, not independent
+   loops. The sequence reads top-to-bottom as a single gesture:
+   1. a shimmer passes through the SCROLL letters (staggered per letter),
+   2. a glowing streak descends the hairline track,
+   3. twin chevrons bloom just as the streak lands, then exit downward.
+   Every keyframe set runs on the same 3s clock so the phases stay
+   locked together. Ease is deliberate and architectural, never bouncy. */
+@keyframes cue-letter {
+  0%,
+  32%,
+  100% {
+    opacity: 0.5;
+    transform: translateY(0);
   }
   10% {
     opacity: 1;
+    transform: translateY(-2px);
   }
-  80% {
+  22% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes cue-streak {
+  0% {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+  14% {
     opacity: 1;
   }
+  55% {
+    transform: translateY(310%);
+    opacity: 1;
+  }
+  64%,
   100% {
-    transform: translateY(200%);
+    transform: translateY(310%);
     opacity: 0;
   }
 }
 
-@keyframes scroll-descend-delayed {
-  0%, 35% {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  45% {
-    opacity: 0.5;
-  }
-  90% {
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(200%);
-    opacity: 0;
-  }
-}
-
-@keyframes chevron-pulse {
-  0%, 100% {
+@keyframes cue-chevron {
+  0%,
+  42% {
     opacity: 0;
     transform: translateY(-4px);
   }
-  40%, 60% {
+  56%,
+  72% {
     opacity: 1;
     transform: translateY(0);
   }
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }
 
-.animate-scroll-descend {
-  animation: scroll-descend 2.8s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+.animate-cue-letter {
+  animation: cue-letter 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
-.animate-scroll-descend-2 {
-  animation: scroll-descend-delayed 2.8s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+.animate-cue-streak {
+  animation: cue-streak 3s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
-.animate-chevron-pulse {
-  animation: chevron-pulse 2.8s ease-in-out infinite;
+.animate-cue-streak-2 {
+  animation: cue-streak 3s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation-delay: 0.4s;
+}
+
+.animate-cue-chevron {
+  animation: cue-chevron 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.animate-cue-chevron-2 {
+  animation: cue-chevron 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: 0.14s;
 }
