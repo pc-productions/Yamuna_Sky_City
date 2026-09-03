@@ -64,11 +64,21 @@ export function Location() {
               WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
             }}
           />
-          {/* Localized readability wash behind the heading/copy only —
-              soft enough that the landscape stays visible through it. */}
+          {/* Readability wash behind the heading/copy: a frosted blur
+              band over the left quarter (mask-faded to the right) under
+              a white gradient, so the white marker text nearby stays
+              crisp while the editorial column sits on a calm ground. */}
           <div
             aria-hidden="true"
-            className="absolute inset-y-0 left-0 z-[2] hidden w-[30%] bg-gradient-to-r from-white/65 via-white/25 to-transparent sm:block"
+            className="absolute inset-y-0 left-0 z-[2] hidden w-[25%] backdrop-blur-[6px] sm:block"
+            style={{
+              maskImage: "linear-gradient(to right, black 55%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, black 55%, transparent)",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 left-0 z-[2] hidden w-[32%] bg-gradient-to-r from-white/70 via-white/30 to-transparent sm:block"
           />
 
           {/* Rings, connection lines and destination markers — all
