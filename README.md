@@ -50,10 +50,37 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 - **Private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
 - **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty; both sections currently render as minimal editorial statements (eyebrow + heading only) and expand to their full presentations automatically once verified entries/figures are added — nothing is invented, no placeholder rows are shown.
 - **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
-- **3D experience URL**: DONE — configured in `content/site.ts` (clearing it falls back to a link-less "Coming Soon" preview). **Production domain**: still a `TODO` in `content/site.ts`.
+- **3D experience URL**: DONE — configured in `content/site.ts` (clearing it falls back to a link-less "Coming Soon" preview). **Production domain**: set `NEXT_PUBLIC_SITE_URL` in the deploy environment (see Launch checklist below).
 - **Temporary visuals** (intro poster, private-viewing background, 3D preview): neutral brand-toned graphics with no development labels; marked TEMPORARY in the SVG sources — replace via `content/media.ts`.
-- **Privacy Policy / Terms pages** (`app/privacy-policy`, `app/terms`): placeholder copy.
+- **Privacy Policy / Terms pages** (`app/privacy-policy`, `app/terms`): honest "being finalised" copy until the confirmed legal text is supplied.
 - **Lead backend**: see above — not connected by default.
+
+## Launch checklist
+
+The build is production-hardened (security headers, env-driven canonical
+domain with an automatic noindex guard, branded 404/error pages, honest
+not-configured states everywhere). Before go-live, supply the inputs only
+the project team can confirm:
+
+1. **Domain** — set `NEXT_PUBLIC_SITE_URL=https://<confirmed-domain>` in the
+   deploy environment. Until it is set, the site serves `noindex` robots and
+   omits structured data, so a misconfigured deploy can never be indexed
+   with placeholder URLs.
+2. **Lead backend** — set `ENQUIRY_WEBHOOK_URL` (server-only) so enquiry
+   submissions are delivered; the form is honest about being unavailable
+   until then.
+3. **Contact details** — phone, email, address, WhatsApp number in
+   `content/site.ts`; the dependent UI appears automatically.
+4. **RERA number + legal copy** — `content/site.ts` (`legal.reraNumber`) and
+   the Privacy Policy / Terms pages.
+5. **Remaining content** — intro film (`content/media.ts`), People Behind
+   (`content/people.ts`), Legacy figures (`content/legacy.ts`), social
+   profiles and Twitter handle (`content/site.ts`).
+6. **Analytics** (optional) — none is integrated by choice; add your
+   preferred vendor in `app/layout.tsx` if required.
+
+`npm run lint && npm run build` must pass before every deploy; both are
+clean at the current head.
 
 ## Scripts
 
