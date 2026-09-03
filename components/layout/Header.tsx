@@ -100,7 +100,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           the hamburger + mobile bottom bar take over. */}
       {/* h-16 base / h-18 (72px) at xl gives the CTAs real air above and
           below; max-w-7xl lets the three zones breathe laterally. */}
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-12 xl:h-18">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-8 xl:h-18 xl:px-12">
         {/* Approved lockup artwork — the dark-application asset over
             video/black surfaces, the primary asset on ivory. Both are
             mounted and cross-faded so the swap never flashes; each is the
@@ -123,7 +123,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
 
         <nav
           aria-label="Primary"
-          className="hidden flex-1 items-center justify-center gap-8 whitespace-nowrap px-8 xl:flex 2xl:gap-10"
+          className="hidden flex-1 items-center justify-center gap-4 whitespace-nowrap px-4 lg:flex xl:gap-8 xl:px-8 2xl:gap-10"
         >
           {navLinks.map((link) => (
             <a
@@ -136,17 +136,25 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           ))}
         </nav>
 
-        <div className="hidden shrink-0 items-center xl:flex">
-          <Button variant={onDark ? "ghost-dark" : "ghost-light"} onClick={onEnquire}>
+        <div className="hidden shrink-0 items-center lg:flex">
+          <Button
+            variant={onDark ? "ghost-dark" : "ghost-light"}
+            onClick={onEnquire}
+            className="lg:px-4! xl:px-7!"
+          >
             {ctaLabels.enquireNow}
           </Button>
           <span
             aria-hidden="true"
-            className={`mx-5 h-4 w-px transition-colors duration-500 ${
+            className={`mx-3 h-4 w-px transition-colors duration-500 xl:mx-5 ${
               onDark ? "bg-white/25" : "bg-ink/15"
             }`}
           />
-          <Button href="#contact" variant={onDark ? "outline-light" : "primary"}>
+          <Button
+            href="#contact"
+            variant={onDark ? "outline-light" : "primary"}
+            className="lg:px-4! xl:px-7!"
+          >
             {ctaLabels.scheduleViewing}
           </Button>
         </div>
@@ -157,7 +165,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           aria-expanded={isMenuOpen}
           aria-controls="mobile-nav"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="flex flex-col gap-1.5 p-2 xl:hidden"
+          className="flex flex-col gap-1.5 p-2 lg:hidden"
         >
           <span
             className={`h-px w-6 transition-all duration-300 ${onDark ? "bg-white" : "bg-ink"} ${
@@ -176,7 +184,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className="flex max-h-[calc(100dvh-4rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-6 py-6 xl:hidden"
+          className="flex max-h-[calc(100dvh-4rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-6 py-6 lg:hidden"
         >
           {navLinks.map((link) => (
             <a
