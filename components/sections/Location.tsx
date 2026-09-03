@@ -15,21 +15,20 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function Location() {
   return (
-    <section id="location" className="scroll-mt-16 bg-paper-muted pt-8 pb-0 sm:pt-10 xl:scroll-mt-18">
-      <Container>
+    <section id="location" className="scroll-mt-16 bg-paper-muted pt-8 pb-0 sm:pt-0 xl:scroll-mt-18">
+      {/* The artwork carries the header and supporting text itself on larger screens;
+          the HTML text renders only on mobile, where the artwork's baked-in text is too small. */}
+      <Container className="sm:hidden">
         <Reveal>
           <SectionHeading eyebrow={locationContent.eyebrow} heading={locationContent.heading} />
-          {/* The artwork carries this copy itself on larger screens; the
-              HTML version renders only on mobile, where the artwork's
-              baked-in text is too small to read. */}
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-muted sm:hidden">
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-muted">
             {locationContent.supportingLine}
           </p>
         </Reveal>
       </Container>
 
       {/* Full-bleed edge-to-edge artwork flush with the next section */}
-      <Reveal delayMs={100} className="mt-12 block w-full sm:mt-16">
+      <Reveal delayMs={100} className="mt-12 block w-full sm:mt-0">
         <div
           className="relative w-full overflow-hidden"
           style={{ aspectRatio: locationImage.aspect }}
