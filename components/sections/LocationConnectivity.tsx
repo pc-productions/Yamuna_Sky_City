@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   connectivity,
   connectivityMap,
@@ -31,6 +31,31 @@ import { useReveal } from "@/lib/hooks/useReveal";
 const { viewBox, center, rings, chipRadius, lineEndRadius, nodes } = connectivityMap;
 
 const byId = Object.fromEntries(connectivity.map((c) => [c.id, c]));
+
+/**
+ * Orbital parameters. Each marker travels an ellipse that passes
+ * EXACTLY through its approved starting position, with the vertical
+ * semi-axis capped so no marker (or its label) ever leaves the figure
+ * at the top or bottom of its journey. Wide-radius markers therefore
+ * sweep wider than tall — which also reads naturally on the landscape
+ * composition.
+ */
+const MAX_RY = 222;
+const orbitParams = nodes.map((n) => {
+  const dx = n.x - center.x;
+  const dy = n.y - center.y;
+  const R = Math.hypot(dx, dy);
+  const ry = Math.min(R, MAX_RY);
+  const s = 1 - (dy / ry) ** 2;
+  const rx = s > 1e-3 ? Math.abs(dx) / Math.sqrt(s) : R;
+  return { rx, ry, a0: Math.atan2(dy / ry, dx / rx), x0: n.x, y0: n.y };
+});
+
+/** Connector lines begin this far from the tower centre. */
+const LINE_INNER = lineEndRadius;
+
+/** One full orbit takes this long (ms) — slow, almost cinematic. */
+const ORBIT_PERIOD_MS = 24000;
 
 /** Unit vector from a marker centre toward the ring centre. */
 function towardCenter(x: number, y: number) {
@@ -126,6 +151,87 @@ const highlightIcons: Record<(typeof locationHighlights)[number]["id"], ReactNod
 export function LocationConnectivity() {
   const { ref, isVisible } = useReveal<HTMLDivElement>(0.35);
   const [hovered, setHovered] = useState<ConnectivityId | null>(null);
+  const hoveredRef = useRef(false);
+  const orbitEls = useRef<(HTMLDivElement | null)[]>([]);
+  const lineEls = useRef<(SVGLineElement | null)[]>([]);
+  const dotEls = useRef<(SVGCircleElement | null)[]>([]);
+  // Flips once, ~1.5s after reveal: releases the entrance line masks and
+  // starts the orbital engine. Never set under prefers-reduced-motion,
+  // so reduced-motion visitors keep the static approved layout.
+  const [orbiting, setOrbiting] = useState(false);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setTimeout(() => setOrbiting(true), 1500);
+    return () => window.clearTimeout(t);
+  }, [isVisible]);
+
+  // Orbital engine: one rAF loop, zero React state per frame. Each tick
+  // advances a shared angle (eased to a crawl while any marker is
+  // hovered/focused) and writes styles/attributes directly: markers get
+  // translate3d along their own ellipse plus a whisper of depth scale
+  // (never rotation — labels stay upright), and each connector line and
+  // Ember dot is repositioned in viewBox units so it stays glued to its
+  // marker along the radial direction.
+  useEffect(() => {
+    if (!orbiting) return;
+    const figure = ref.current?.parentElement;
+    if (!figure) return;
+    let unit = figure.getBoundingClientRect().width / viewBox.w;
+    const onResize = () => {
+      unit = figure.getBoundingClientRect().width / viewBox.w;
+    };
+    window.addEventListener("resize", onResize);
+
+    const omega = (2 * Math.PI) / ORBIT_PERIOD_MS;
+    let raf = 0;
+    let last = performance.now();
+    let angle = 0;
+    let speed = 0; // ramps 0 → 1 so the orbit eases in, and toward ~0.1 on hover
+    const tick = (now: number) => {
+      const dt = Math.min(now - last, 100);
+      last = now;
+      const target = hoveredRef.current ? 0.1 : 1;
+      speed += (target - speed) * Math.min(1, dt / 600);
+      angle += omega * dt * speed;
+      for (let i = 0; i < orbitParams.length; i++) {
+        const q = orbitParams[i];
+        const a = q.a0 + angle;
+        const ux = center.x + q.rx * Math.cos(a);
+        const uy = center.y + q.ry * Math.sin(a);
+        const el = orbitEls.current[i];
+        if (el) {
+          const depth = (Math.sin(a) + 1) / 2; // lower on screen = nearer
+          el.style.transform = `translate3d(${(ux - q.x0) * unit}px, ${(uy - q.y0) * unit}px, 0) scale(${0.94 + 0.06 * depth})`;
+          el.style.opacity = (0.88 + 0.12 * depth).toFixed(3);
+        }
+        const ddx = ux - center.x;
+        const ddy = uy - center.y;
+        const len = Math.hypot(ddx, ddy) || 1;
+        const nx = ddx / len;
+        const ny = ddy / len;
+        const line = lineEls.current[i];
+        if (line) {
+          line.setAttribute("x1", String(center.x + nx * Math.min(LINE_INNER, len - chipRadius - 8)));
+          line.setAttribute("y1", String(center.y + ny * Math.min(LINE_INNER, len - chipRadius - 8)));
+          line.setAttribute("x2", String(ux - nx * chipRadius));
+          line.setAttribute("y2", String(uy - ny * chipRadius));
+        }
+        const dot = dotEls.current[i];
+        if (dot) {
+          dot.setAttribute("cx", String(ux - nx * chipRadius));
+          dot.setAttribute("cy", String(uy - ny * chipRadius));
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [orbiting, ref]);
 
   // Quiet depth: expose scroll progress as --loc-drift on the figure;
   // globals.css offsets the ring layer and the editorial content at
@@ -229,7 +335,10 @@ export function LocationConnectivity() {
             <g key={node.id}>
               <line
                 {...l}
-                mask={`url(#conn-mask-${i})`}
+                ref={(el) => {
+                  lineEls.current[i] = el;
+                }}
+                mask={orbiting ? undefined : `url(#conn-mask-${i})`}
                 stroke={
                   hovered === node.id ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.45)"
                 }
@@ -248,6 +357,9 @@ export function LocationConnectivity() {
                 }}
               >
                 <circle
+                  ref={(el) => {
+                    dotEls.current[i] = el;
+                  }}
                   cx={l.x2}
                   cy={l.y2}
                   r="3.4"
@@ -272,6 +384,20 @@ export function LocationConnectivity() {
           return (
             <div
               key={node.id}
+              /* Orbit carrier: the rAF engine moves this wrapper along
+                 the marker's circle with translate3d only (no React
+                 involvement, no rotation — labels stay upright). */
+              ref={(el) => {
+                orbitEls.current[i] = el;
+              }}
+              className="absolute"
+              style={{
+                left: `${(node.x / viewBox.w) * 100}%`,
+                top: `${((node.y - chipRadius) / viewBox.h) * 100}%`,
+                willChange: "transform, opacity",
+              }}
+            >
+            <div
               /* Top-anchored so the MARKER's centre (not the stack's)
                  sits exactly on the node point the SVG geometry uses.
                  The whole stack is one hover/focus group, keyboard
@@ -279,14 +405,24 @@ export function LocationConnectivity() {
               role="group"
               tabIndex={0}
               aria-label={`${item.label} — ${item.minutes} minutes away`}
-              onMouseEnter={() => setHovered(node.id)}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => setHovered(node.id)}
-              onBlur={() => setHovered(null)}
-              className="group pointer-events-auto absolute flex -translate-x-1/2 flex-col items-center transition-all duration-700 ease-out"
+              onMouseEnter={() => {
+                hoveredRef.current = true;
+                setHovered(node.id);
+              }}
+              onMouseLeave={() => {
+                hoveredRef.current = false;
+                setHovered(null);
+              }}
+              onFocus={() => {
+                hoveredRef.current = true;
+                setHovered(node.id);
+              }}
+              onBlur={() => {
+                hoveredRef.current = false;
+                setHovered(null);
+              }}
+              className="group pointer-events-auto flex -translate-x-1/2 flex-col items-center transition-all duration-700 ease-out"
               style={{
-                left: `${(node.x / viewBox.w) * 100}%`,
-                top: `${((node.y - chipRadius) / viewBox.h) * 100}%`,
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible
                   ? "translateX(-50%) translateY(0)"
@@ -319,6 +455,7 @@ export function LocationConnectivity() {
                 {item.minutes}
                 <span className="pl-0.5 text-[0.72em] font-semibold opacity-80">MIN</span>
               </span>
+            </div>
             </div>
           );
         })}
