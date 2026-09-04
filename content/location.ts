@@ -83,7 +83,7 @@ export const connectivityMap = {
     /* Mall keeps its original left-middle row, pulled in to sit on the
        inner ring — the frame's 5vw right shift clears it from the
        editorial column. */
-    { id: "mall", x: 390, y: 250 },
+    { id: "mall", x: 380, y: 250 },
     { id: "school", x: 834, y: 245 },
     { id: "hospital", x: 358, y: 405 },
     { id: "cityCentre", x: 555, y: 452 },
