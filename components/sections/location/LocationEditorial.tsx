@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { locationContent } from "@/content/location";
 import { Container } from "@/components/ui/Container";
 
