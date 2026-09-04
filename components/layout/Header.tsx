@@ -104,7 +104,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           the hamburger + mobile bottom bar take over. */}
       {/* h-16 base / h-18 (72px) at xl gives the CTAs real air above and
           below; max-w-7xl lets the three zones breathe laterally. */}
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-8 xl:h-18 xl:px-12">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-[23px] sm:px-[31px] lg:px-[31px] xl:h-18 xl:px-[47px]">
         {/* Approved lockup artwork — the dark-application asset over
             video/black surfaces, the primary asset on ivory. Both are
             mounted and cross-faded so the swap never flashes; each is the
@@ -140,17 +140,17 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           ))}
         </nav>
 
-        <div className="hidden shrink-0 items-center lg:flex">
+        <div className="hidden shrink-0 items-center lg:flex lg:gap-4 xl:gap-6">
           <Button
             variant={onDark ? "ghost-dark" : "ghost-light"}
             onClick={onEnquire}
-            className="lg:px-4! xl:px-7!"
+            className="px-0! py-0! hover:opacity-80"
           >
             {ctaLabels.enquireNow}
           </Button>
           <span
             aria-hidden="true"
-            className={`mx-3 h-4 w-px transition-colors duration-500 xl:mx-5 ${
+            className={`h-4 w-px transition-colors duration-500 ${
               onDark ? "bg-white/25" : "bg-ink/15"
             }`}
           />
