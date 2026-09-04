@@ -151,6 +151,10 @@ export function LocationConnectivity() {
   const { ref, isVisible } = useReveal<HTMLDivElement>(0.35);
   const [hovered, setHovered] = useState<ConnectivityId | null>(null);
   const hoveredRef = useRef(false);
+  // Live mirror of prefers-reduced-motion — the engine eases to a stop
+  // when it flips on mid-session instead of tearing down (a teardown
+  // would re-apply the entrance line masks at stale geometry).
+  const reducedRef = useRef(false);
   const orbitEls = useRef<(HTMLDivElement | null)[]>([]);
   const lineEls = useRef<(SVGLineElement | null)[]>([]);
   const dotEls = useRef<(SVGCircleElement | null)[]>([]);
@@ -161,9 +165,32 @@ export function LocationConnectivity() {
 
   useEffect(() => {
     if (!isVisible) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setTimeout(() => setOrbiting(true), 1100);
-    return () => window.clearTimeout(t);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let t = 0;
+    const apply = () => {
+      reducedRef.current = mq.matches;
+      window.clearTimeout(t);
+      // Watching the preference live means a visitor who switches the
+      // OS "reduce motion" setting off sees the orbit start without a
+      // reload (this is the usual cause of "the icons don't revolve on
+      // one of my devices").
+      if (!mq.matches) t = window.setTimeout(() => setOrbiting(true), 1100);
+    };
+    apply();
+    // Older Safari only ships the deprecated addListener API.
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", apply);
+    } else {
+      mq.addListener(apply);
+    }
+    return () => {
+      window.clearTimeout(t);
+      if (typeof mq.removeEventListener === "function") {
+        mq.removeEventListener("change", apply);
+      } else {
+        mq.removeListener(apply);
+      }
+    };
   }, [isVisible]);
 
   // Orbital engine: one rAF loop, zero React state per frame. Each tick
@@ -193,7 +220,8 @@ export function LocationConnectivity() {
       last = now;
       // Hovering slows the orbit noticeably but never to an apparent
       // standstill — a resting cursor must not make it look broken.
-      const target = hoveredRef.current ? 0.3 : 1;
+      // Reduced-motion flipping on mid-session eases it to a full stop.
+      const target = reducedRef.current ? 0 : hoveredRef.current ? 0.3 : 1;
       speed += (target - speed) * Math.min(1, dt / 450);
       angle += omega * dt * speed;
       for (let i = 0; i < orbitParams.length; i++) {
