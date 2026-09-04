@@ -41,7 +41,7 @@ type NodePresentation = {
 export const nodePresentation: Record<ConnectivityId, NodePresentation> = {
   beach: { float: { duration: 4.2, delay: 0 } },
   nh66: { float: { duration: 5.1, delay: 0.9 } },
-  mall: { float: { duration: 3.8, delay: 0.4 } },
+  railway: { float: { duration: 3.8, delay: 0.4 } },
   school: { float: { duration: 4.7, delay: 1.3 } },
   hospital: { float: { duration: 5.4, delay: 0.7 } },
   airport: { float: { duration: 4.5, delay: 1.6 } },

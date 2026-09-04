@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import {
   FirstAid,
-  Handbag,
+  Train,
   GraduationCap,
   Buildings,
   AirplaneTilt,
@@ -57,7 +57,7 @@ const BeachIcon = (
 export const nodeIcons: Record<ConnectivityId, ReactNode> = {
   beach: BeachIcon,
   nh66: RoadIcon,
-  mall: <Handbag weight="regular" className={iconClass} />,
+  railway: <Train weight="regular" className={iconClass} />,
   school: <GraduationCap weight="regular" className={iconClass} />,
   hospital: <FirstAid weight="regular" className={iconClass} />,
   cityCentre: <Buildings weight="fill" className={iconClass} />,

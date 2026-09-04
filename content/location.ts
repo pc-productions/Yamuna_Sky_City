@@ -17,7 +17,7 @@ export type ConnectivityId =
   | "nh66"
   | "school"
   | "hospital"
-  | "mall"
+  | "railway"
   | "cityCentre"
   | "airport";
 
@@ -33,9 +33,9 @@ export const connectivity: ReadonlyArray<{
 }> = [
   { id: "beach", label: "Beach", minutes: 2 },
   { id: "nh66", label: "National Highway 66", minutes: 5 },
-  { id: "school", label: "International School", minutes: 6 },
-  { id: "hospital", label: "A. J. Hospital", minutes: 7 },
-  { id: "mall", label: "City Mall", minutes: 8 },
+  { id: "school", label: "Ryan International School", minutes: 6 },
+  { id: "hospital", label: "AJ Hospital", minutes: 7 },
+  { id: "railway", label: "Railway Station", minutes: 8 },
   { id: "cityCentre", label: "City Centre", minutes: 15 },
   { id: "airport", label: "Mangalore International Airport", minutes: 20 },
 ] as const;
@@ -80,9 +80,9 @@ export const connectivityMap = {
   nodes: [
     { id: "beach", x: 379, y: 106 },
     { id: "nh66", x: 776, y: 108 },
-    /* Mall sits on the outer orbital ring arc (R=228), perfectly
-       aligned in a circle with Beach and A. J. Hospital */
-    { id: "mall", x: 310, y: 250 },
+    /* Railway Station sits on the outer orbital ring arc (R=228),
+       aligned in a circle with Beach and AJ Hospital */
+    { id: "railway", x: 310, y: 250 },
     { id: "school", x: 834, y: 245 },
     { id: "hospital", x: 358, y: 405 },
     { id: "cityCentre", x: 555, y: 452 },
