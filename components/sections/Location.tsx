@@ -35,18 +35,30 @@ export function Location() {
 
       {/* Full-bleed edge-to-edge artwork flush with the next section */}
       <Reveal delayMs={100} className="mt-12 block w-full sm:mt-0">
-        <div
-          className="location-figure relative w-full overflow-hidden"
-          style={{ aspectRatio: locationImage.aspect }}
-        >
-          <Image
-            src={locationImage.src}
-            alt={locationImage.alt}
-            fill
-            sizes="100vw"
-            className="w-full object-cover"
-            loading="lazy"
-          />
+        <div className="location-figure relative w-full overflow-hidden">
+          {/* Mobile Image (hidden on sm+) */}
+          <div className="relative w-full sm:hidden" style={{ aspectRatio: locationImage.mobileAspect || "1/1" }}>
+            <Image
+              src={locationImage.mobileSrc || locationImage.src}
+              alt={locationImage.alt}
+              fill
+              sizes="100vw"
+              className="w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          
+          {/* Desktop Image (hidden on mobile) */}
+          <div className="relative hidden w-full sm:block" style={{ aspectRatio: locationImage.aspect }}>
+            <Image
+              src={locationImage.src}
+              alt={locationImage.alt}
+              fill
+              sizes="100vw"
+              className="w-full object-cover"
+              loading="lazy"
+            />
+          </div>
           {/* Soft veil at the top of the artwork (sm+ only, where the
               image sits flush against the overview section): a white fade
               plus a gently masked blur so the sections melt together

@@ -66,11 +66,13 @@ export const locationImage = {
   // (see components/sections/LocationConnectivity.tsx); nothing is baked
   // into the asset.
   src: "/media/location/tower-aerial.jpg",
+  mobileSrc: "/media/location/IMG_9536.JPG.jpeg",
   alt: "Aerial view of the Yamuna Sky City tower rising from coastal greenery, with National Highway 66 and a river bridge to the right and the Arabian Sea beach in the foreground",
   /** Aspect ratio of the artwork — keeps loading stable across swaps.
       Must match the asset's true ratio, and connectivityMap.viewBox in
       content/location.ts must follow it, or overlay markers drift. */
   aspect: "1672 / 941",
+  mobileAspect: "9 / 16", // Approximate vertical aspect, can be adjusted
 };
 
 export const explore3dPreview = {
