@@ -132,14 +132,21 @@ export function LocationSection() {
        * Desktop composition (lg+): image-anchored overlay system.
        * ------------------------------------------------------------ */}
       <div className="absolute inset-0 hidden lg:block">
-        <LocationBackground />
-        <LocationAtmosphere />
-        {/* Rings, lines, red points and bubbles share the image's exact
-            cover geometry, so they stay glued to the photograph. */}
-        <CoverFrame className="z-[2]">
-          <LocationOrbitalSystem />
-          <LocationConnectionLines />
-          <div className="absolute inset-0">
+        {/* ONE shared frame carries the photograph AND every overlay
+            layer (atmosphere, rings, lines, red points, bubbles), so
+            they live in a single coordinate space — the orbit's centre
+            is pinned to the tower by construction and cannot drift at
+            any viewport size or zoom level. */}
+        <CoverFrame className="z-0">
+          <LocationBackground />
+          <LocationAtmosphere />
+          <div className="absolute inset-0 z-[2]">
+            <LocationOrbitalSystem />
+          </div>
+          <div className="absolute inset-0 z-[3]">
+            <LocationConnectionLines />
+          </div>
+          <div className="absolute inset-0 z-[4]">
             {nodes.map((node) => {
               const item = byId[node.id];
               if (!item) return null;
