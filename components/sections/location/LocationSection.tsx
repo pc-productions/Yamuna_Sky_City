@@ -193,9 +193,12 @@ export function LocationSection() {
             {locationContent.supportingLine}
           </p>
         </Container>
-        <div className="relative mt-8 w-full" style={{ aspectRatio: locationImage.aspect }}>
+        <div
+          className="relative mt-8 w-full"
+          style={{ aspectRatio: locationImage.mobileAspect ?? locationImage.aspect }}
+        >
           <Image
-            src={locationImage.src}
+            src={locationImage.mobileSrc ?? locationImage.src}
             alt={locationImage.alt}
             fill
             sizes="100vw"
