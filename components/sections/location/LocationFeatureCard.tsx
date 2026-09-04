@@ -29,9 +29,11 @@ export function HighlightRows({ className = "" }: { className?: string }) {
  */
 export function LocationFeatureCard() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] hidden lg:block">
-      <Container className="pb-8 sm:pb-10 lg:pb-10 xl:pb-12">
-        <div data-loc-card="" className="pointer-events-auto mb-10 w-[clamp(16rem,19vw,20.5rem)]">
+    /* Raised to the approved position: bottom edge ~24% up the section,
+       left-aligned with the editorial column's Container inset. */
+    <div className="pointer-events-none absolute inset-x-0 bottom-[24%] z-[5] hidden lg:block">
+      <Container>
+        <div data-loc-card="" className="pointer-events-auto w-[clamp(16rem,19vw,20.5rem)]">
           <HighlightRows className="rounded-[20px] border border-white/35 bg-white/60 px-5 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[12px]" />
         </div>
       </Container>
