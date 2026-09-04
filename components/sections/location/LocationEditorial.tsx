@@ -16,11 +16,11 @@ import { Container } from "@/components/ui/Container";
  * identical height and left inset sitewide. The column is capped at
  * 17.5rem so it stays clear of the Beach bubble at wide viewports.
  */
-export function LocationEditorial({ children }: { children?: ReactNode }) {
+export function LocationEditorial() {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 z-[5]">
       <Container className="pt-8 sm:pt-10">
-        <div className="pointer-events-auto max-w-[17.5rem]">
+        <div className="pointer-events-auto max-w-[20rem] xl:max-w-[23rem]">
           {/* Sitewide Section Eyebrow */}
           <span data-loc-eyebrow="" className="eyebrow block text-brand tracking-[0.22em]">
             {locationContent.eyebrow}
@@ -29,16 +29,16 @@ export function LocationEditorial({ children }: { children?: ReactNode }) {
           {/* Main Section Heading */}
           <h2
             data-loc-heading=""
-            className="mt-3 font-display text-[clamp(1.4rem,1.75vw,1.95rem)] leading-tight font-semibold tracking-[0.05em] text-[#DA2B1D] uppercase"
+            className="mt-3 font-display text-[clamp(1.75rem,2.35vw,2.65rem)] leading-[1.1] font-semibold tracking-[0.04em] text-[#DA2B1D] uppercase"
           >
             {locationContent.heading}
-            <span aria-hidden="true" className="pl-[0.4em] text-[0.8em]">
+            <span aria-hidden="true" className="pl-[0.35em] text-[0.8em]">
               ✦
             </span>
           </h2>
 
           {/* Brand Accent Divider */}
-          <div data-loc-divider="" className="mt-3 h-[2px] w-12 bg-[#DA2B1D]" />
+          <div data-loc-divider="" className="mt-3.5 h-[2px] w-14 bg-[#DA2B1D]" />
 
           {/* Supporting Copy */}
           <p
@@ -47,9 +47,6 @@ export function LocationEditorial({ children }: { children?: ReactNode }) {
           >
             {locationContent.supportingLine}
           </p>
-
-          {/* Feature card slots in here, below the copy (see LocationSection) */}
-          {children}
         </div>
       </Container>
     </div>

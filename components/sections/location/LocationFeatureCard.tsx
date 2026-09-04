@@ -1,5 +1,6 @@
 import { locationHighlights } from "@/content/location";
 import { highlightIcons } from "@/components/sections/location/icons";
+import { Container } from "@/components/ui/Container";
 
 /**
  * The three approved highlight rows — shared by the desktop glass card
@@ -22,15 +23,18 @@ export function HighlightRows({ className = "" }: { className?: string }) {
 }
 
 /**
- * The translucent feature card — premium glass (soft white, backdrop
- * blur, hairline white border). It sits in the editorial column's
- * flow, directly below the supporting copy with clear breathing room,
- * so it always tracks the text however the copy wraps.
+ * Layer 6 — the bottom-left translucent feature card: premium glass
+ * (soft white, backdrop blur, hairline white border), positioned at the
+ * bottom-left with the standard sitewide container padding.
  */
 export function LocationFeatureCard() {
   return (
-    <div data-loc-card="" className="mt-10 2xl:mt-12">
-      <HighlightRows className="w-full rounded-[20px] border border-white/35 bg-white/55 px-5 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[12px]" />
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] hidden lg:block">
+      <Container className="pb-8 sm:pb-10 lg:pb-10 xl:pb-12">
+        <div data-loc-card="" className="pointer-events-auto w-[clamp(16rem,19vw,20.5rem)]">
+          <HighlightRows className="rounded-[20px] border border-white/35 bg-white/60 px-5 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[12px]" />
+        </div>
+      </Container>
     </div>
   );
 }

@@ -172,9 +172,8 @@ export function LocationSection() {
             })}
           </div>
         </CoverFrame>
-        <LocationEditorial>
-          <LocationFeatureCard />
-        </LocationEditorial>
+        <LocationEditorial />
+        <LocationFeatureCard />
       </div>
 
       {/* ------------------------------------------------------------ *
