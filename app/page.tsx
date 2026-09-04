@@ -1,6 +1,5 @@
 import { IntroExperience } from "@/components/sections/IntroExperience";
 import { ProjectFacts } from "@/components/sections/ProjectFacts";
-import { Location } from "@/components/sections/Location";
 import { PrivateViewingCTA } from "@/components/sections/PrivateViewingCTA";
 import { Explore3D } from "@/components/sections/Explore3D";
 import { PeopleBehind } from "@/components/sections/PeopleBehind";
@@ -22,8 +21,9 @@ export default function Home() {
       {/* 3. Project introduction and hard facts */}
       <ProjectFacts />
 
-      {/* 4. Location / connectivity */}
-      <Location />
+      {/* 4. Location / connectivity — removed pending a full rebuild.
+          Approved data (travel times, highlights, image config) is kept
+          in content/location.ts and content/media.ts for the new build. */}
 
       {/* 5. Private viewing conversion checkpoint */}
       <PrivateViewingCTA />

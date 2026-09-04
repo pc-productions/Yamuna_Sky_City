@@ -60,11 +60,11 @@ export const heroVideo: VideoSource = {
   },
 };
 
+// Kept for the upcoming Location section rebuild — the assets remain in
+// /public/media/location and the approved data in content/location.ts.
 export const locationImage = {
-  // Clean aerial render (client-supplied, 1672×941) — the connectivity
-  // labels, rings and lines are rendered programmatically on top of it
-  // (see components/sections/LocationConnectivity.tsx); nothing is baked
-  // into the asset.
+  // Clean aerial render (client-supplied, 1672×941) with no text baked
+  // into the asset — overlay content is meant to render programmatically.
   src: "/media/location/tower-aerial.jpg",
   mobileSrc: "/media/location/IMG_9536.JPG.jpeg",
   alt: "Aerial view of the Yamuna Sky City tower rising from coastal greenery, with National Highway 66 and a river bridge to the right and the Arabian Sea beach in the foreground",

@@ -9,7 +9,8 @@ export type NavLink = {
  */
 export const navLinks: NavLink[] = [
   { label: "Project", href: "#project" },
-  { label: "Location", href: "#location" },
+  // Location link removed while the section awaits its rebuild —
+  // restore { label: "Location", href: "#location" } with the new section.
   { label: "3D Experience", href: "#explore-3d" },
   { label: "Legacy", href: "#legacy" },
   { label: "Contact", href: "#contact" },
