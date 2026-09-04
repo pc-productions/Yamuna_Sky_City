@@ -132,6 +132,10 @@ export function LocationSection() {
        * Desktop composition (lg+): image-anchored overlay system.
        * ------------------------------------------------------------ */}
       <div className="absolute inset-0 hidden lg:block">
+        {/* Pure-white underlay for the band the right-shifted frame
+            exposes on the left — it reads as the start of the
+            atmospheric fade, not a seam. */}
+        <div aria-hidden="true" className="absolute inset-y-0 left-0 z-0 w-[6vw] bg-white" />
         {/* ONE shared frame carries the photograph AND every overlay
             layer (atmosphere, rings, lines, red points, bubbles), so
             they live in a single coordinate space — the orbit's centre

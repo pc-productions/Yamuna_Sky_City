@@ -80,10 +80,10 @@ export const connectivityMap = {
   nodes: [
     { id: "beach", x: 379, y: 106 },
     { id: "nh66", x: 776, y: 108 },
-    /* Mall sits on the lower-left arc between the middle rings — the
-       original left-middle slot collides with the editorial column now
-       that the column shares the sitewide Container inset. */
-    { id: "mall", x: 433, y: 435 },
+    /* Mall keeps its original left-middle row, pulled in to sit on the
+       inner ring — the frame's 5vw right shift clears it from the
+       editorial column. */
+    { id: "mall", x: 390, y: 250 },
     { id: "school", x: 834, y: 245 },
     { id: "hospital", x: 358, y: 405 },
     { id: "cityCentre", x: 555, y: 452 },

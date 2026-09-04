@@ -27,9 +27,14 @@ export function CoverFrame({
   return (
     <div
       {...rest}
-      /* Sized to always cover the section container while preserving the exact
-         1672/941 geometry and keeping the tower perfectly centered. */
-      className={`absolute top-1/2 left-1/2 w-full max-w-none -translate-x-1/2 -translate-y-1/2 ${className}`}
+      /* Full-width at the exact 1672/941 geometry, vertically centred,
+         and shifted 5vw to the RIGHT: the tower moves off-centre (as in
+         the approved artwork) to clear breathing room on the left for
+         the editorial column and the City Mall node. The 5vw of image
+         that leaves the right edge is cropped by the section; the
+         exposed band on the left is painted white by LocationSection
+         and dissolves into the atmospheric fade. */
+      className={`absolute top-1/2 left-[5vw] w-full max-w-none -translate-y-1/2 ${className}`}
       style={{
         aspectRatio: `${viewBox.w} / ${viewBox.h}`,
         containerType: "inline-size",

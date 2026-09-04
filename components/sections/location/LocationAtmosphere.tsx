@@ -16,7 +16,7 @@ export function LocationAtmosphere() {
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.94) 14%, rgba(255,255,255,0.82) 26%, rgba(255,255,255,0.50) 38%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0) 56%)",
+            "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 14%, rgba(255,255,255,0.82) 26%, rgba(255,255,255,0.50) 38%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0) 56%)",
         }}
       />
       {/* Frosted backdrop blur layer masked seamlessly across the left reading zone */}
