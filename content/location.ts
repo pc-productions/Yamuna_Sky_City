@@ -73,11 +73,9 @@ export const connectivityMap = {
   center: { x: 533, y: 252 },
   /** Circle ring radii, in viewBox units. */
   rings: [148, 188, 228],
-  /** Chip radius in viewBox units — MUST match the CSS chip diameter
-      (w-[3.4vw] → 34 viewBox units), so lines meet chip edges exactly. */
-  chipRadius: 17,
   /** Connection lines end this far from the ring centre, keeping the
-      tower itself clear of graphics. */
+      tower itself clear of graphics. Bubble sizing lives with the rest
+      of the presentation config in components/sections/location/config.ts. */
   lineEndRadius: 150,
   nodes: [
     { id: "beach", x: 379, y: 106 },

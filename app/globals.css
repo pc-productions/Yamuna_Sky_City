@@ -253,3 +253,48 @@ body {
 .animate-cue-label-fade {
   animation: cue-label-fade 2.4s ease-in-out infinite;
 }
+
+/* Location section — post-entrance ambient life. Each bubble drifts
+   vertically a few pixels on its own period/phase (config.ts), and the
+   red connection points breathe slowly. Both stay PAUSED until the
+   GSAP entrance completes ([data-settled="true"] on the section) so
+   they never fight the entrance transforms, and both are killed by the
+   global reduced-motion rules above. No orbiting, no rotation. */
+@keyframes loc-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  32% {
+    transform: translateY(-6px);
+  }
+  68% {
+    transform: translateY(4px);
+  }
+}
+.loc-float {
+  animation: loc-float var(--float-duration, 4.5s) ease-in-out var(--float-delay, 0s) infinite;
+  animation-play-state: paused;
+}
+[data-settled="true"] .loc-float {
+  animation-play-state: running;
+}
+
+@keyframes loc-dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+.loc-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+[data-settled="true"] .loc-dot {
+  animation: loc-dot-pulse 4.4s ease-in-out var(--pulse-delay, 0s) infinite;
+}
