@@ -19,7 +19,7 @@ import { Reveal } from "@/components/ui/Reveal";
 export function ProjectFacts() {
   return (
     <section id="project" className="scroll-mt-16 bg-white xl:scroll-mt-18">
-      <Container className="pt-8 pb-20 sm:pt-10 sm:pb-28 lg:pb-36">
+      <Container className="pt-8 pb-12 sm:pt-10 sm:pb-14 lg:pb-16">
         {/* Section identifier */}
         <Reveal>
           <div className="h-[2px] w-12 bg-brand" />
@@ -32,7 +32,7 @@ export function ProjectFacts() {
             after the text-free hero video. Deliberately smaller than the
             headline; never a logo recreation. */}
         <Reveal delayMs={50}>
-          <p className="mt-6 font-display text-[clamp(1.125rem,1.7vw,1.5rem)] font-semibold uppercase leading-none tracking-[0.14em] text-brand sm:mt-7">
+          <p className="mt-4 font-display text-[clamp(1.125rem,1.7vw,1.5rem)] font-semibold uppercase leading-none tracking-[0.14em] text-brand sm:mt-5">
             {brand.name}
           </p>
         </Reveal>
@@ -40,7 +40,7 @@ export function ProjectFacts() {
         {/* Main headline — the page's primary heading. Poppins Semibold,
             uppercase and tight tracking come from the base h1 styles. */}
         <Reveal delayMs={100}>
-          <h1 className="mt-6 max-w-6xl text-[clamp(2.5rem,5vw,4.375rem)] leading-[1.06] text-ink sm:mt-7">
+          <h1 className="mt-4 max-w-6xl text-[clamp(2.5rem,5vw,4.375rem)] leading-[1.06] text-ink sm:mt-5">
             {projectIntro.headlineLines.map((line) => (
               <span key={line} className="block">
                 {line}
@@ -50,7 +50,7 @@ export function ProjectFacts() {
         </Reveal>
 
         {/* Supporting factual copy — two columns with a hairline divider */}
-        <Reveal delayMs={160} className="mt-12 sm:mt-16">
+        <Reveal delayMs={160} className="mt-8 sm:mt-10">
           <div className="grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-0">
             <p className="text-[1.0625rem] leading-[1.7] text-ink/80 lg:pr-14">
               {projectIntro.descriptionLeft}
@@ -63,7 +63,7 @@ export function ProjectFacts() {
 
         {/* Facts — directly on the canvas, hairline dividers only,
             one unified black system. Mobile: 2×2. Desktop: one row. */}
-        <Reveal delayMs={220} className="mt-16 sm:mt-20 lg:mt-24">
+        <Reveal delayMs={220} className="mt-10 sm:mt-12 lg:mt-14">
           <div className="grid grid-cols-2 gap-y-14 lg:grid-cols-4 lg:gap-y-0">
             {projectFacts.map((fact, i) => (
               <div
