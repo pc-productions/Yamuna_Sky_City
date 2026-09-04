@@ -33,15 +33,16 @@ export function LocationBackground() {
     >
       {/* The image box extends 5px above the frame so the photo's top
           5px are cropped away by the wrapper's overflow. */}
-      <Image
-        src={locationImage.src}
-        alt={locationImage.alt}
-        fill
-        sizes="100vw"
-        className="object-cover"
-        style={{ top: "-5px", height: "calc(100% + 5px)" }}
-        loading="lazy"
-      />
+      <div className="absolute -top-[5px] inset-x-0 h-[calc(100%+5px)]">
+        <Image
+          src={locationImage.src}
+          alt={locationImage.alt}
+          fill
+          sizes="100vw"
+          className="object-cover"
+          loading="lazy"
+        />
+      </div>
     </div>
   );
 }
