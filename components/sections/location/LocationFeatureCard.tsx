@@ -30,7 +30,7 @@ export function HighlightRows({ className = "" }: { className?: string }) {
 export function LocationFeatureCard() {
   return (
     <div data-loc-card="" className="mt-10 2xl:mt-12">
-      <HighlightRows className="w-[clamp(16rem,19vw,20rem)] rounded-[20px] border border-white/35 bg-white/55 px-5 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[12px]" />
+      <HighlightRows className="w-full rounded-[20px] border border-white/35 bg-white/55 px-5 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[12px]" />
     </div>
   );
 }

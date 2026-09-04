@@ -12,13 +12,16 @@ import { locationImage } from "@/content/media";
  */
 export function LocationBackground() {
   return (
-    <div data-loc-bg="" className="absolute inset-0 z-0">
+    <div data-loc-bg="" className="absolute inset-0 z-0 overflow-hidden">
+      {/* The image box extends 5px above the frame so the photo's top
+          5px are cropped away by the wrapper's overflow. */}
       <Image
         src={locationImage.src}
         alt={locationImage.alt}
         fill
         sizes="100vw"
         className="object-cover"
+        style={{ top: "-5px", height: "calc(100% + 5px)" }}
         loading="lazy"
       />
     </div>

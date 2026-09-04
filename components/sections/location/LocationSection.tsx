@@ -119,13 +119,13 @@ export function LocationSection() {
       id="location"
       ref={sectionRef}
       data-settled={settled}
-      /* Height = the image's natural aspect height (56.28vw = 941/1672),
-         floored at 600px (lg) / one screen (xl). Width always stays 100vw
-         — pairing aspect-ratio with min-height on the section itself made
-         the aspect resolve against the min-height and blow the section
-         WIDER than the viewport (159px x-overflow at 1440×900). When the
-         floor wins, the full-width frame simply letterboxes inside. */
-      className="relative scroll-mt-16 overflow-hidden bg-paper-muted lg:h-[max(600px,56.28vw)] xl:h-[max(100vh,56.28vw)] xl:scroll-mt-18"
+      /* Height = exactly the image's natural aspect height (56.28vw =
+         941/1672) at full viewport width. No floors: a taller section
+         would letterbox the image with pale bands that read as gaps
+         between sections — this way the photograph always meets the
+         neighbouring sections edge to edge. (On a 16:9 display this IS
+         a full screen.) */
+      className="relative scroll-mt-16 overflow-hidden bg-paper-muted lg:h-[56.28vw] xl:scroll-mt-18"
       style={{ "--tower-x": `${towerX}%`, "--tower-y": `${towerY}%` } as CSSProperties}
     >
       {/* ------------------------------------------------------------ *
