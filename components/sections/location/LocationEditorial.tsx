@@ -29,7 +29,7 @@ export function LocationEditorial({ children }: { children?: ReactNode }) {
           {/* Main Section Heading */}
           <h2
             data-loc-heading=""
-            className="mt-3 font-display text-[clamp(1.2rem,1.45vw,1.625rem)] leading-tight font-semibold tracking-[0.06em] text-[#DA2B1D] uppercase"
+            className="mt-3 font-display text-[clamp(1.4rem,1.75vw,1.95rem)] leading-tight font-semibold tracking-[0.05em] text-[#DA2B1D] uppercase"
           >
             {locationContent.heading}
             <span aria-hidden="true" className="pl-[0.4em] text-[0.8em]">
