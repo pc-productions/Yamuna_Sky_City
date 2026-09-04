@@ -20,7 +20,7 @@
  * ---------------------------------------------------------------------- */
 :root {
   /* Official brand palette */
-  --color-skycity-ember: #b42810;
+  --color-skycity-ember: #B42810;
   --color-white: #ffffff;
   /* True guideline values — sections that want the warm brand surfaces
      use these directly (bg-pearl-ivory, border-mist-grey); the global

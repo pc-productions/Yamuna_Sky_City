@@ -19,7 +19,7 @@ export function LocationEditorial() {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 z-[5]">
       <Container className="pt-8 sm:pt-10">
-        <div className="pointer-events-auto max-w-[20rem] xl:max-w-[23rem]">
+        <div className="pointer-events-auto flex max-w-[14.5rem] flex-col lg:max-w-[14.75rem] xl:max-w-[16.5rem] 2xl:max-w-[18.5rem]">
           {/* Sitewide Section Eyebrow */}
           <span data-loc-eyebrow="" className="eyebrow block text-brand tracking-[0.22em]">
             {locationContent.eyebrow}
@@ -42,7 +42,7 @@ export function LocationEditorial() {
           {/* Supporting Copy */}
           <p
             data-loc-body=""
-            className="mt-4 text-[clamp(0.875rem,1.05vw,1.0625rem)] leading-[1.7] font-normal text-[#0B1B33]/90"
+            className="mt-4 text-justify text-[clamp(0.875rem,1.05vw,1.0625rem)] leading-[1.7] font-normal text-[#0B1B33]/90"
           >
             {locationContent.supportingLine}
           </p>

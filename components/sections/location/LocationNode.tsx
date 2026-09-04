@@ -78,7 +78,7 @@ export function LocationNode({
           >
             {item.label}
           </span>
-          <span className="mt-[0.18cqw] font-display text-[1.08cqw] font-bold text-[#b42810] [text-shadow:0_1px_4px_rgba(0,0,0,0.55)]">
+          <span className="mt-[0.18cqw] font-display text-[1.08cqw] font-bold text-[#E84E3A] [text-shadow:0_1px_4px_rgba(0,0,0,0.55)]">
             {item.minutes} MIN
           </span>
         </div>

@@ -16,13 +16,13 @@ export function LocationAtmosphere() {
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 14%, rgba(255,255,255,0.82) 26%, rgba(255,255,255,0.50) 38%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0) 56%)",
+            "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 10%, rgba(255,255,255,0.75) 18%, rgba(255,255,255,0.35) 26%, rgba(255,255,255,0.06) 34%, rgba(255,255,255,0) 40%)",
         }}
       />
       {/* Frosted backdrop blur layer masked seamlessly across the left reading zone */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[50%] backdrop-blur-[8px] [mask-image:linear-gradient(90deg,black_0%,black_30%,transparent_100%)]"
+        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[36%] backdrop-blur-[8px] [mask-image:linear-gradient(90deg,black_0%,black_18%,transparent_100%)]"
       />
       {/* Top boundary melt */}
       <div
