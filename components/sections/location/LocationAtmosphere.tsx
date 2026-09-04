@@ -24,7 +24,7 @@ export function LocationAtmosphere() {
           then dissolves toward the tower. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[44%] backdrop-blur-[14px] [mask-image:linear-gradient(90deg,black_0%,black_45%,transparent_100%)]"
+        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[52%] backdrop-blur-[14px] [mask-image:linear-gradient(90deg,black_0%,black_55%,transparent_100%)]"
       />
       {/* Top boundary melt */}
       <div
