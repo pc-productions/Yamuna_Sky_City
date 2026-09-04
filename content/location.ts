@@ -32,8 +32,8 @@ export const connectivity: ReadonlyArray<{
   minutes: number;
 }> = [
   { id: "beach", label: "Beach", minutes: 2 },
-  { id: "nh66", label: "National Highway 66", minutes: 5 },
-  { id: "school", label: "Ryan International School", minutes: 6 },
+  { id: "nh66", label: "National Highway 66", minutes: 2 },
+  { id: "school", label: "Ryan International School", minutes: 4 },
   { id: "hospital", label: "AJ Hospital", minutes: 7 },
   { id: "railway", label: "Railway Station", minutes: 8 },
   { id: "cityCentre", label: "City Centre", minutes: 15 },
