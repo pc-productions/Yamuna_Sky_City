@@ -1,5 +1,6 @@
 import { locationContent } from "@/content/location";
 import { Container } from "@/components/ui/Container";
+import { LogoStar } from "@/components/sections/location/icons";
 
 /**
  * Layer 5 — the editorial column in the white atmospheric region:
@@ -31,9 +32,8 @@ export function LocationEditorial() {
             className="mt-3 font-display text-[clamp(1.75rem,2.35vw,2.65rem)] leading-[1.1] font-semibold tracking-[0.04em] text-[#b42810] uppercase"
           >
             {locationContent.heading}
-            <span aria-hidden="true" className="pl-[0.35em] text-[0.8em]">
-              ✦
-            </span>
+            {/* The exact star from the Sky City logomark, not a glyph */}
+            <LogoStar className="ml-[0.3em] inline-block h-[0.55em] w-[0.55em] -translate-y-[0.04em]" />
           </h2>
 
           {/* Brand Accent Divider */}
