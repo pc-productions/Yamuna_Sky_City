@@ -28,7 +28,7 @@ export function LocationEditorial() {
           {/* Main Section Heading */}
           <h2
             data-loc-heading=""
-            className="mt-3 font-display text-[clamp(1.75rem,2.35vw,2.65rem)] leading-[1.1] font-semibold tracking-[0.04em] text-[#DA2B1D] uppercase"
+            className="mt-3 font-display text-[clamp(1.75rem,2.35vw,2.65rem)] leading-[1.1] font-semibold tracking-[0.04em] text-[#b42810] uppercase"
           >
             {locationContent.heading}
             <span aria-hidden="true" className="pl-[0.35em] text-[0.8em]">
@@ -37,7 +37,7 @@ export function LocationEditorial() {
           </h2>
 
           {/* Brand Accent Divider */}
-          <div data-loc-divider="" className="mt-3.5 h-[2px] w-14 bg-[#DA2B1D]" />
+          <div data-loc-divider="" className="mt-3.5 h-[2px] w-14 bg-[#b42810]" />
 
           {/* Supporting Copy */}
           <p

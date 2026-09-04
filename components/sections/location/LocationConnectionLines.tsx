@@ -56,7 +56,7 @@ export function LocationConnectionLines() {
               cx={dot.cx}
               cy={dot.cy}
               r={DOT_R}
-              fill="#DA2B1D"
+              fill="#b42810"
               stroke="rgba(255,255,255,0.9)"
               strokeWidth="1"
               style={{ animationDelay: `${(i * 0.55) % 3.6}s` }}
