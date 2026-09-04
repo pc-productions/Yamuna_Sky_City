@@ -19,10 +19,12 @@ export function LocationAtmosphere() {
             "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 10%, rgba(255,255,255,0.75) 18%, rgba(255,255,255,0.35) 26%, rgba(255,255,255,0.06) 34%, rgba(255,255,255,0) 40%)",
         }}
       />
-      {/* Frosted backdrop blur layer masked seamlessly across the left reading zone */}
+      {/* Frosted backdrop blur layer — held at full strength across the
+          whole editorial column so it evidently sits behind the text,
+          then dissolves toward the tower. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[36%] backdrop-blur-[8px] [mask-image:linear-gradient(90deg,black_0%,black_18%,transparent_100%)]"
+        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[44%] backdrop-blur-[14px] [mask-image:linear-gradient(90deg,black_0%,black_45%,transparent_100%)]"
       />
       {/* Top boundary melt */}
       <div
