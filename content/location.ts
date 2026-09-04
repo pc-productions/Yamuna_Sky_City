@@ -83,7 +83,7 @@ export const connectivityMap = {
     { id: "mall", x: 319, y: 248 },
     { id: "school", x: 834, y: 245 },
     { id: "hospital", x: 358, y: 405 },
-    { id: "airport", x: 555, y: 452 },
-    { id: "cityCentre", x: 755, y: 428 },
+    { id: "cityCentre", x: 555, y: 452 },
+    { id: "airport", x: 755, y: 428 },
   ] as ReadonlyArray<{ id: ConnectivityId; x: number; y: number }>,
 } as const;
