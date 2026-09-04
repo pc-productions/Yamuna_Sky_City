@@ -22,16 +22,14 @@ export function HighlightRows({ className = "" }: { className?: string }) {
 }
 
 /**
- * Layer 6 — the bottom-left translucent feature card from the
- * reference: premium glass (soft white, backdrop blur, hairline white
- * border), quiet enough that it never competes with the tower.
+ * The translucent feature card — premium glass (soft white, backdrop
+ * blur, hairline white border). It sits in the editorial column's
+ * flow, directly below the supporting copy with clear breathing room,
+ * so it always tracks the text however the copy wraps.
  */
 export function LocationFeatureCard() {
   return (
-    <div
-      data-loc-card=""
-      className="absolute bottom-[calc(9%+50px)] left-[5vw] z-[6] hidden lg:block"
-    >
+    <div data-loc-card="" className="mt-10 2xl:mt-12">
       <HighlightRows className="w-[clamp(16rem,19vw,20rem)] rounded-[20px] border border-white/35 bg-white/55 px-5 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[12px]" />
     </div>
   );

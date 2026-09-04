@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { locationContent } from "@/content/location";
 
 /**
@@ -8,7 +9,7 @@ import { locationContent } from "@/content/location";
  * - Approved supporting copy in dark navy
  * Staggered during the GSAP entrance sequence.
  */
-export function LocationEditorial() {
+export function LocationEditorial({ children }: { children?: ReactNode }) {
   return (
     /* Positioned top-left under the header wash, clear of orbital nodes */
     <div className="absolute top-[8%] left-[4vw] z-[5] max-w-[16.5rem] lg:top-[7.5%] xl:top-[8.5%] xl:max-w-[19rem] 2xl:left-[5vw] 2xl:max-w-[22rem]">
@@ -41,6 +42,9 @@ export function LocationEditorial() {
       >
         {locationContent.supportingLine}
       </p>
+
+      {/* Feature card slots in here, below the copy (see LocationSection) */}
+      {children}
     </div>
   );
 }
