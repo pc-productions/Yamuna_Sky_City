@@ -12,7 +12,25 @@ import { locationImage } from "@/content/media";
  */
 export function LocationBackground() {
   return (
-    <div data-loc-bg="" className="absolute inset-0 z-0 overflow-hidden">
+    <div
+      data-loc-bg=""
+      className="absolute inset-0 z-0 overflow-hidden"
+      /* Every edge of the photograph is feathered by a static mask, so
+         the image dissolves into the surrounding white instead of
+         ending in a hard line — at rest AND mid-animation (the entrance
+         zoom scales the img INSIDE this masked window, so the feathered
+         edge itself never moves). The right feather sits past the
+         viewport (the frame is shifted 5vw right) and is simply never
+         seen. */
+      style={{
+        maskImage:
+          "linear-gradient(to right, transparent 0px, black 56px, black calc(100% - 56px), transparent 100%), linear-gradient(to bottom, transparent 0px, black 44px, black calc(100% - 28px), transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0px, black 56px, black calc(100% - 56px), transparent 100%), linear-gradient(to bottom, transparent 0px, black 44px, black calc(100% - 28px), transparent 100%)",
+        maskComposite: "intersect",
+        WebkitMaskComposite: "source-in",
+      }}
+    >
       {/* The image box extends 5px above the frame so the photo's top
           5px are cropped away by the wrapper's overflow. */}
       <Image

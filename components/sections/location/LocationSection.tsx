@@ -66,7 +66,10 @@ export function LocationSection() {
     const ctx = gsap.context(() => {
       // Author-time markup is the finished state; hide via GSAP so the
       // section degrades to the complete composition without JS.
-      gsap.set("[data-loc-bg]", { opacity: 0, scale: 1.03 });
+      // Opacity on the masked wrapper; the settle zoom on the img INSIDE
+      // it, so the feathered edges stay perfectly still while animating.
+      gsap.set("[data-loc-bg]", { opacity: 0 });
+      gsap.set("[data-loc-bg] img", { scale: 1.03 });
       gsap.set("[data-loc-atmo]", { opacity: 0 });
       gsap.set("[data-loc-eyebrow]", { opacity: 0, y: 15 });
       gsap.set("[data-loc-heading]", { opacity: 0, y: 20 });
@@ -83,7 +86,8 @@ export function LocationSection() {
         defaults: { ease: "power3.out" },
         onComplete: () => setSettled(true),
       });
-      tl.to("[data-loc-bg]", { opacity: 1, scale: 1, duration: 1.35, ease: "power2.out" }, 0)
+      tl.to("[data-loc-bg]", { opacity: 1, duration: 1.35, ease: "power2.out" }, 0)
+        .to("[data-loc-bg] img", { scale: 1, duration: 1.35, ease: "power2.out" }, 0)
         .to("[data-loc-atmo]", { opacity: 1, duration: 1.05 }, 0.15)
         .to("[data-loc-eyebrow]", { opacity: 1, y: 0, duration: 0.7 }, 0.2)
         .to("[data-loc-heading]", { opacity: 1, y: 0, duration: 0.8 }, 0.28)
