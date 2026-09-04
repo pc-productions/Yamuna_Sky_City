@@ -72,13 +72,13 @@ export function LocationNode({
             </svg>
           </div>
           <span
-            className={`mt-[0.55cqw] text-center text-[1.02cqw] leading-[1.25] font-bold tracking-[0.03em] text-[#0B1B33] uppercase [text-shadow:0_1px_5px_rgba(255,255,255,0.85),0_0_16px_rgba(255,255,255,0.55)] ${
+            className={`mt-[0.55cqw] text-center text-[1.02cqw] leading-[1.25] font-bold tracking-[0.03em] text-white uppercase [text-shadow:0_1px_4px_rgba(0,0,0,0.75),0_2px_10px_rgba(0,0,0,0.4)] ${
               wrap ? "max-w-[15.5cqw]" : "whitespace-nowrap"
             }`}
           >
             {item.label}
           </span>
-          <span className="mt-[0.2cqw] font-display text-[1.2cqw] font-bold text-[#DA2B1D] [text-shadow:0_1px_5px_rgba(255,255,255,0.8)]">
+          <span className="mt-[0.2cqw] font-display text-[1.2cqw] font-bold text-[#DA2B1D] [text-shadow:0_1px_4px_rgba(0,0,0,0.55)]">
             {item.minutes} MIN
           </span>
         </div>

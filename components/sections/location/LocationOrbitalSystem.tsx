@@ -1,7 +1,7 @@
 import { viewBox, center, rings } from "@/components/sections/location/config";
 
 /** Ring opacities, innermost → outermost. Thin, elegant, semi-transparent. */
-const RING_OPACITY = [0.62, 0.46, 0.32];
+const RING_OPACITY = [0.9, 0.72, 0.55];
 
 /**
  * Layer 2 — the orbital rings around the tower. Pure SVG, centred on

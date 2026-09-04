@@ -71,10 +71,10 @@ export function LocationSection() {
       gsap.set("[data-loc-heading]", { opacity: 0, y: 20 });
       gsap.set("[data-loc-divider]", { scaleX: 0, transformOrigin: "left center" });
       gsap.set("[data-loc-body]", { opacity: 0, y: 25 });
-      gsap.set("[data-loc-ring]", { opacity: 0, scale: 0.75, transformOrigin: "50% 50%" });
+      gsap.set("[data-loc-ring]", { opacity: 0, scale: 0.55, transformOrigin: "50% 50%" });
       gsap.set("[data-loc-linemask]", { strokeDashoffset: 1 });
       gsap.set("[data-loc-dot]", { opacity: 0 });
-      gsap.set("[data-loc-node]", { opacity: 0, scale: 0.65, y: 15 });
+      gsap.set("[data-loc-node]", { opacity: 0, scale: 0.3, y: 18 });
       gsap.set("[data-loc-card]", { opacity: 0, y: 25 });
 
       const tl = gsap.timeline({
@@ -87,9 +87,11 @@ export function LocationSection() {
         .to("[data-loc-heading]", { opacity: 1, y: 0, duration: 0.8 }, 0.25)
         .to("[data-loc-divider]", { scaleX: 1, duration: 0.6 }, 0.4)
         .to("[data-loc-body]", { opacity: 1, y: 0, duration: 0.8 }, 0.5)
+        /* Pop: each ring zooms out from the tower with a clear overshoot
+           while fading in — sequential, never rotating. */
         .to(
           "[data-loc-ring]",
-          { opacity: 1, scale: 1, duration: 0.9, ease: "back.out(1.7)", stagger: 0.18 },
+          { opacity: 1, scale: 1, duration: 1.0, ease: "back.out(2.2)", stagger: 0.2 },
           0.6,
         )
         .to(
@@ -98,9 +100,11 @@ export function LocationSection() {
           1.3,
         )
         .to("[data-loc-dot]", { opacity: 1, duration: 0.45, stagger: 0.09 }, 1.55)
+        /* Bubble pop: markers inflate from a third of their size with a
+           springy overshoot as the section is entered. */
         .to(
           "[data-loc-node]",
-          { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(1.7)", stagger: 0.13 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.85, ease: "back.out(2)", stagger: 0.13 },
           1.45,
         )
         .to("[data-loc-card]", { opacity: 1, y: 0, duration: 0.8 }, 2.15);
