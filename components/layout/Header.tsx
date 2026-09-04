@@ -127,9 +127,9 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
 
         <nav
           aria-label="Primary"
-          /* Nudged left of optical centre; gaps are the standard steps
-             minus 1px (15/31/39) per design direction. */
-          className="hidden flex-1 -translate-x-4 items-center justify-center gap-[15px] whitespace-nowrap px-4 lg:flex xl:-translate-x-5 xl:gap-[31px] xl:px-8 2xl:gap-[39px]"
+          /* Pulled left toward the brand mark; gaps are the standard
+             steps minus 1px (15/31/39) per design direction. */
+          className="hidden flex-1 -translate-x-8 items-center justify-center gap-[15px] whitespace-nowrap px-4 lg:flex xl:-translate-x-12 xl:gap-[31px] xl:px-8 2xl:gap-[39px]"
         >
           {navLinks.map((link) => (
             <a
