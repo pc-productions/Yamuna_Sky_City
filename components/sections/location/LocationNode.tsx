@@ -58,18 +58,9 @@ export function LocationNode({
           <div
             className="flex aspect-square w-[4.86cqw] items-center justify-center rounded-full bg-white/95 text-[#0B1B33] shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[6px] transition-[scale,box-shadow] duration-300 ease-out group-hover:scale-[1.04] group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.16)] group-focus-visible:scale-[1.04]"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-              className="w-1/2"
-            >
-              {nodeIcons[item.id]}
-            </svg>
+            {/* Phosphor icon components render their own <svg> and
+                inherit the bubble's navy via currentColor. */}
+            {nodeIcons[item.id]}
           </div>
           <span
             className={`mt-[0.5cqw] text-center text-[0.92cqw] leading-[1.25] font-bold tracking-[0.03em] text-white uppercase [text-shadow:0_1px_4px_rgba(0,0,0,0.75),0_2px_10px_rgba(0,0,0,0.4)] ${

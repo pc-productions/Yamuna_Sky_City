@@ -1,56 +1,67 @@
 import type { ReactNode } from "react";
+import {
+  FirstAid,
+  Handbag,
+  GraduationCap,
+  Buildings,
+  AirplaneTilt,
+} from "@phosphor-icons/react";
 import type { ConnectivityId } from "@/content/location";
 import type { locationHighlights } from "@/content/location";
 
-/**
- * Minimal line icons matching the approved artwork's motifs — one per
- * destination. Rendered inside the white location bubbles; paths are
- * drawn on a 24×24 grid and inherit stroke colour from the bubble.
+/*
+ * Location node icons — Phosphor (@phosphor-icons/react), matched
+ * icon-for-icon against the approved "Perfectly Connected" artwork:
+ * line weights for beach/road/bag/cap/cross, FILL weights for the
+ * plane and the city buildings, exactly as the artwork mixes them.
+ * All inherit currentColor from the bubble. The beach motif (sun over
+ * waves) is a composite the libraries don't ship as one icon, drawn to
+ * Phosphor's visual weight.
  */
+const iconClass = "h-1/2 w-1/2";
+
+/* Straight-on road (two converging edges + dashed centre line) — the
+   artwork's exact motif; Phosphor only ships a horizon variant. */
+const RoadIcon = (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    aria-hidden="true"
+    className={iconClass}
+  >
+    <path d="M8.2 3.5 5.2 20.5M15.8 3.5l3 17" />
+    <path d="M12 4.5v3M12 10.7v3M12 16.9v3" />
+  </svg>
+);
+
+const BeachIcon = (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    aria-hidden="true"
+    className={iconClass}
+  >
+    <circle cx="12" cy="7" r="2.7" />
+    <path d="M12 1.8v1.6M8.3 3.3l1.1 1.1M15.7 3.3l-1.1 1.1M6.8 7h1.6M15.6 7h1.6" />
+    <path d="M3 14.6c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0" />
+    <path d="M3 19.2c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0" />
+  </svg>
+);
+
 export const nodeIcons: Record<ConnectivityId, ReactNode> = {
-  beach: (
-    <>
-      <circle cx="12" cy="7.5" r="2.5" />
-      <path d="M12 2.5v1.5M7 4l1 1M17 4l-1 1M4.5 7.5H6M18 7.5h1.5" />
-      <path d="M3 14.5c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
-      <path d="M3 19c1.5-1.4 3-1.4 4.5 0s3 1.4 4.5 0 3-1.4 4.5 0 3 1.4 4.5 0" />
-    </>
-  ),
-  nh66: (
-    <>
-      <path d="M8 4 5 20M16 4l3 16" />
-      <path d="M12 5v3M12 11v3M12 17v3" />
-    </>
-  ),
-  school: (
-    <>
-      <path d="m12 5-9 4 9 4 9-4-9-4Z" />
-      <path d="M6.5 11v4.5c0 1 2.5 2.5 5.5 2.5s5.5-1.5 5.5-2.5V11" />
-    </>
-  ),
-  hospital: (
-    <>
-      <rect x="4" y="4" width="16" height="16" rx="2" />
-      <path d="M12 8.5v7M8.5 12h7" />
-    </>
-  ),
-  mall: (
-    <>
-      <path d="M5 8h14l-1 12H6L5 8Z" />
-      <path d="M9 10V6.5a3 3 0 0 1 6 0V10" />
-    </>
-  ),
-  cityCentre: (
-    <>
-      <path d="M4 20V9h6v11M14 20V4h6v16" />
-      <path d="M6.5 12h1M6.5 15h1M16.5 8h1M16.5 12h1M16.5 16h1M2.5 20h19" />
-    </>
-  ),
-  airport: (
-    <>
-      <path d="M10.5 20.5 12 15l4.5-4.5c1.5-1.5 3-4 2.5-5.5-1.5-.5-4 1-5.5 2.5L9 12l-5.5 1.5L5 15l4-1 1.5 1.5-1 4 1 1Z" />
-    </>
-  ),
+  beach: BeachIcon,
+  nh66: RoadIcon,
+  mall: <Handbag weight="regular" className={iconClass} />,
+  school: <GraduationCap weight="regular" className={iconClass} />,
+  hospital: <FirstAid weight="regular" className={iconClass} />,
+  cityCentre: <Buildings weight="fill" className={iconClass} />,
+  airport: <AirplaneTilt weight="fill" className={iconClass} />,
 };
 
 /** Legend icons for the feature card (waves / pin / sparkle). */
