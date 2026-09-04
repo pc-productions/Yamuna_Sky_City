@@ -259,13 +259,18 @@ body {
    The figure's photograph eases from a gentle zoom to rest as the
    overlay reveals; the tower beacon breathes with slow expanding
    rings; after each connection line draws, a streak of light travels
-   it once (the same gesture as the hero scroll cue). */
-.location-figure img {
-  transform: scale(1.05);
-  transition: transform 2.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.location-figure:has([data-visible="true"]) img {
-  transform: scale(1);
+   it once (the same gesture as the hero scroll cue).
+   The settle is desktop-only: the [data-visible] reveal root
+   (LocationConnectivity) is hidden below sm, so on mobile the release
+   selector could never fire and the image would stay zoomed forever. */
+@media (min-width: 640px) {
+  .location-figure img {
+    transform: scale(1.05);
+    transition: transform 2.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .location-figure:has([data-visible="true"]) img {
+    transform: scale(1);
+  }
 }
 
 @keyframes beacon-ping {
