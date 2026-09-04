@@ -33,22 +33,21 @@ const { viewBox, center, rings, chipRadius, lineEndRadius, nodes } = connectivit
 const byId = Object.fromEntries(connectivity.map((c) => [c.id, c]));
 
 /**
- * Orbital parameters. Each marker travels an ellipse that passes
- * EXACTLY through its approved starting position, with the vertical
- * semi-axis capped so no marker (or its label) ever leaves the figure
- * at the top or bottom of its journey. Wide-radius markers therefore
- * sweep wider than tall — which also reads naturally on the landscape
- * composition.
+ * Orbital parameters. The user requested all icons to share the SAME orbit,
+ * equidistant from each other around the tower center, revolving gently.
  */
-const MAX_RY = 222;
-const orbitParams = nodes.map((n) => {
-  const dx = n.x - center.x;
-  const dy = n.y - center.y;
-  const R = Math.hypot(dx, dy);
-  const ry = Math.min(R, MAX_RY);
-  const s = 1 - (dy / ry) ** 2;
-  const rx = s > 1e-3 ? Math.abs(dx) / Math.sqrt(s) : R;
-  return { rx, ry, a0: Math.atan2(dy / ry, dx / rx), x0: n.x, y0: n.y };
+const ORBIT_RADIUS = 220;
+const orbitNodes = nodes.map((n, i) => {
+  // Equal distance from each other means equally spaced angles (2PI / count)
+  // We offset by -PI/2 so the first icon starts at the top (12 o'clock)
+  const angle = (i / nodes.length) * Math.PI * 2 - Math.PI / 2;
+  const x = center.x + ORBIT_RADIUS * Math.cos(angle);
+  const y = center.y + ORBIT_RADIUS * Math.sin(angle);
+  return { ...n, x, y, a0: angle };
+});
+
+const orbitParams = orbitNodes.map((n) => {
+  return { rx: ORBIT_RADIUS, ry: ORBIT_RADIUS, a0: n.a0, x0: n.x, y0: n.y };
 });
 
 /** Connector lines begin this far from the tower centre. */
@@ -311,7 +310,7 @@ export function LocationConnectivity() {
 
         {/* Hairlines drawing outward from the tower toward each marker */}
         <defs>
-          {nodes.map((node, i) => {
+          {orbitNodes.map((node, i) => {
             const l = connectionLine(node.x, node.y);
             return (
               <mask key={node.id} id={`conn-mask-${i}`} maskUnits="userSpaceOnUse">
@@ -331,7 +330,7 @@ export function LocationConnectivity() {
             );
           })}
         </defs>
-        {nodes.map((node, i) => {
+        {orbitNodes.map((node, i) => {
           const l = connectionLine(node.x, node.y);
           return (
             <g key={node.id}>
@@ -380,7 +379,7 @@ export function LocationConnectivity() {
       {/* Small white icon markers + quiet labels — real text on the
           same normalized coordinates as the SVG. */}
       <div className="absolute inset-0 z-[7]">
-        {nodes.map((node, i) => {
+        {orbitNodes.map((node, i) => {
           const item = byId[node.id];
           if (!item) return null;
           return (
