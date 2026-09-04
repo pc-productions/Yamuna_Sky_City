@@ -119,7 +119,7 @@ export function LocationSection() {
       id="location"
       ref={sectionRef}
       data-settled={settled}
-      className="relative scroll-mt-16 overflow-hidden bg-paper-muted lg:aspect-[1672/941] xl:aspect-auto xl:h-screen xl:scroll-mt-18"
+      className="relative scroll-mt-16 overflow-hidden bg-paper-muted lg:aspect-[1672/941] lg:min-h-[600px] xl:aspect-[1672/941] xl:min-h-screen xl:h-auto xl:scroll-mt-18"
       style={{ "--tower-x": `${towerX}%`, "--tower-y": `${towerY}%` } as CSSProperties}
     >
       {/* ------------------------------------------------------------ *

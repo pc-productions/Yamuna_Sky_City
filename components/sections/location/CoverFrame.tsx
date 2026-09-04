@@ -27,11 +27,9 @@ export function CoverFrame({
   return (
     <div
       {...rest}
-      /* Below xl the section itself follows the image aspect, so the
-         frame is simply full-width (no crop — every annotation stays
-         on screen at tablet widths). From xl up the section is a full
-         100vh screen and the frame reproduces the cover crop. */
-      className={`absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 xl:w-[max(100%,calc(100vh*1.7768))] ${className}`}
+      /* Sized to always cover the section container while preserving the exact
+         1672/941 geometry and keeping the tower perfectly centered. */
+      className={`absolute top-1/2 left-1/2 w-full max-w-none -translate-x-1/2 -translate-y-1/2 ${className}`}
       style={{
         aspectRatio: `${viewBox.w} / ${viewBox.h}`,
         containerType: "inline-size",
