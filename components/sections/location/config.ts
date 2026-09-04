@@ -19,18 +19,18 @@ export const towerY = (center.y / viewBox.h) * 100;
 
 /**
  * Bubble radius in viewBox units (viewBox is 1000 wide). MUST stay in
- * sync with the CSS bubble diameter of 5.4cqw — 5.4% of the image frame
- * equals 54 viewBox units — so connection lines and red points meet the
+ * sync with the CSS bubble diameter of 4.86cqw — 4.86% of the image frame
+ * equals 48.6 viewBox units — so connection lines and red points meet the
  * bubble edge exactly.
  */
-export const BUBBLE_R = 27;
+export const BUBBLE_R = 24.3;
 
 /** Connection lines start this far from the tower centre (viewBox
     units), keeping the building itself clear of graphics. */
 export const LINE_INNER = connectivityMap.lineEndRadius;
 
 /** Red connection point radius, viewBox units. */
-export const DOT_R = 4.5;
+export const DOT_R = 4.0;
 
 type NodePresentation = {
   /** Vertical float personality — deliberately different per node so
