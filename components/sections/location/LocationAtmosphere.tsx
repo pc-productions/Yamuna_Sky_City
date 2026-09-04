@@ -9,15 +9,22 @@
 export function LocationAtmosphere() {
   return (
     <>
+      {/* Left reading region — progressive white wash + frosted glass diffusion */}
       <div
         aria-hidden="true"
         data-loc-atmo=""
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "linear-gradient(90deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 8%, rgba(255,255,255,0.65) 16%, rgba(255,255,255,0.32) 24%, rgba(255,255,255,0.08) 34%, rgba(255,255,255,0) 45%)",
+            "linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.94) 14%, rgba(255,255,255,0.82) 26%, rgba(255,255,255,0.50) 38%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0) 56%)",
         }}
       />
+      {/* Frosted backdrop blur layer masked seamlessly across the left reading zone */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[50%] backdrop-blur-[8px] [mask-image:linear-gradient(90deg,black_0%,black_30%,transparent_100%)]"
+      />
+      {/* Top boundary melt */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-24 bg-gradient-to-b from-white/90 via-white/35 to-transparent"

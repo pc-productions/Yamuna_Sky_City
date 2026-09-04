@@ -68,6 +68,7 @@ export function LocationSection() {
       // section degrades to the complete composition without JS.
       gsap.set("[data-loc-bg]", { opacity: 0, scale: 1.03 });
       gsap.set("[data-loc-atmo]", { opacity: 0 });
+      gsap.set("[data-loc-eyebrow]", { opacity: 0, y: 15 });
       gsap.set("[data-loc-heading]", { opacity: 0, y: 20 });
       gsap.set("[data-loc-divider]", { scaleX: 0, transformOrigin: "left center" });
       gsap.set("[data-loc-body]", { opacity: 0, y: 25 });
@@ -84,9 +85,10 @@ export function LocationSection() {
       });
       tl.to("[data-loc-bg]", { opacity: 1, scale: 1, duration: 1.35, ease: "power2.out" }, 0)
         .to("[data-loc-atmo]", { opacity: 1, duration: 1.05 }, 0.15)
-        .to("[data-loc-heading]", { opacity: 1, y: 0, duration: 0.8 }, 0.25)
-        .to("[data-loc-divider]", { scaleX: 1, duration: 0.6 }, 0.4)
-        .to("[data-loc-body]", { opacity: 1, y: 0, duration: 0.8 }, 0.5)
+        .to("[data-loc-eyebrow]", { opacity: 1, y: 0, duration: 0.7 }, 0.2)
+        .to("[data-loc-heading]", { opacity: 1, y: 0, duration: 0.8 }, 0.28)
+        .to("[data-loc-divider]", { scaleX: 1, duration: 0.6 }, 0.42)
+        .to("[data-loc-body]", { opacity: 1, y: 0, duration: 0.8 }, 0.52)
         /* Pop: each ring zooms out from the tower with a clear overshoot
            while fading in — sequential, never rotating. */
         .to(
