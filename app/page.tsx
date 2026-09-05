@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { IntroExperience } from "@/components/sections/IntroExperience";
 import { ProjectFacts } from "@/components/sections/ProjectFacts";
 import { LocationSection } from "@/components/sections/location/LocationSection";
@@ -13,6 +14,10 @@ import { Contact } from "@/components/sections/Contact";
  * deleting its line; each section owns its own content/data import, so
  * none of this needs to change when sections are added elsewhere.
  */
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function Home() {
   return (
     <>

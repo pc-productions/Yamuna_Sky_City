@@ -68,7 +68,7 @@ export function Hero({ active }: { active: boolean }) {
       <div className="relative flex-1 w-full overflow-hidden">
         <VideoBackground
           media={active ? heroVideo : { ...heroVideo, src: undefined }}
-          priority={active}
+          priority
           videoRef={videoRef}
         />
       </div>

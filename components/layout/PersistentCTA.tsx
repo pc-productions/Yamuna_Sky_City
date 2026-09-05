@@ -7,7 +7,8 @@ import { ctaLabels } from "@/content/site";
  */
 export function PersistentCTA({ onEnquire }: { onEnquire: () => void }) {
   return (
-    <div
+    <nav
+      aria-label="Quick actions"
       className="fixed inset-x-0 bottom-0 z-40 flex border-t border-paper/10 bg-night/95 backdrop-blur-sm lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
@@ -24,6 +25,6 @@ export function PersistentCTA({ onEnquire }: { onEnquire: () => void }) {
       >
         {ctaLabels.mobileSchedule}
       </a>
-    </div>
+    </nav>
   );
 }

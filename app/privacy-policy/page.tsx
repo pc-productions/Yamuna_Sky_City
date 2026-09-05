@@ -3,6 +3,9 @@ import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
+  description: "Privacy policy for the Yamuna Sky City website.",
+  alternates: { canonical: "/privacy-policy" },
+  openGraph: { title: "Privacy Policy | Yamuna Sky City", url: "/privacy-policy" },
 };
 
 export default function PrivacyPolicyPage() {

@@ -30,6 +30,9 @@ export const isSiteUrlConfigured = Boolean(configuredSiteUrl);
 
 export const seo = {
   titleDefault: "Yamuna Sky City",
+  // Homepage <title> / og:title: brand name + the official tagline (the
+  // only positioning line approved in the brand guidelines).
+  homeTitle: `${brand.name} | ${brand.tagline}`,
   titleTemplate: "%s | Yamuna Sky City",
   // Built only from approved facts — no location or positioning claims.
   description:
@@ -37,6 +40,10 @@ export const seo = {
   siteUrl: configuredSiteUrl ?? "https://www.yamunaskycity.example",
   // TODO: set the confirmed handle, or leave empty to omit the tag.
   twitterHandle: "",
+  // Google Search Console "HTML tag" verification token (the content=
+  // value only). Public, but deploy-specific — set via env; omitted when
+  // empty.
+  googleSiteVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
 } as const;
 
 /**

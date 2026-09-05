@@ -3,6 +3,9 @@ import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",
+  description: "Terms and conditions for the Yamuna Sky City website.",
+  alternates: { canonical: "/terms" },
+  openGraph: { title: "Terms & Conditions | Yamuna Sky City", url: "/terms" },
 };
 
 export default function TermsPage() {

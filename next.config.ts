@@ -32,6 +32,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Repo-owned media (video, artwork, brand marks). Not content-
+        // hashed, so a bounded browser cache with background revalidation
+        // rather than "immutable" — replacing a file under the same path
+        // (as has happened with the location artwork) propagates within a
+        // day while repeat visits stay fast.
+        source: "/media/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
     ];
   },
 };

@@ -18,8 +18,14 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <a
+        href="#top"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-brand focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-paper focus:outline-none"
+      >
+        Skip to content
+      </a>
       <Header onEnquire={() => setModalOpen(true)} />
-      <main id="top" className="flex-1 pb-20 xl:pb-0">
+      <main id="top" tabIndex={-1} className="flex-1 pb-20 outline-none xl:pb-0">
         {children}
       </main>
       <Footer />

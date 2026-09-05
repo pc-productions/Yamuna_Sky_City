@@ -46,7 +46,7 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 
 - **Hero video**: DONE — the supplied 4K master is optimized to `public/media/video/hero-1080.{mp4,webm}` (1080p30, muted, faststart; WebM preferred where supported) with the first frame as `hero-poster.jpg`. On narrow portrait screens the 16:9 crop trims the film's flanking title words; supply a portrait cut and branch in `content/media.ts` if that matters.
 - **Intro video**: still not supplied. The section renders its poster/fallback gracefully; drop the file into `public/media/video/` and set `introVideo.src` in `content/media.ts`. The entry flow is an explicit state machine (`IntroExperience`: resolving → intro → hero) so the hero video only activates after the intro completes, is skipped, or is ineligible.
-- **Location artwork**: DONE — the approved "Perfectly Connected" artwork (1600×900) ships at `public/media/location/perfectly-connected.jpg`; travel-time data source of truth stays in `content/location.ts` and drives the mobile-only list below the image. For crisper large desktops, a higher-resolution export (e.g. 2400px wide) can replace the same path.
+- **Location artwork**: DONE for desktop — the clean aerial render (`public/media/location/tower-aerial.jpg`, 1672×941) carries a programmatic GSAP/SVG connectivity overlay driven by `content/location.ts`. Below `lg` an interim static composition uses `mbl_loc_img.png`, whose baked-in labels predate the approved node names/times (City Mall, older minutes) — a dedicated mobile composition or a re-exported mobile asset is still needed before mobile can be called final.
 - **Private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
 - **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty; both sections currently render as minimal editorial statements (eyebrow + heading only) and expand to their full presentations automatically once verified entries/figures are added — nothing is invented, no placeholder rows are shown.
 - **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
@@ -85,6 +85,15 @@ the project team can confirm:
    disable per environment with `NEXT_PUBLIC_GTM_ID`). Configure the
    actual tags (GA4, ads pixels, conversions) inside the GTM container —
    no code changes needed.
+7. **Search** — once `NEXT_PUBLIC_SITE_URL` is set the site becomes
+   indexable automatically: `index,follow` robots, per-page canonicals,
+   `sitemap.xml`, Organization + WebSite JSON-LD and branded OG/Twitter
+   cards. Then: (a) in Vercel, attach the domain and make the non-canonical
+   host (www vs apex) a 308 redirect to the canonical one; (b) verify the
+   property in Google Search Console — set
+   `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to the HTML-tag token — and
+   submit `/sitemap.xml`; (c) re-run Lighthouse on the live URL (the SEO
+   category can only pass once the site is crawlable).
 
 `npm run lint && npm run build` must pass before every deploy; both are
 clean at the current head.
