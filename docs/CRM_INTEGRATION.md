@@ -78,6 +78,10 @@ are kept distinct so the CRM can use either or both.
 
 ## What the CRM agency needs to provide
 
+A fuller, agency-facing questionnaire covering the same ground in more
+detail lives in `docs/CRM_AGENCY_REQUIREMENTS.md` — send that file to
+the agency; the summary table below is the developer checklist.
+
 Please fill in every item. Blank items block integration.
 
 | # | Item | Value |
