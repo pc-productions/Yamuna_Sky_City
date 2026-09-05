@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { captureAttribution } from "@/lib/attribution";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PersistentCTA } from "@/components/layout/PersistentCTA";
@@ -8,6 +9,12 @@ import { EnquiryModal } from "@/components/modal/EnquiryModal";
 
 export function SiteChrome({ children }: { children: ReactNode }) {
   const [isModalOpen, setModalOpen] = useState(false);
+
+  // First-touch marketing attribution (UTMs, referrer, landing page) for
+  // the enquiry lead record — captured once per session, read at submit.
+  useEffect(() => {
+    captureAttribution();
+  }, []);
 
   return (
     <>

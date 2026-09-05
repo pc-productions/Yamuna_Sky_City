@@ -93,6 +93,17 @@ export const ctaLabels = {
   mobileSchedule: "Schedule a Viewing",
 } as const;
 
+/**
+ * Brochure (website-hosted delivery, approach A). Left EMPTY until the
+ * approved brochure file exists — no fake asset is ever linked. Set to
+ * a path under /public (e.g. "/media/brochure/yamuna-sky-city.pdf") or
+ * an absolute URL. Access is resolved in lib/brochure.ts only after a
+ * confirmed successful enquiry; a CRM-provided URL takes precedence.
+ */
+export const brochure = {
+  href: "", // TODO: approved brochure PDF path or URL
+} as const;
+
 export const legal = {
   // Left empty until the confirmed RERA number is supplied — the footer
   // hides this row while empty.

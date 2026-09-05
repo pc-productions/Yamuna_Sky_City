@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { consentField, formCopy } from "@/content/form";
 import { contact, ctaLabels, getWhatsAppUrl } from "@/content/site";
 import { useEnquiryForm } from "@/lib/hooks/useEnquiryForm";
+import { resolveBrochureAccess } from "@/lib/brochure";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/forms/FormField";
 
@@ -15,6 +16,12 @@ import { FormField } from "@/components/forms/FormField";
  * WhatsApp/phone actions render only when configured in content/site.ts.
  * A missing lead backend surfaces as an honest "not available yet"
  * message — never a false success confirmation.
+ *
+ * Success state (only after the lead destination CONFIRMED the lead):
+ * thank-you copy + brochure access resolved by lib/brochure.ts, with
+ * WhatsApp as a secondary option. The form knows nothing about the CRM
+ * or how the brochure is delivered — both are replaceable behind their
+ * boundaries without touching this component.
  */
 export function EnquiryForm({
   source,
@@ -25,7 +32,7 @@ export function EnquiryForm({
   tone?: "light" | "dark";
   onSuccess?: () => void;
 }) {
-  const { fields, values, errors, status, errorMessage, setField, blurField, handleSubmit } =
+  const { fields, values, errors, status, errorMessage, result, setField, blurField, handleSubmit } =
     useEnquiryForm(source);
 
   const whatsappUrl = getWhatsAppUrl();
@@ -38,16 +45,36 @@ export function EnquiryForm({
   }, [status, onSuccess]);
 
   if (status === "success") {
+    const brochure = resolveBrochureAccess(result);
+    const textTone = tone === "dark" ? "text-mist" : "text-ink";
     return (
-      <div className="flex flex-col gap-4 py-6" role="status">
-        <p className={`text-lg ${tone === "dark" ? "text-mist" : "text-ink"}`}>
-          {formCopy.successMessage}
-        </p>
-        {whatsappUrl && (
-          <Button href={whatsappUrl} variant={outlineVariant}>
-            {ctaLabels.chatWhatsApp}
-          </Button>
-        )}
+      <div className="flex flex-col gap-5 py-6" role="status" aria-live="polite">
+        <div>
+          <p className={`font-display text-display-md font-semibold uppercase ${textTone}`}>
+            {formCopy.successHeading}
+          </p>
+          <p className={`mt-3 text-lg ${textTone}`}>{formCopy.successMessage}</p>
+          <p className={`mt-2 text-base ${labelTone}`}>
+            {brochure.available ? formCopy.brochureReadyMessage : formCopy.brochurePendingMessage}
+          </p>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row">
+          {brochure.available && (
+            <Button
+              href={brochure.href}
+              variant="primary"
+              className="sm:flex-1"
+              {...(brochure.external ? {} : { download: true })}
+            >
+              {formCopy.brochureButtonLabel}
+            </Button>
+          )}
+          {whatsappUrl && (
+            <Button href={whatsappUrl} variant={outlineVariant} className="sm:flex-1">
+              {ctaLabels.chatWhatsApp}
+            </Button>
+          )}
+        </div>
       </div>
     );
   }
@@ -58,7 +85,7 @@ export function EnquiryForm({
         <FormField
           key={field.id}
           field={field}
-          value={values[field.id] ?? ""}
+          value={String(values[field.id] ?? "")}
           error={errors[field.id]}
           onChange={(v) => setField(field.id, v)}
           onBlur={() => blurField(field.id)}

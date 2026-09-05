@@ -66,9 +66,13 @@ the project team can confirm:
    deploy environment. Until it is set, the site serves `noindex` robots and
    omits structured data, so a misconfigured deploy can never be indexed
    with placeholder URLs.
-2. **Lead backend** — set `ENQUIRY_WEBHOOK_URL` (server-only) so enquiry
-   submissions are delivered; the form is honest about being unavailable
-   until then.
+2. **Lead backend / CRM** — set `ENQUIRY_WEBHOOK_URL` (server-only) so
+   enquiry submissions are delivered; the form is honest about being
+   unavailable until then and shows the thank-you/brochure state only
+   after the destination confirms the lead. The CRM integration boundary
+   is `lib/integrations/crm.ts`; everything the CRM agency must supply is
+   listed in `docs/CRM_INTEGRATION.md`. Brochure access: set
+   `brochure.href` in `content/site.ts` once the approved PDF exists.
 3. **Contact details** — phone, email, address, WhatsApp number in
    `content/site.ts`; the dependent UI appears automatically.
 4. **RERA number + legal copy** — `content/site.ts` (`legal.reraNumber`) and

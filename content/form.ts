@@ -58,7 +58,15 @@ export const formCopy = {
     "Share your details and our team will be in touch to arrange your private viewing.",
   submitLabel: "SUBMIT ENQUIRY",
   submittingLabel: "Submitting…",
-  successMessage: "Thank you. Our team will reach out to you shortly.",
+  /* Success state — shown ONLY after the lead destination has confirmed
+     the lead. The brochure lines are used by lib/brochure.ts's
+     resolution: "ready" when a brochure is available, "pending" (an
+     honest interim) while no brochure mechanism is configured. */
+  successHeading: "Thank you",
+  successMessage: "Your enquiry has been received.",
+  brochureReadyMessage: "Your Yamuna Sky City brochure is ready.",
+  brochureButtonLabel: "Download Brochure",
+  brochurePendingMessage: "Our team will share the Yamuna Sky City brochure with you shortly.",
   errorMessageFallback: "Something went wrong. Please try again.",
   // Shown while no lead backend is configured — an honest state, never a
   // false "submitted" confirmation.
