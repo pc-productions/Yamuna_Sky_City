@@ -40,6 +40,17 @@ export const seo = {
 } as const;
 
 /**
+ * Google Tag Manager container — the public container ID supplied by
+ * the client (GTM_YSC.docx). Public identifiers are safe to commit.
+ * Override per environment with NEXT_PUBLIC_GTM_ID; set it to an empty
+ * string to disable tagging on a deploy (e.g. previews) without
+ * touching code — the layout renders nothing when the ID is empty.
+ */
+export const analytics = {
+  gtmId: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-MHNRSR6J",
+} as const;
+
+/**
  * Contact channels. Every field is optional in practice: leave a field
  * as an empty string until the real value is confirmed and the UI that
  * depends on it (footer rows, call links, WhatsApp CTAs) stays hidden.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Cormorant_Garamond } from "next/font/google";
-import { isSiteUrlConfigured, seo } from "@/content/site";
+import { GoogleTagManager } from "@next/third-parties/google";
+import { analytics, isSiteUrlConfigured, seo } from "@/content/site";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
@@ -61,7 +62,25 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${poppins.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
+      {/* Google Tag Manager (content/site.ts → analytics.gtmId). Next's
+          official component injects the dataLayer bootstrap and loads
+          gtm.js after hydration — the App Router equivalent of "as high
+          in the head as possible" without blocking first paint. */}
+      {analytics.gtmId && <GoogleTagManager gtmId={analytics.gtmId} />}
       <body className="flex min-h-full flex-col bg-paper text-ink">
+        {/* GTM noscript fallback — the doc's step 2, immediately after
+            the opening body tag, so tags still fire with JS disabled. */}
+        {analytics.gtmId && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${analytics.gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+              title="Google Tag Manager"
+            />
+          </noscript>
+        )}
         {/* Minimal, purely factual structured data; emitted only once the
             real domain is configured so search engines never receive
             placeholder URLs. */}

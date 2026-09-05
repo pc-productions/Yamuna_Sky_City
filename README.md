@@ -76,8 +76,11 @@ the project team can confirm:
 5. **Remaining content** — intro film (`content/media.ts`), People Behind
    (`content/people.ts`), Legacy figures (`content/legacy.ts`), social
    profiles and Twitter handle (`content/site.ts`).
-6. **Analytics** (optional) — none is integrated by choice; add your
-   preferred vendor in `app/layout.tsx` if required.
+6. **Analytics** — Google Tag Manager is integrated (container
+   `GTM-MHNRSR6J`, `content/site.ts` → `analytics.gtmId`; override or
+   disable per environment with `NEXT_PUBLIC_GTM_ID`). Configure the
+   actual tags (GA4, ads pixels, conversions) inside the GTM container —
+   no code changes needed.
 
 `npm run lint && npm run build` must pass before every deploy; both are
 clean at the current head.
