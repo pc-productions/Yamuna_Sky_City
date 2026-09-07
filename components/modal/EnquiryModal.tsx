@@ -29,6 +29,7 @@ export function EnquiryModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="enquiry-modal-heading"
+        data-lenis-prevent=""
         className="relative flex max-h-[90dvh] w-full flex-col overflow-y-auto bg-paper px-6 py-8 sm:max-w-md sm:px-12 sm:py-14"
       >
         <button

@@ -1,19 +1,22 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { explore3dPreview } from "@/content/media";
-import { ctaLabels, externalLinks } from "@/content/site";
+import { externalLinks } from "@/content/site";
+import { explore3dSection } from "@/content/sections";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { ParallaxMedia } from "@/components/motion/ParallaxMedia";
 
 /**
- * External 3D mapping experience. The destination URL is centralized in
- * content/site.ts (`externalLinks.explore3d`) — never hardcode it
- * elsewhere. While the URL is unconfigured (empty), the preview renders
- * without an outbound link and the CTA reads "Coming Soon", so visitors
- * are never sent to a placeholder destination; setting the URL makes the
- * section fully functional with no component changes (new tab,
- * rel="noopener noreferrer").
+ * Invitation into the external 3D experience. The photograph opens
+ * through a soft mask while it settles from a slight zoom, then drifts
+ * a few percent as the visitor scrolls past; on desktop, hover eases it
+ * a touch closer. The call to action is typographic — a line of text
+ * with a hairline, not a button — because the whole image is the link.
+ *
+ * Destination URL lives in content/site.ts (`externalLinks.explore3d`).
+ * Unconfigured → no outbound link and an honest "Coming Soon".
  */
 export function Explore3D() {
   const url = externalLinks.explore3d;
@@ -21,62 +24,56 @@ export function Explore3D() {
 
   const overlay = (
     <div
-      className={`absolute inset-0 flex flex-col items-center justify-center gap-4 bg-night/35 backdrop-blur-[2.5px] transition-all duration-500 ${
-        isConfigured ? "group-hover:bg-night/45 group-hover:backdrop-blur-[4px]" : ""
+      className={`absolute inset-0 flex items-end bg-gradient-to-t from-night/70 via-night/15 to-transparent transition-opacity duration-[var(--motion-slow)] ${
+        isConfigured ? "group-hover:opacity-90" : ""
       }`}
     >
-      <span
-        className={`font-display border px-6 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-paper transition-all duration-300 sm:px-10 sm:py-[1.125rem] bg-night/65 backdrop-blur-[4px] ${
-          isConfigured
-            ? "border-paper/70 group-hover:border-paper group-hover:bg-paper group-hover:text-ink"
-            : "border-paper/40 text-paper/80"
-        }`}
-      >
-        {isConfigured ? (
-          <>
-            {ctaLabels.exploreIn3d}
-            {/* Outward arrow signals an external destination. */}
-            <span aria-hidden="true" className="ml-3 inline-block">
-              &#8599;
+      <div className="flex w-full flex-col gap-2 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-10">
+        <span className="font-display text-[0.8125rem] font-semibold uppercase tracking-[0.16em] text-paper sm:text-sm">
+          {isConfigured ? (
+            <span className="inline-flex items-center gap-3 border-b border-paper/60 pb-2 transition-[border-color] duration-[var(--motion-fast)] group-hover:border-paper">
+              {explore3dSection.invitation}
+              <span aria-hidden="true" className="inline-block transition-transform duration-[var(--motion-fast)] group-hover:translate-x-1">
+                &#8599;
+              </span>
+              <span className="sr-only">({explore3dSection.externalNote})</span>
             </span>
-            <span className="sr-only">(opens in a new tab)</span>
-          </>
-        ) : (
-          "Coming Soon"
-        )}
-      </span>
-      {isConfigured && (
-        <span className="eyebrow text-[0.625rem] text-paper/75 drop-shadow-sm">
-          External experience
+          ) : (
+            <span className="border-b border-paper/40 pb-2 text-paper/80">Coming Soon</span>
+          )}
         </span>
-      )}
+        {isConfigured && (
+          <span className="eyebrow text-[0.625rem] text-paper/65">{explore3dSection.externalNote}</span>
+        )}
+      </div>
     </div>
   );
 
   const preview = (
     <>
-      <Image
-        src={explore3dPreview.src}
-        alt={explore3dPreview.alt}
-        fill
-        sizes="(min-width: 1280px) 1152px, 100vw"
-        className={`object-cover ${
-          isConfigured
-            ? "transition-transform duration-[1.2s] ease-out group-hover:scale-[1.02]"
-            : ""
-        }`}
-        loading="lazy"
-      />
+      <ParallaxMedia percent={5} className="absolute -inset-y-[5%] inset-x-0">
+        <Image
+          data-reveal-media=""
+          src={explore3dPreview.src}
+          alt={explore3dPreview.alt}
+          fill
+          sizes="(min-width: 1280px) 1152px, 100vw"
+          className={`object-cover ${
+            isConfigured ? "transition-[scale] duration-[var(--motion-cinematic)] ease-[var(--ease-editorial)] group-hover:scale-[1.025]" : ""
+          }`}
+          loading="lazy"
+        />
+      </ParallaxMedia>
       {overlay}
     </>
   );
 
-  const frameClass = "relative block aspect-[16/9] w-full overflow-hidden bg-night";
+  const frameClass = "group relative block aspect-[16/9] w-full overflow-hidden bg-night";
 
   let framed: ReactNode;
   if (isConfigured) {
     framed = (
-      <a href={url} target="_blank" rel="noopener noreferrer" className={`group ${frameClass}`}>
+      <a href={url} target="_blank" rel="noopener noreferrer" className={frameClass}>
         {preview}
       </a>
     );
@@ -85,17 +82,14 @@ export function Explore3D() {
   }
 
   return (
-    <section id="explore-3d" className="scroll-mt-16 bg-paper pt-8 pb-16 sm:pt-10 sm:pb-24 xl:scroll-mt-18">
+    <section id="explore-3d" className="section-top section-bottom scroll-mt-16 bg-paper xl:scroll-mt-18">
       <Container>
-        <Reveal>
-          <SectionHeading
-            eyebrow="3D Experience"
-            heading="See Where Yamuna Sky City Rises."
-            supportingLine="Explore the project and its surroundings through an immersive 3D location experience."
-          />
-        </Reveal>
-
-        <Reveal delayMs={100} className="mt-16 sm:mt-24">
+        <SectionHeading
+          eyebrow={explore3dSection.eyebrow}
+          heading={explore3dSection.heading}
+          supportingLine={explore3dSection.supportingLine}
+        />
+        <Reveal variant="image" className="mt-16 sm:mt-20 lg:mt-24">
           {framed}
         </Reveal>
       </Container>

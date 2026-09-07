@@ -26,10 +26,16 @@ export function LocationAtmosphere() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[52%] backdrop-blur-[14px] [mask-image:linear-gradient(90deg,black_0%,black_55%,transparent_100%)]"
       />
-      {/* Top boundary melt */}
+      {/* Boundary melts — the photograph surfaces out of the light
+          section above and dissolves again before the Ember field
+          below, so the section is entered and left, never cut to. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-24 bg-gradient-to-b from-white/90 via-white/35 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-40 bg-gradient-to-b from-white via-white/45 to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-white/80 via-white/25 to-transparent"
       />
     </>
   );

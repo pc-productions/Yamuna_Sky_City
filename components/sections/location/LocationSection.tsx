@@ -8,6 +8,7 @@ import { connectivity, locationContent } from "@/content/location";
 import { locationImage } from "@/content/media";
 import { Container } from "@/components/ui/Container";
 import { CoverFrame } from "@/components/sections/location/CoverFrame";
+import { ParallaxMedia } from "@/components/motion/ParallaxMedia";
 import { LocationBackground } from "@/components/sections/location/LocationBackground";
 import { LocationAtmosphere } from "@/components/sections/location/LocationAtmosphere";
 import { LocationOrbitalSystem } from "@/components/sections/location/LocationOrbitalSystem";
@@ -69,7 +70,7 @@ export function LocationSection() {
       // Opacity on the masked wrapper; the settle zoom on the img INSIDE
       // it, so the feathered edges stay perfectly still while animating.
       gsap.set("[data-loc-bg]", { opacity: 0 });
-      gsap.set("[data-loc-bg] img", { scale: 1.03 });
+      gsap.set("[data-loc-bg] img", { scale: 1.05 });
       gsap.set("[data-loc-atmo]", { opacity: 0 });
       gsap.set("[data-loc-eyebrow]", { opacity: 0, y: 15 });
       gsap.set("[data-loc-heading]", { opacity: 0, y: 20 });
@@ -82,13 +83,13 @@ export function LocationSection() {
       gsap.set("[data-loc-card]", { opacity: 0, y: 25 });
 
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: root, start: "top 75%", once: true },
+        scrollTrigger: { trigger: root, start: "top 70%", once: true },
         defaults: { ease: "power3.out" },
         onComplete: () => setSettled(true),
       });
-      tl.to("[data-loc-bg]", { opacity: 1, duration: 1.35, ease: "power2.out" }, 0)
-        .to("[data-loc-bg] img", { scale: 1, duration: 1.35, ease: "power2.out" }, 0)
-        .to("[data-loc-atmo]", { opacity: 1, duration: 1.05 }, 0.15)
+      tl.to("[data-loc-bg]", { opacity: 1, duration: 1.9, ease: "power2.out" }, 0)
+        .to("[data-loc-bg] img", { scale: 1, duration: 2.6, ease: "power2.out" }, 0)
+        .to("[data-loc-atmo]", { opacity: 1, duration: 1.4 }, 0.2)
         .to("[data-loc-eyebrow]", { opacity: 1, y: 0, duration: 0.7 }, 0.2)
         .to("[data-loc-heading]", { opacity: 1, y: 0, duration: 0.8 }, 0.28)
         .to("[data-loc-divider]", { scaleX: 1, duration: 0.6 }, 0.42)
@@ -97,23 +98,23 @@ export function LocationSection() {
            while fading in — sequential, never rotating. */
         .to(
           "[data-loc-ring]",
-          { opacity: 1, scale: 1, duration: 1.0, ease: "back.out(2.2)", stagger: 0.2 },
-          0.6,
+          { opacity: 1, scale: 1, duration: 1.2, ease: "back.out(1.9)", stagger: 0.26 },
+          0.75,
         )
         .to(
           "[data-loc-linemask]",
-          { strokeDashoffset: 0, duration: 0.75, ease: "power2.inOut", stagger: 0.09 },
-          1.3,
+          { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut", stagger: 0.1 },
+          1.55,
         )
-        .to("[data-loc-dot]", { opacity: 1, duration: 0.45, stagger: 0.09 }, 1.55)
+        .to("[data-loc-dot]", { opacity: 1, duration: 0.5, stagger: 0.1 }, 1.8)
         /* Bubble pop: markers inflate from a third of their size with a
            springy overshoot as the section is entered. */
         .to(
           "[data-loc-node]",
-          { opacity: 1, scale: 1, y: 0, duration: 0.85, ease: "back.out(2)", stagger: 0.13 },
-          1.45,
+          { opacity: 1, scale: 1, y: 0, duration: 1.0, ease: "back.out(1.8)", stagger: 0.14 },
+          1.7,
         )
-        .to("[data-loc-card]", { opacity: 1, y: 0, duration: 0.8 }, 2.15);
+        .to("[data-loc-card]", { opacity: 1, y: 0, duration: 1.0 }, 2.5);
     }, root);
     return () => ctx.revert();
   }, []);
@@ -145,6 +146,11 @@ export function LocationSection() {
             they live in a single coordinate space — the orbit's centre
             is pinned to the tower by construction and cannot drift at
             any viewport size or zoom level. */}
+        {/* The WHOLE frame (photograph + rings + lines + nodes) drifts a
+            few percent with the scroll, so the orbit and the tower move
+            as one; the editorial column and card stay put, which gives
+            the composition depth without any risk of drift. */}
+        <ParallaxMedia percent={3} className="absolute inset-0">
         <CoverFrame className="z-0">
           <LocationBackground />
           <LocationAtmosphere />
@@ -172,6 +178,7 @@ export function LocationSection() {
             })}
           </div>
         </CoverFrame>
+        </ParallaxMedia>
         <LocationEditorial />
         <LocationFeatureCard />
       </div>

@@ -32,14 +32,21 @@ function useHeaderTone(enabled: boolean): HeaderTone {
     if (!enabled) return;
 
     const probe = () => {
-      const probeY = 32; // vertical middle of the header bar
+      // Whatever is painted under the middle of the bar decides the
+      // tone — stacking order, not DOM order, because the hero is a
+      // sticky backdrop that later sections slide over.
+      // Probe near the bar's lower edge so an incoming section changes
+      // the tone as soon as it slides under the header.
+      const bar = document.querySelector("header");
+      const probeY = Math.round((bar?.offsetHeight ?? 64) * 0.8);
+      const x = Math.round(window.innerWidth / 2);
       let next: HeaderTone = "light";
-      for (const el of document.querySelectorAll<HTMLElement>("[data-header-tone]")) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= probeY && rect.bottom >= probeY) {
-          next = (el.dataset.headerTone as HeaderTone) ?? "light";
-          break;
-        }
+      for (const el of document.elementsFromPoint(x, probeY)) {
+        if (el.closest("header")) continue;
+        const section = el.closest<HTMLElement>("main > section, footer");
+        if (!section) continue;
+        next = (section.dataset.headerTone as HeaderTone | undefined) ?? "light";
+        break;
       }
       setTone(next);
     };
@@ -75,9 +82,9 @@ const surfaceByTone: Record<HeaderTone, string> = {
   // (white frosted bar + Ember primary CTA) instead of dark glass.
   // To revert, restore: "border-b border-white/10 bg-night/75 backdrop-blur-md"
   // here and `tone !== "light"` for onDark below.
-  video: "border-b border-line/70 bg-paper/90 backdrop-blur-md",
-  dark: "border-b border-white/10 bg-night/85 backdrop-blur-md",
-  light: "border-b border-line/70 bg-paper/90 backdrop-blur-md",
+  video: "border-b border-line/50 bg-paper/80 backdrop-blur-md",
+  dark: "border-b border-white/10 bg-night/80 backdrop-blur-md",
+  light: "border-b border-line/60 bg-paper/85 backdrop-blur-md",
 };
 
 export function Header({ onEnquire }: { onEnquire: () => void }) {
@@ -94,7 +101,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ${surfaceByTone[tone]}`}
+      className={`fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-[var(--motion-standard)] ease-[var(--ease-soft)] ${surfaceByTone[tone]}`}
     >
       {/* Three-zone composition: brand left, nav optically centered in the
           space between brand and actions (flex-1 — can never overlap its

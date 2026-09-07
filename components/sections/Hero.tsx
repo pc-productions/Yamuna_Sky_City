@@ -1,24 +1,32 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { heroVideo } from "@/content/media";
+import { isNarrowViewport, prefersReducedMotion } from "@/lib/motion";
 import { VideoBackground } from "@/components/ui/VideoBackground";
 
 /**
- * Full-screen looping hero video with a compact scroll cue that appears
- * only after the first video loop completes (or after a fixed delay when
- * no video is available). The cue fades in smoothly and consumes minimal
- * vertical space.
+ * Opening shot. The hero is a sticky backdrop: it stays put while the
+ * project story slides up over it (see the `main > section` rule in
+ * globals.css), so the visitor is handed from film to page rather than
+ * cut between two slabs. While that hand-off happens the film eases in
+ * (scale) and dims — scroll-linked, transform/opacity only — and it is
+ * paused once fully covered so it costs nothing offscreen.
+ *
+ * No text overlay: the film carries its own typography. The only UI is
+ * the scroll cue, which appears after the first loop and retreats once
+ * the visitor moves.
  */
 export function Hero({ active }: { active: boolean }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showCue, setShowCue] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const prevTimeRef = useRef(0);
   const cueVisible = showCue && !scrolled;
 
-  // The cue's job is done once the visitor starts moving: retreat as soon
-  // as they scroll, return if they come back to the very top.
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {
@@ -33,47 +41,93 @@ export function Hero({ active }: { active: boolean }) {
     };
   }, []);
 
+  // Scroll hand-off into the next section + offscreen pause.
+  useEffect(() => {
+    const root = sectionRef.current;
+    const next = document.getElementById("project");
+    if (!root || !next) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const reduced = prefersReducedMotion();
+    const ctx = gsap.context(() => {
+      const video = () => videoRef.current;
+      const st = {
+        trigger: next,
+        start: "top bottom",
+        end: "top top",
+        onLeave: () => video()?.pause(),
+        onEnterBack: () => {
+          video()
+            ?.play()
+            .catch(() => {});
+        },
+      };
+      if (reduced) {
+        ScrollTrigger.create(st);
+        return;
+      }
+      gsap.to("[data-hero-media]", {
+        scale: isNarrowViewport() ? 1.04 : 1.08,
+        ease: "none",
+        scrollTrigger: { ...st, scrub: 0.5 },
+      });
+      gsap.to("[data-hero-dim]", {
+        opacity: 0.55,
+        ease: "none",
+        scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub: 0.5 },
+      });
+    }, root);
+    return () => ctx.revert();
+  }, []);
+
   useEffect(() => {
     if (!active) return;
-
     const video = videoRef.current;
-
     if (!heroVideo.src || !video) {
-      // No real footage — show cue after a reasonable fallback delay.
       const t = window.setTimeout(() => setShowCue(true), 4000);
       return () => window.clearTimeout(t);
     }
-
-    // Detect the first loop by watching for currentTime jumping backwards.
+    // First loop → cue. Detected by currentTime jumping backwards.
     const handleTimeUpdate = () => {
       const current = video.currentTime;
-      // If time dropped by more than 1 s from the previous frame, the video looped.
       if (prevTimeRef.current - current > 1) {
         setShowCue(true);
         video.removeEventListener("timeupdate", handleTimeUpdate);
       }
       prevTimeRef.current = current;
     };
-
     video.addEventListener("timeupdate", handleTimeUpdate);
     return () => video.removeEventListener("timeupdate", handleTimeUpdate);
   }, [active]);
 
   return (
     <section
+      ref={sectionRef}
+      data-hero=""
       aria-label="Yamuna Sky City"
       data-header-tone="video"
-      className="relative flex h-dvh w-full flex-col overflow-hidden bg-night pt-16 xl:pt-18"
+      className="sticky top-0 z-0 h-dvh w-full overflow-hidden bg-night"
     >
-      <div className="relative flex-1 w-full overflow-hidden">
+      {/* Film. When the intro hands over, the picture settles from a
+          slight zoom to rest — the establishing shot finding its frame. */}
+      <div
+        data-hero-media=""
+        className="absolute inset-0 transition-transform duration-[var(--motion-cinematic)] ease-[var(--ease-editorial)] motion-reduce:transition-none"
+        style={{ transform: active ? "scale(1)" : "scale(1.06)" }}
+      >
         <VideoBackground
           media={active ? heroVideo : { ...heroVideo, src: undefined }}
           priority
           videoRef={videoRef}
         />
       </div>
+      {/* Dims as the story slides over the film. */}
+      <div
+        data-hero-dim=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-night opacity-0"
+      />
 
-      {/* Scroll cue — premium ultra-compact luxury mouse pill with brand Ember dot */}
+      {/* Scroll cue — compact mouse pill with the Ember dot. */}
       <a
         href="#project"
         aria-label="Scroll to Project Overview"
@@ -85,7 +139,7 @@ export function Hero({ active }: { active: boolean }) {
           Scroll
         </span>
         <div className="relative flex h-8 w-5 justify-center rounded-full border border-white/30 p-1 backdrop-blur-md transition-colors duration-300 group-hover:border-white/70 animate-cue-ring-pulse">
-          <span className="h-1.5 w-1 rounded-full bg-[#B42810] shadow-[0_0_8px_#B42810] animate-cue-wheel-dot" />
+          <span className="h-1.5 w-1 rounded-full bg-brand shadow-[0_0_8px_var(--color-brand)] animate-cue-wheel-dot" />
         </div>
       </a>
     </section>

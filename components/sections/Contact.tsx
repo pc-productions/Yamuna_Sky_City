@@ -1,28 +1,42 @@
 import { formCopy } from "@/content/form";
+import { contactSection } from "@/content/sections";
 import { Container } from "@/components/ui/Container";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Reveal } from "@/components/ui/Reveal";
+import { RevealLines } from "@/components/ui/RevealLines";
 
 /**
- * Main conversion hub — editorial two-column composition on desktop:
- * heading and supporting copy hold the left column, the form the right.
- * Shares its form logic/validation with the Enquiry modal via
- * components/forms/EnquiryForm — only the surrounding presentation differs.
+ * The conclusion. After the dark legacy card the page returns to light
+ * and to the visitor: a bridge line, the invitation, and the form —
+ * the same shared form and CRM boundary as the modal, only the
+ * surrounding composition differs.
  */
 export function Contact() {
   return (
-    <section id="contact" className="scroll-mt-16 bg-paper-muted pt-8 pb-16 sm:pt-10 sm:pb-24 xl:scroll-mt-18">
+    <section id="contact" className="section-top section-bottom scroll-mt-16 bg-paper-muted xl:scroll-mt-18">
       <Container>
         <div className="grid gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
-          <Reveal>
-            <span className="eyebrow text-brand">Private Viewing</span>
-            <h2 className="text-display-lg mt-8 text-ink">{formCopy.heading}</h2>
-            <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-muted">
-              {formCopy.supportingLine}
-            </p>
-          </Reveal>
+          <div className="lg:pt-2">
+            <Reveal>
+              <span className="eyebrow block text-brand">{contactSection.eyebrow}</span>
+              <p className="mt-7 max-w-sm text-base leading-relaxed text-ink-faint">
+                {contactSection.lead}
+              </p>
+            </Reveal>
+            <RevealLines
+              as="h2"
+              lines={[formCopy.heading]}
+              delayMs={160}
+              className="text-display-lg mt-6 text-ink"
+            />
+            <Reveal delayMs={340}>
+              <p className="mt-7 max-w-md text-lg leading-relaxed text-ink-muted">
+                {formCopy.supportingLine}
+              </p>
+            </Reveal>
+          </div>
 
-          <Reveal delayMs={100} className="lg:pt-2">
+          <Reveal delayMs={260} className="lg:pt-2">
             <EnquiryForm source="contact-section" tone="light" />
           </Reveal>
         </div>

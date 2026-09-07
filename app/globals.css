@@ -53,6 +53,15 @@
   --font-display: var(--font-poppins);
   --font-serif: var(--font-cormorant);
   --font-body: var(--font-inter);
+
+  /* Motion system (CSS side) — mirrors lib/motion.ts. Every transition
+     on the site uses one of these durations and one of these curves. */
+  --motion-fast: 0.45s;
+  --motion-standard: 0.9s;
+  --motion-slow: 1.35s;
+  --motion-cinematic: 2s;
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 @theme inline {
@@ -114,9 +123,44 @@
   --text-stat-md--letter-spacing: -0.02em;
 }
 
-/* Consistent section vertical rhythm — tuned for both mobile and laptop */
+/* Section rhythm — one generous vertical unit, used whole (section-pad)
+   or per edge so consecutive sections can share a single beat. */
 @utility section-pad {
-  padding-block: clamp(4rem, 8vw, 9rem);
+  padding-block: clamp(5rem, 9vw, 10rem);
+}
+@utility section-top {
+  padding-top: clamp(5rem, 9vw, 10rem);
+}
+@utility section-bottom {
+  padding-bottom: clamp(5rem, 9vw, 10rem);
+}
+
+/* The hero is a sticky backdrop; every section after it slides over it
+   like a curtain. They all carry their own opaque surface, so they only
+   need to paint above the hero's stacking layer. */
+main > section:not([data-hero]) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Lenis (smooth wheel scrolling) — recommended base styles. Native
+   scroll-behavior would fight the interpolation, so it is disabled only
+   while Lenis is active; keyboard/touch scrolling stays native. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 /* Understated label — Poppins Medium, uppercase. Small sizes need

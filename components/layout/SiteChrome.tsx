@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PersistentCTA } from "@/components/layout/PersistentCTA";
 import { CookieConsent } from "@/components/layout/CookieConsent";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { EnquiryModal } from "@/components/modal/EnquiryModal";
 
 export function SiteChrome({ children }: { children: ReactNode }) {
@@ -19,6 +20,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <SmoothScroll paused={isModalOpen} />
       <a
         href="#top"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-brand focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-paper focus:outline-none"

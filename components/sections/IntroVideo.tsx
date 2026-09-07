@@ -18,8 +18,10 @@ export function IntroVideo({ onComplete }: { onComplete: () => void }) {
 
   const finish = () => {
     setIsExiting(true);
-    // Let the exit transition play before unmounting via the parent.
-    window.setTimeout(onComplete, 500);
+    // Hand over to the hero: the film dissolves and drifts a touch
+    // larger while the (already playing) establishing shot settles
+    // underneath — a cross-dissolve, not a cut.
+    window.setTimeout(onComplete, 1100);
   };
 
   useEffect(() => {
@@ -59,8 +61,8 @@ export function IntroVideo({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-end bg-night transition-opacity duration-500 ${
-        isExiting ? "pointer-events-none opacity-0" : "opacity-100"
+      className={`fixed inset-0 z-50 flex items-end bg-night transition-[opacity,transform] duration-[1100ms] ease-[var(--ease-editorial)] motion-reduce:transition-none ${
+        isExiting ? "pointer-events-none scale-[1.03] opacity-0" : "scale-100 opacity-100"
       }`}
       role="dialog"
       aria-label="Yamuna Sky City cinematic introduction"
