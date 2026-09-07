@@ -31,10 +31,10 @@ Open http://localhost:3000.
 
 ## Wiring up a lead backend
 
-No CRM/email/API integration exists yet. While `ENQUIRY_WEBHOOK_URL` is unset, `lib/actions/submitEnquiry.ts` returns an explicit `not_configured` result and the form shows an honest "enquiries not available yet" message — it never fakes a successful submission. To connect a real backend:
+Leads are delivered server-side through `lib/integrations/crm.ts` to the CRM developer's webhook. While `ENQUIRY_WEBHOOK_URL` is unset, `lib/actions/submitEnquiry.ts` returns an explicit `not_configured` result and the form shows an honest "enquiries not available yet" message — it never fakes a successful submission. To connect:
 
-1. Set `ENQUIRY_WEBHOOK_URL` (a server-only environment variable — see `.env.example`) to the endpoint that should receive submissions.
-2. That's it — the function already POSTs the payload as JSON once the variable is set. No component changes needed.
+1. Set `ENQUIRY_WEBHOOK_URL` (a server-only environment variable — see `.env.example` and `docs/CRM_INTEGRATION.md`) in the deploy platform.
+2. That's it — the action POSTs the mapped lead as JSON once the variable is set. No component changes needed.
 
 Never expose backend credentials via `NEXT_PUBLIC_*` variables; keep integration secrets server-only.
 
@@ -66,13 +66,16 @@ the project team can confirm:
    deploy environment. Until it is set, the site serves `noindex` robots and
    omits structured data, so a misconfigured deploy can never be indexed
    with placeholder URLs.
-2. **Lead backend / CRM** — set `ENQUIRY_WEBHOOK_URL` (server-only) so
-   enquiry submissions are delivered; the form is honest about being
-   unavailable until then and shows the thank-you/brochure state only
-   after the destination confirms the lead. The CRM integration boundary
-   is `lib/integrations/crm.ts`; everything the CRM agency must supply is
-   listed in `docs/CRM_INTEGRATION.md`. Brochure access: set
-   `brochure.href` in `content/site.ts` once the approved PDF exists.
+2. **Lead backend / CRM** — set `ENQUIRY_WEBHOOK_URL` (server-only, in
+   Vercel) to the CRM developer's n8n webhook recorded in
+   `docs/CRM_INTEGRATION.md`; each enquiry is POSTed as
+   `{ name, email, phone, project, details }` and the form shows the
+   thank-you/brochure state only after the webhook answers 2xx. Until
+   the variable is set the form is honest about being unavailable. The
+   mapping lives in `lib/integrations/crm.ts`; open points to confirm
+   with the CRM developer (key names, auth, response) are in the same doc.
+   Brochure access: set `brochure.href` in `content/site.ts` once the
+   approved PDF exists.
 3. **Contact details** — phone, email, address, WhatsApp number in
    `content/site.ts`; the dependent UI appears automatically.
 4. **RERA number + legal copy** — `content/site.ts` (`legal.reraNumber`) and

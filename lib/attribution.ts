@@ -1,7 +1,7 @@
 /**
  * Marketing attribution — a deliberately small, integration-ready
  * capture of where a visitor came from, so the CRM boundary can pass it
- * along once the CRM agency specifies the fields it wants.
+ * along once the CRM developer specifies the fields it wants.
  *
  * First-touch per browser session: captured once on the landing page
  * (UTM parameters, document.referrer, landing URL) into sessionStorage,

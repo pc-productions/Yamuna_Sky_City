@@ -64,7 +64,7 @@ request; on a real network this audit passes.
    the www/apex 308 redirect on the domain.
 2. Search Console verification token, then submit `/sitemap.xml`.
 3. CRM: `ENQUIRY_WEBHOOK_URL` + the answers in
-   `docs/CRM_AGENCY_REQUIREMENTS.md`; brochure PDF (`brochure.href`).
+   `docs/CRM_DEVELOPER_REQUIREMENTS.md`; brochure PDF (`brochure.href`).
 4. Contact details, WhatsApp number, RERA number, social profiles
    (`content/site.ts`); Privacy Policy and Terms copy.
 5. Intro film; People Behind and Legacy content.

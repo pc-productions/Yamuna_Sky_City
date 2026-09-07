@@ -1,10 +1,53 @@
 # Yamuna Sky City — CRM Integration Handoff
 
-**Audience:** the CRM agency and the website developers.
-**Status:** the website's enquiry pipeline is production-ready and
-integration-ready. It is waiting on the CRM API specification. Nothing
-about the CRM has been assumed or stubbed — every item below is blank
-until the agency supplies it.
+**Audience:** the CRM developer and the website developers.
+**Status (2026-09-05):** the CRM developer has supplied a webhook and the four
+fields it wants. The website maps leads onto that shape (see "Agreed
+contract" below). Remaining open items are listed in the table further
+down — nothing beyond what the CRM developer stated has been assumed.
+
+## Agreed contract (from the CRM developer, 2026-09-05)
+
+- **Endpoint:** `https://n8n.thesparksocial.in/webhook/yamuna-google-ads`
+  (n8n). Set it as `ENQUIRY_WEBHOOK_URL` in the Vercel project — server
+  side only; it is not committed anywhere in code.
+- **Method / body:** `POST`, `application/json`.
+- **Fields requested:** lead name, email, phone number, inquired project
+  name. The website sends them flat at the top level, plus its own
+  context under `details`:
+
+```json
+{
+  "name":    "Visitor name",
+  "email":   "visitor@example.com",
+  "phone":   "+91 98765 43210",
+  "project": "Yamuna Sky City",
+  "details": {
+    "city": "",
+    "source": { "ui": "modal", "utm_source": "…", "referrer": "…", "landing_page": "…" },
+    "consent": { "agreed": true, "text": "…", "recordedAt": "ISO-8601" },
+    "submittedAt": "ISO-8601",
+    "site": "yamuna-sky-city-website"
+  }
+}
+```
+
+- **Success:** any `2xx` response. Nothing is read from the body.
+
+**To confirm with the CRM developer before go-live**
+
+1. The key names `name` / `email` / `phone` / `project` are the website's
+   proposal — the CRM developer did not specify names. If their n8n workflow
+   expects different keys (or the Google Ads lead-form webhook schema,
+   given the endpoint's name), change `toCrmRequest()` in
+   `lib/integrations/crm.ts` only.
+2. No authentication was given. The webhook is treated as unauthenticated;
+   if they add a token, it goes in `buildHeaders()` from a server-only env var.
+3. Phone is delivered as typed; say if E.164 is required.
+4. What the webhook returns, how duplicates are handled, and brochure
+   delivery (website-hosted `brochure.href` is assumed meanwhile).
+5. A single URL was given — confirm whether test leads are acceptable on
+   it, and agree a test-lead marker (e.g. name prefixed `TEST -`).
 
 ## How the website side works today
 
@@ -29,11 +72,10 @@ EnquiryForm (modal / contact)
   When the spec arrives, only its three mapping functions
   (`toCrmRequest`, `fromCrmResponse`, `buildHeaders`) and environment
   variables change. No UI, hook, validation or success-state code changes.
-* **Current destination:** the generic `ENQUIRY_WEBHOOK_URL`
-  (server-side env var). The website POSTs the *website lead record*
-  below as JSON; any **2xx** response is treated as an acknowledged lead.
-  Unset → the site shows an honest "not available yet" state and never
-  fakes success.
+* **Current destination:** the CRM developer's webhook via `ENQUIRY_WEBHOOK_URL`
+  (server-side env var). The website POSTs the mapped body shown above;
+  any **2xx** response is treated as an acknowledged lead. Unset → the
+  site shows an honest "not available yet" state and never fakes success.
 * **Honesty rule:** the thank-you / brochure state is shown only after
   the destination acknowledges the lead. Any failure keeps the form,
   its values, and offers retry.
@@ -76,24 +118,24 @@ normalise it. `source.ui` is the on-site origin; the `utm_*` /
 `referrer` / `landing_page` fields are marketing attribution — the two
 are kept distinct so the CRM can use either or both.
 
-## What the CRM agency needs to provide
+## What the CRM developer needs to provide
 
-A fuller, agency-facing questionnaire covering the same ground in more
-detail lives in `docs/CRM_AGENCY_REQUIREMENTS.md` — send that file to
-the agency; the summary table below is the developer checklist.
+A fuller, developer-facing questionnaire covering the same ground in more
+detail lives in `docs/CRM_DEVELOPER_REQUIREMENTS.md` — send that file to
+the CRM developer; the summary table below is the developer checklist.
 
 Please fill in every item. Blank items block integration.
 
 | # | Item | Value |
 |---|------|-------|
-| 1 | API endpoint (lead creation) | |
-| 2 | HTTP method | |
+| 1 | API endpoint (lead creation) | Supplied: `https://n8n.thesparksocial.in/webhook/yamuna-google-ads` |
+| 2 | HTTP method | POST (assumed for an n8n webhook; confirm) |
 | 3 | Authentication method (header/token/HMAC/OAuth…) and how credentials are issued | |
-| 4 | Staging endpoint | |
-| 5 | Production endpoint | |
-| 6 | Required fields | |
+| 4 | Staging endpoint | Not given — single URL only |
+| 5 | Production endpoint | Assumed to be the URL in item 1 — confirm |
+| 6 | Required fields | Supplied: lead name, email, phone number, inquired project name |
 | 7 | Optional fields | |
-| 8 | Exact field names (JSON keys) | |
+| 8 | Exact field names (JSON keys) | Not given — website sends `name`, `email`, `phone`, `project`; confirm |
 | 9 | Expected field formats (phone format, country code, encoding, max lengths) | |
 | 10 | Success response (status + body; where is the lead identifier?) | |
 | 11 | Error response (status + body; validation errors vs system errors) | |
@@ -101,7 +143,7 @@ Please fill in every item. Blank items block integration.
 | 13 | Duplicate lead behaviour (same email/phone resubmitted — reject? merge? new lead?) | |
 | 14 | Retry expectations (is the endpoint idempotent? idempotency key supported?) | |
 | 15 | Rate limits | |
-| 16 | CORS requirements (N/A if server-to-server — the website calls from its server, not the browser; confirm) | |
+| 16 | CORS requirements | N/A — server-to-server |
 | 17 | Lead source values (accepted values / enum for on-site origin) | |
 | 18 | UTM / attribution fields (which of the above you accept, and their names) | |
 | 19 | Consent fields (how consent + consent text + timestamp should be sent) | |
@@ -127,21 +169,21 @@ filtered out.
 
 No approved brochure asset exists in the repository yet. Access is
 resolved in `lib/brochure.ts` only from a confirmed successful
-submission, with this precedence: CRM-returned URL (if the agency
+submission, with this precedence: CRM-returned URL (if the CRM developer
 provides one) → website-hosted file (`brochure.href` in
 `content/site.ts`). While neither is configured, the success state
 shows an honest "we will share the brochure shortly" line instead of a
 dead link.
 
-## Exact next steps once the specification arrives
+## Exact next steps
 
-1. Add the CRM's environment variables to `.env.example` (names only)
-   and to the Vercel project (values), server-side only.
-2. In `lib/integrations/crm.ts`: implement `buildHeaders()` (auth),
-   `toCrmRequest()` (field mapping) and `fromCrmResponse()` (lead id /
-   brochure URL). Point delivery at the CRM endpoint variable.
-3. If the brochure is website-hosted, drop the approved PDF under
+1. In Vercel → Project → Settings → Environment Variables, add
+   `ENQUIRY_WEBHOOK_URL` = the webhook URL above (Production, and Preview
+   if test leads are acceptable). Redeploy.
+2. Submit one clearly marked test enquiry (name `TEST - website`) from
+   the live site; ask the CRM developer to confirm the lead arrived with all
+   four fields populated, and delete it.
+3. If any key name differs from what their workflow reads, adjust
+   `toCrmRequest()` and redeploy — no other file changes.
+4. When the approved brochure PDF exists, place it under
    `public/media/brochure/` and set `brochure.href` in `content/site.ts`.
-4. Submit a test lead against the staging endpoint; confirm the lead
-   appears in the CRM and the success/brochure state renders.
-5. Repeat against production, then remove any test leads.

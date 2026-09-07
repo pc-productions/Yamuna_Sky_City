@@ -6,25 +6,33 @@
  * lib/actions/submitEnquiry.ts, so nothing here (endpoint, credentials,
  * request shape, response shape) can reach the browser bundle.
  *
- * STATUS: the external CRM agency has not yet supplied its API contract
- * (see docs/CRM_INTEGRATION.md for the full list of what is awaited).
- * Until then the delivery target is the generic ENQUIRY_WEBHOOK_URL:
- * the website lead record below is POSTed as JSON and any 2xx counts as
- * an acknowledged lead. NOTHING about the future CRM is assumed here.
+ * STATUS: the CRM developer has supplied an n8n webhook (set as
+ * ENQUIRY_WEBHOOK_URL in the deploy environment — never committed) and
+ * asked for: lead name, email, phone number, inquired project name.
+ * `toCrmRequest()` sends exactly those four as flat top-level keys,
+ * plus the website's context (source, attribution, consent, timestamp)
+ * under `details` so nothing already captured is lost. Any 2xx counts
+ * as an acknowledged lead.
  *
- * WHEN THE CRM SPEC ARRIVES, change only:
- *   1. `toCrmRequest()` — map the LeadRecord onto the CRM's field names.
- *   2. `fromCrmResponse()` — read leadId / brochureUrl from its response.
- *   3. `buildHeaders()` — the CRM's authentication (server-side secrets
- *      via environment variables, never NEXT_PUBLIC_*).
- *   4. Environment variables in .env.example / the deploy platform.
- * The form UI, hook, validation and success UI need no changes.
+ * STILL UNCONFIRMED by the CRM developer (see docs/CRM_INTEGRATION.md):
+ *   - the exact JSON key names their workflow reads (the ones below are
+ *     the website's proposal — adjust here if they differ);
+ *   - authentication (none was given; the webhook is treated as
+ *     unauthenticated — add it in `buildHeaders()` from server-only env
+ *     vars, never NEXT_PUBLIC_*);
+ *   - the response body (nothing is read from it yet), duplicate
+ *     handling, and brochure delivery.
+ * The form UI, hook, validation and success UI need no changes for any
+ * of those.
  */
 
 import type { LeadRecord } from "@/lib/actions/submitEnquiry";
 
 /** How long the website waits for the lead destination to acknowledge. */
 const DELIVERY_TIMEOUT_MS = 10_000;
+
+/** "Inquired project name" — the one project this website markets. */
+const PROJECT_NAME = "Yamuna Sky City";
 
 /**
  * Normalized outcome of a delivery attempt. The website never sees raw
@@ -36,20 +44,36 @@ export type DeliveryOutcome =
   | { delivered: false; cause: "not_configured" | "rejected" | "timeout" | "network" };
 
 /**
- * Request mapping — the website LeadRecord → the destination's body.
- * Today: the lead record itself (generic webhook, no CRM assumptions).
- * TODO(CRM): map onto the CRM's exact field names once specified.
+ * Request mapping — the website LeadRecord → the CRM developer's webhook body.
+ *
+ * Top level = the four fields the CRM developer asked for, flat, so an n8n
+ * workflow can read them directly. `phone` is sent as typed (the CRM developer
+ * has not asked for E.164). `project` is the inquired project name.
+ * `details` carries everything else the website records; the workflow
+ * can ignore it.
  */
-function toCrmRequest(lead: LeadRecord): unknown {
-  return lead;
+export function toCrmRequest(lead: LeadRecord) {
+  return {
+    name: lead.lead.name,
+    email: lead.lead.email,
+    phone: lead.lead.mobile,
+    project: PROJECT_NAME,
+    details: {
+      city: lead.lead.city ?? "",
+      source: lead.source,
+      consent: lead.consent,
+      submittedAt: lead.meta.submittedAt,
+      site: lead.meta.site,
+    },
+  };
 }
 
 /**
  * Response mapping — the destination's body → optional lead metadata.
- * Today: nothing is read from the body, because no response contract
- * exists yet; a 2xx status alone means "acknowledged".
- * TODO(CRM): extract the CRM's lead identifier and, if the CRM delivers
- * the brochure (approach B), its brochure URL.
+ * Nothing is read from the body: the CRM developer has not described what the
+ * webhook returns, so a 2xx status alone means "acknowledged".
+ * TODO(CRM): extract a lead identifier / brochure URL if the CRM developer's
+ * workflow returns them.
  */
 function fromCrmResponse(body: unknown): { leadId?: string; brochureUrl?: string } {
   void body; // intentionally unread until the CRM response contract exists
@@ -57,8 +81,9 @@ function fromCrmResponse(body: unknown): { leadId?: string; brochureUrl?: string
 }
 
 /**
- * Authentication headers. None today — the generic webhook is unauthenticated.
- * TODO(CRM): add the CRM's auth scheme from server-only env vars.
+ * Authentication headers. None — the CRM developer supplied no auth scheme for
+ * the webhook. TODO(CRM): add one here from server-only env vars if they
+ * introduce a token/secret.
  */
 function buildHeaders(): Record<string, string> {
   return { "Content-Type": "application/json", Accept: "application/json" };
