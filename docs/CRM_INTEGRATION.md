@@ -162,8 +162,10 @@ filtered out.
   variables** (`ENQUIRY_WEBHOOK_URL` today; CRM auth vars later). Never
   `NEXT_PUBLIC_*`, never in source control, never in the browser.
 * The browser never talks to the CRM; the Next.js server does.
-* User-facing errors are generic. Destination status codes are logged
-  server-side only; response bodies are never logged.
+* User-facing errors are generic. On failure the destination's status
+  code and a 300-character excerpt of its error body are logged
+  server-side only (Vercel → Logs, filter `[enquiry]`); successful
+  response bodies are never logged.
 
 ## Brochure
 

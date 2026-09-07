@@ -109,13 +109,33 @@ export async function deliverLead(lead: LeadRecord): Promise<DeliveryOutcome> {
     });
   } catch (err) {
     const timedOut = err instanceof Error && err.name === "TimeoutError";
-    console.error(`[enquiry] delivery ${timedOut ? "timed out" : "failed (network)"}`);
+    // Network failures carry a cause (DNS, TLS, refused) worth logging.
+    const detail =
+      err instanceof Error
+        ? [err.name, err.message, (err as { cause?: { message?: string } }).cause?.message]
+            .filter(Boolean)
+            .join(" / ")
+        : String(err);
+    console.error(
+      `[enquiry] delivery ${timedOut ? "timed out" : "failed (network)"}: ${detail}`,
+    );
     return { delivered: false, cause: timedOut ? "timeout" : "network" };
   }
 
   if (!res.ok) {
-    // Log status only — never the body, which may echo the payload.
-    console.error(`[enquiry] destination rejected the lead (HTTP ${res.status})`);
+    // Server-side diagnostics only: status plus a short excerpt of the
+    // error body (n8n, for example, explains a 404 as "workflow not
+    // active"). Error bodies describe the failure rather than echoing
+    // the lead, and the excerpt is capped so logs stay small.
+    let excerpt = "";
+    try {
+      excerpt = (await res.text()).replace(/\s+/g, " ").slice(0, 300);
+    } catch {
+      excerpt = "";
+    }
+    console.error(
+      `[enquiry] destination rejected the lead (HTTP ${res.status})${excerpt ? `: ${excerpt}` : ""}`,
+    );
     return { delivered: false, cause: "rejected" };
   }
 
