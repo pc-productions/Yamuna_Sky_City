@@ -13,6 +13,28 @@ where one does not apply, write "N/A" with a one-line reason.
 
 ---
 
+## 0. Immediate action required — activate the workflow
+
+The webhook is currently **not live**. A test enquiry from the website
+on 7 September 2026 was rejected, and opening the URL directly returns
+n8n's "not registered" error:
+
+```json
+{"code":404,"message":"The requested webhook \"GET yamuna-google-ads\" is not registered.",
+ "hint":"The workflow must be active for a production URL to run successfully. You can activate the workflow using the toggle in the top-right of the editor. Note that unlike test URL calls, production URL calls aren't shown on the canvas (only in the executions list)"}
+```
+
+This is n8n's message for a workflow that is switched off (an active
+workflow that simply does not accept GET says "not registered for GET
+requests" instead). **Please activate the workflow** using the toggle
+in the top-right of the n8n editor so the production URL
+`/webhook/yamuna-google-ads` accepts requests, then let the website
+team know. The website will immediately start delivering leads — no
+change or redeploy is needed on the website side. Production calls
+appear in n8n's Executions list, not on the canvas.
+
+---
+
 ## 1. What is agreed and already implemented
 
 | Item | Value |
@@ -139,11 +161,11 @@ The website shows a brochure download only after the lead is accepted.
 
 ## 3. What happens next
 
-1. The website team sets the webhook URL in the hosting environment
-   (server-side only) and redeploys.
-2. One clearly marked test enquiry is submitted from the live site; the
-   CRM developer confirms it arrived with all four fields populated and
-   deletes it.
+1. The CRM developer activates the workflow (section 0). The webhook
+   URL is already configured on the website's hosting environment.
+2. One clearly marked test enquiry (`TEST - website`) is submitted from
+   the live site; the CRM developer confirms it arrived with all four
+   fields populated and deletes it.
 3. Any key-name or format difference from section A is a one-function
    change on the website side, no form changes.
 4. The brochure flow is switched on according to section F.
