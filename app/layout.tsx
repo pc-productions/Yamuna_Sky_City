@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Cormorant_Garamond } from "next/font/google";
+import Script from "next/script";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { analytics, isSiteUrlConfigured, seo } from "@/content/site";
 import { buildSiteStructuredData } from "@/lib/structuredData";
+import { consentBootstrapScript } from "@/lib/consent";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
@@ -70,6 +72,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           official component injects the dataLayer bootstrap and loads
           gtm.js after hydration — the App Router equivalent of "as high
           in the head as possible" without blocking first paint. */}
+      {/* Google Consent Mode v2 defaults (all non-essential storage
+          denied) must be on the dataLayer BEFORE gtm.js loads; the
+          visitor's stored "accept" is restored here too. See
+          lib/consent.ts + components/layout/CookieConsent.tsx. */}
+      {analytics.gtmId && (
+        <Script id="ysc-consent-default" strategy="beforeInteractive">
+          {consentBootstrapScript}
+        </Script>
+      )}
       {analytics.gtmId && <GoogleTagManager gtmId={analytics.gtmId} />}
       <body className="flex min-h-full flex-col bg-paper text-ink">
         {/* GTM noscript fallback — the doc's step 2, immediately after

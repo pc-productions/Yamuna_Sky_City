@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { enquiryFields } from "@/content/form";
 import { submitEnquiry, type SubmitResult } from "@/lib/actions/submitEnquiry";
 import { getAttribution } from "@/lib/attribution";
@@ -32,6 +32,11 @@ export function useEnquiryForm(source: string) {
   // second submit event in the same tick (double click, Enter + click)
   // could otherwise start a second request before `status` flips.
   const inFlight = useRef(false);
+  // Time-to-submit: humans need a few seconds; bots often post instantly.
+  const mountedAt = useRef(0);
+  useEffect(() => {
+    mountedAt.current = Date.now();
+  }, []);
 
   const setField = useCallback((id: string, value: string | boolean) => {
     setValues((prev) => ({ ...prev, [id]: value }));
@@ -81,6 +86,8 @@ export function useEnquiryForm(source: string) {
           consent: Boolean(values.consent),
           source,
           attribution: getAttribution(),
+          honeypot: String(values._gotcha ?? ""),
+          elapsedMs: Date.now() - mountedAt.current,
         });
       } catch {
         // The server action itself failed to run (offline, deploy in

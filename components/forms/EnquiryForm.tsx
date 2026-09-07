@@ -81,6 +81,21 @@ export function EnquiryForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+      {/* Honeypot: invisible to people (off-screen, untabbable, hidden
+          from assistive tech); bots that fill every input reveal
+          themselves. Checked server-side with a time-to-submit floor. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] top-0 h-px w-px overflow-hidden">
+        <label htmlFor={`${source}-gotcha`}>Leave this field empty</label>
+        <input
+          id={`${source}-gotcha`}
+          name="_gotcha"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={String(values._gotcha ?? "")}
+          onChange={(e) => setField("_gotcha", e.target.value)}
+        />
+      </div>
       {fields.map((field) => (
         <FormField
           key={field.id}

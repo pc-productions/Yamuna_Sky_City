@@ -27,6 +27,9 @@ export type EnquiryPayload = {
   source: string;
   /** Marketing attribution captured client-side (may be empty). */
   attribution?: Attribution;
+  /** Spam signals: hidden honeypot value and ms between mount and submit. */
+  honeypot?: string;
+  elapsedMs?: number;
 };
 
 /** The website's own lead record — what the integration boundary receives. */
@@ -47,6 +50,8 @@ export type SubmitResult =
     };
 
 const MAX_FIELD_LENGTH = 200;
+/** Submissions faster than this after the form mounted are treated as bots. */
+const MIN_SUBMIT_MS = 1_500;
 
 export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResult> {
   // Defense in depth: never trust the browser's validation alone.
@@ -56,6 +61,16 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
   const errors = validateForm(enquiryFields, { ...values, consent: payload.consent === true }, true);
   if (Object.keys(errors).length > 0 || payload.consent !== true) {
     return { ok: false, reason: "invalid", error: "Please check the highlighted fields." };
+  }
+
+  // Spam protection (no third-party service): a filled honeypot or an
+  // impossibly fast submission is dropped before it reaches the CRM.
+  // A real visitor who somehow trips this can simply submit again.
+  const honeypotFilled = typeof payload.honeypot === "string" && payload.honeypot.trim() !== "";
+  const tooFast = typeof payload.elapsedMs === "number" && payload.elapsedMs >= 0 && payload.elapsedMs < MIN_SUBMIT_MS;
+  if (honeypotFilled || tooFast) {
+    console.warn(`[enquiry] blocked as spam (${honeypotFilled ? "honeypot" : "too fast"})`);
+    return { ok: false, reason: "invalid", error: "Please try again." };
   }
 
   const now = new Date().toISOString();

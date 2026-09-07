@@ -8,9 +8,9 @@ export type NavLink = {
  * `id` (see components/sections/*). Reorder/add/remove here only.
  */
 export const navLinks: NavLink[] = [
-  { label: "Project", href: "#project" },
-  { label: "Location", href: "#location" },
-  { label: "3D Experience", href: "#explore-3d" },
-  { label: "Legacy", href: "#legacy" },
-  { label: "Contact", href: "#contact" },
+  { label: "Project", href: "/#project" },
+  { label: "Location", href: "/#location" },
+  { label: "3D Experience", href: "/#explore-3d" },
+  { label: "Legacy", href: "/#legacy" },
+  { label: "Contact", href: "/#contact" },
 ];

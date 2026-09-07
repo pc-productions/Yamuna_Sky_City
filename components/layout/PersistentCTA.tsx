@@ -20,7 +20,7 @@ export function PersistentCTA({ onEnquire }: { onEnquire: () => void }) {
         {ctaLabels.mobileEnquire}
       </button>
       <a
-        href="#contact"
+        href="/#contact"
         className="font-display flex flex-1 items-center justify-center bg-brand py-4 text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-paper transition-colors hover:bg-brand-dark"
       >
         {ctaLabels.mobileSchedule}

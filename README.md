@@ -46,7 +46,7 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 
 - **Hero video**: DONE — the supplied 4K master is optimized to `public/media/video/hero-1080.{mp4,webm}` (1080p30, muted, faststart; WebM preferred where supported) with the first frame as `hero-poster.jpg`. On narrow portrait screens the 16:9 crop trims the film's flanking title words; supply a portrait cut and branch in `content/media.ts` if that matters.
 - **Intro video**: still not supplied. The section renders its poster/fallback gracefully; drop the file into `public/media/video/` and set `introVideo.src` in `content/media.ts`. The entry flow is an explicit state machine (`IntroExperience`: resolving → intro → hero) so the hero video only activates after the intro completes, is skipped, or is ineligible.
-- **Location artwork**: DONE for desktop — the clean aerial render (`public/media/location/tower-aerial.jpg`, 1672×941) carries a programmatic GSAP/SVG connectivity overlay driven by `content/location.ts`. Below `lg` an interim static composition uses `mbl_loc_img.png`, whose baked-in labels predate the approved node names/times (City Mall, older minutes) — a dedicated mobile composition or a re-exported mobile asset is still needed before mobile can be called final.
+- **Location artwork**: DONE for desktop — the clean aerial render (`public/media/location/tower-aerial.jpg`, 1672×941) carries a programmatic GSAP/SVG connectivity overlay driven by `content/location.ts`. Below `lg` an interim static composition uses `mbl_loc_img.jpg`, whose baked-in labels predate the approved node names/times (City Mall, older minutes) — a dedicated mobile composition or a re-exported mobile asset is still needed before mobile can be called final.
 - **Private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
 - **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty; both sections currently render as minimal editorial statements (eyebrow + heading only) and expand to their full presentations automatically once verified entries/figures are added — nothing is invented, no placeholder rows are shown.
 - **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
@@ -87,7 +87,10 @@ the project team can confirm:
    `GTM-MHNRSR6J`, `content/site.ts` → `analytics.gtmId`; override or
    disable per environment with `NEXT_PUBLIC_GTM_ID`). Configure the
    actual tags (GA4, ads pixels, conversions) inside the GTM container —
-   no code changes needed.
+   no code changes needed. Google Consent Mode v2 is wired in: every
+   non-essential storage type is denied until the visitor accepts the
+   cookie bar (`components/layout/CookieConsent.tsx`, `lib/consent.ts`),
+   so tags in the container must keep their built-in consent checks on.
 7. **Search** — once `NEXT_PUBLIC_SITE_URL` is set the site becomes
    indexable automatically: `index,follow` robots, per-page canonicals,
    `sitemap.xml`, Organization + WebSite JSON-LD and branded OG/Twitter

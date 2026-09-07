@@ -1,4 +1,5 @@
 import { navLinks } from "@/content/nav";
+import { CookiePreferencesButton } from "@/components/layout/CookiePreferencesButton";
 import { brand, contact, legal, socialLinks } from "@/content/site";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
@@ -70,6 +71,7 @@ export function Footer() {
             <a href="/terms" className="transition-colors hover:text-white">
               Terms
             </a>
+            <CookiePreferencesButton className="transition-colors hover:text-white" />
             <span>
               &copy; {new Date().getFullYear()} {brand.name}. All rights reserved.
             </span>

@@ -77,11 +77,36 @@ request; on a real network this audit passes.
    indexable copy; approved paragraphs on the project, residences and
    location would materially help ranking.
 
+## Launch checklist (20-point) — 2026-09-07
+
+| # | Item | Status | Notes |
+|---|---|---|---|
+| 1 | Privacy policy page | Page exists, copy pending | `/privacy-policy` renders honest "being finalised" text; the legal wording must come from the client. It should cover: enquiry data sent to the CRM, GTM cookies (analytics / ads, consent-gated), session-only attribution storage. |
+| 2 | Terms & conditions page | Page exists, copy pending | Same as above for `/terms`. |
+| 3 | Secrets off the frontend | Done | Only `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` are public; the webhook URL is server-only. Verified by grep and bundle review. |
+| 4 | Force HTTPS | Done | Vercel redirects http→https at the edge; HSTS (2 years, subdomains) is sent by the app. |
+| 5 | Cookie consent banner | Done | Google Consent Mode v2: all non-essential storage denied by default before GTM loads; banner Accept/Decline; choice persisted and restored before GTM on later visits; "Cookie preferences" in the footer re-opens it. |
+| 6 | Meta titles + descriptions | Done | Per page, with canonicals and per-page OpenGraph. |
+| 7 | Social preview image | Done | Generated 1200×630 OG/Twitter image from the approved lockup. |
+| 8 | Favicon | Done | Dynamic favicon (64px) plus Apple touch icon (180px), both from the approved mark. |
+| 9 | Sitemap + robots.txt | Done | Both generated; indexable only once the real domain is configured. |
+| 10 | Alt text on images | Done | 0 images without `alt`; decorative images use `alt=""`. |
+| 11 | Compress images | Done | All raster images go through `next/image`; the mobile location source re-encoded PNG 2.7 MB → JPEG 0.5 MB; hero film 1080p WebM/MP4. |
+| 12 | Page load speed | Done | Lighthouse Performance 100 desktop / 86 mobile; CLS 0. |
+| 13 | Colour contrast | Done | axe colour-contrast rule: 0 violations on every route, viewport and the consent bar. |
+| 14 | Mobile friendly | Done, two visual caveats | No overflow at 360–820 px; touch targets fine. Caveats: hero film crops its title letters on portrait phones (needs a portrait cut); mobile Location uses interim artwork. |
+| 15 | Custom 404 page | Done | Branded, returns HTTP 404. |
+| 16 | Fix broken links | Done | Crawled every anchor on all routes: header/footer section links were hash-only and did nothing on the legal pages — now absolute (`/#section`). External 3D link cannot be reached from the audit sandbox; check once by hand. |
+| 17 | Form validation | Done | Client + server validation; phone 7–15 digits; consent required. |
+| 18 | Spam protection | Done | Honeypot field + 1.5 s time-to-submit floor, enforced server-side before the CRM is called. No third-party service, no keys. Add Cloudflare Turnstile later only if spam volume warrants it. |
+| 19 | Analytics | Done | GTM container `GTM-MHNRSR6J`, consent-gated. Tags are configured inside GTM. |
+| 20 | One clear call to action | Done | "Schedule a Private Viewing" is the single primary CTA in the header, checkpoint section and mobile bar; "Enquire" is secondary. |
+
 ## Deliberately not done
 
 - No Content-Security-Policy header: the client will configure tags
   (GA4, ad pixels) inside GTM without code changes, and a strict CSP
   would silently block each new vendor domain. Revisit with an
   allow-list once the tag set is final.
-- No consent banner: GTM currently loads for every visitor; add one if
-  the tags configured in the container set non-essential cookies.
+- No third-party CAPTCHA: honeypot + timing cover the common bot traffic
+  without keys or a vendor; escalate to Turnstile only if spam appears.

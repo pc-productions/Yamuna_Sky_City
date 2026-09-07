@@ -157,7 +157,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
             }`}
           />
           <Button
-            href="#contact"
+            href="/#contact"
             variant={onDark ? "outline-light" : "primary"}
             className="lg:px-4! xl:px-7!"
           >
@@ -214,7 +214,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
               {ctaLabels.enquireNow}
             </Button>
             <Button
-              href="#contact"
+              href="/#contact"
               variant="outline-dark"
               onClick={() => setMenuOpen(false)}
               className="w-full justify-center"

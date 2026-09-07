@@ -66,7 +66,7 @@ export const locationImage = {
   // Clean aerial render (client-supplied, 1672×941) with no text baked
   // into the asset — overlay content is meant to render programmatically.
   src: "/media/location/tower-aerial.jpg",
-  mobileSrc: "/media/location/mbl_loc_img.png",
+  mobileSrc: "/media/location/mbl_loc_img.jpg",
   alt: "Aerial view of the Yamuna Sky City tower rising from coastal greenery, with National Highway 66 and a river bridge to the right and the Arabian Sea beach in the foreground",
   /** Aspect ratio of the artwork — keeps loading stable across swaps.
       Must match the asset's true ratio, and connectivityMap.viewBox in

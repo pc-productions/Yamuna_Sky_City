@@ -5,6 +5,7 @@ import { captureAttribution } from "@/lib/attribution";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PersistentCTA } from "@/components/layout/PersistentCTA";
+import { CookieConsent } from "@/components/layout/CookieConsent";
 import { EnquiryModal } from "@/components/modal/EnquiryModal";
 
 export function SiteChrome({ children }: { children: ReactNode }) {
@@ -30,6 +31,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <PersistentCTA onEnquire={() => setModalOpen(true)} />
+      <CookieConsent />
       <EnquiryModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
