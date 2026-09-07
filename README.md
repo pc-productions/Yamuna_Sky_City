@@ -52,7 +52,7 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 - **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
 - **3D experience URL**: DONE — configured in `content/site.ts` (clearing it falls back to a link-less "Coming Soon" preview). **Production domain**: set `NEXT_PUBLIC_SITE_URL` in the deploy environment (see Launch checklist below).
 - **Temporary visuals** (intro poster, private-viewing background, 3D preview): neutral brand-toned graphics with no development labels; marked TEMPORARY in the SVG sources — replace via `content/media.ts`.
-- **Privacy Policy / Terms pages** (`app/privacy-policy`, `app/terms`): honest "being finalised" copy until the confirmed legal text is supplied.
+- **Privacy Policy** (`content/privacy.ts`): a full draft describing exactly what the site does (enquiry data → CRM, consent-gated GTM tags, session-only attribution), awaiting legal sign-off. Fill `legal.entityName`, `legal.grievanceOfficer` and `legal.privacyLastUpdated` in `content/site.ts`; until then the policy uses the brand name and states that contact details will be published. **Terms** (`app/terms`): honest "being finalised" copy until the confirmed legal text is supplied.
 - **Lead backend**: see above — not connected by default.
 
 ## Launch checklist

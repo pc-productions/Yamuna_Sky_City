@@ -115,6 +115,16 @@ export const legal = {
   // Left empty until the confirmed RERA number is supplied — the footer
   // hides this row while empty.
   reraNumber: "",
+  /** Registered legal entity that operates the website / markets the
+      project, e.g. "XYZ Developers Private Limited". Empty → the privacy
+      policy refers to the brand name instead. TODO: confirm with client. */
+  entityName: "",
+  /** Grievance Officer under the DPDP Act 2023 / IT Rules. Empty → the
+      policy states that contact details will be published. TODO. */
+  grievanceOfficer: { name: "", email: "" },
+  /** Date the privacy policy was approved, e.g. "7 September 2026".
+      Empty → the "Last updated" line is hidden. */
+  privacyLastUpdated: "",
   disclaimer:
     "All images, plans and information are indicative and subject to change without notice. Details herein do not constitute an offer or contract.",
 } as const;
