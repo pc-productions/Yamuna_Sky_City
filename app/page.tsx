@@ -7,6 +7,7 @@ import { Explore3D } from "@/components/sections/Explore3D";
 import { PeopleBehind } from "@/components/sections/PeopleBehind";
 import { Legacy } from "@/components/sections/Legacy";
 import { Contact } from "@/components/sections/Contact";
+import { sectionVisibility } from "@/content/site";
 
 /**
  * Homepage flow — a flat, explicit, ordered list of independent section
@@ -44,11 +45,13 @@ export default function Home() {
           <EngineeringMarvel />
       */}
 
-      {/* 7. People behind the project */}
-      <PeopleBehind />
+      {/* 7. People behind the project — hidden in production until
+          verified contributors exist (content/site.ts → sectionVisibility). */}
+      {sectionVisibility.peopleBehind && <PeopleBehind />}
 
-      {/* 8. Yamuna's legacy */}
-      <Legacy />
+      {/* 8. Yamuna's legacy — hidden in production until verified legacy
+          content exists (content/site.ts → sectionVisibility). */}
+      {sectionVisibility.legacy && <Legacy />}
 
       {/* 9. Contact / private viewing (Footer is rendered globally in SiteChrome) */}
       <Contact />

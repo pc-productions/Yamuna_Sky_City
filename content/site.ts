@@ -89,6 +89,18 @@ export const externalLinks = {
   explore3d: "https://www.turiya.co/360/YamunaSkyCity/",
 } as const;
 
+/**
+ * Homepage section switches. Sections whose verified content has not
+ * been supplied yet are kept in the codebase but NOT rendered for
+ * visitors. Flip a flag to `true` once the content exists — the
+ * section, and any nav link that points to it, appear again with no
+ * other change.
+ */
+export const sectionVisibility = {
+  peopleBehind: false, // TODO: enable once content/people.ts has verified entries
+  legacy: false, // TODO: enable once content/legacy.ts has verified content
+} as const;
+
 export const ctaLabels = {
   scheduleViewing: "Schedule a Private Viewing",
   enquireNow: "Enquire Now",
