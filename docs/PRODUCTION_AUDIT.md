@@ -71,9 +71,7 @@ request; on a real network this audit passes.
 6. **Mobile hero**: the 16:9 film's baked-in title letters are cropped
    into fragments on portrait phones — a portrait cut of the film is
    needed (`content/media.ts` already accepts per-breakpoint sources).
-7. **Mobile Location**: the interim mobile artwork carries outdated
-   baked-in labels; a dedicated mobile composition is still to be built.
-8. Content depth for search: the page is visually led with little
+7. Content depth for search: the page is visually led with little
    indexable copy; approved paragraphs on the project, residences and
    location would materially help ranking.
 
@@ -91,10 +89,10 @@ request; on a real network this audit passes.
 | 8 | Favicon | Done | Dynamic favicon (64px) plus Apple touch icon (180px), both from the approved mark. |
 | 9 | Sitemap + robots.txt | Done | Both generated; indexable only once the real domain is configured. |
 | 10 | Alt text on images | Done | 0 images without `alt`; decorative images use `alt=""`. |
-| 11 | Compress images | Done | All raster images go through `next/image`; the mobile location source re-encoded PNG 2.7 MB → JPEG 0.5 MB; hero film 1080p WebM/MP4. |
+| 11 | Compress images | Done | All raster images go through `next/image` (the 2.7 MB mobile location PNG is a source file only — visitors get an optimised ~100 KB derivative); hero film 1080p WebM/MP4. |
 | 12 | Page load speed | Done | Lighthouse Performance 100 desktop / 86 mobile; CLS 0. |
 | 13 | Colour contrast | Done | axe colour-contrast rule: 0 violations on every route, viewport and the consent bar. |
-| 14 | Mobile friendly | Done, two visual caveats | No overflow at 360–820 px; touch targets fine. Caveats: hero film crops its title letters on portrait phones (needs a portrait cut); mobile Location uses interim artwork. |
+| 14 | Mobile friendly | Done, one visual caveat | No overflow at 360–820 px; touch targets fine. Caveat: hero film crops its title letters on portrait phones (needs a portrait cut). Mobile Location artwork is now the approved composition with correct labels. |
 | 15 | Custom 404 page | Done | Branded, returns HTTP 404. |
 | 16 | Fix broken links | Done | Crawled every anchor on all routes: header/footer section links were hash-only and did nothing on the legal pages — now absolute (`/#section`). External 3D link cannot be reached from the audit sandbox; check once by hand. |
 | 17 | Form validation | Done | Client + server validation; phone 7–15 digits; consent required. |
