@@ -35,8 +35,9 @@ export const seo = {
   homeTitle: `${brand.name} | ${brand.tagline}`,
   titleTemplate: "%s | Yamuna Sky City",
   // Built only from approved facts — no location or positioning claims.
+  // Facts only (content/facts.ts): scale, configuration, corridor, distance.
   description:
-    "Yamuna Sky City — 60 levels, 296 residences across 2, 3, 4 & 5 BHK configurations. Schedule a private viewing.",
+    "Yamuna Sky City, Mangalore — South India's tallest sea-view tower: 296 sea-facing residences across GF+60 floors on the NH-66 corridor, 300 m from the Arabian Sea. Schedule a private viewing.",
   siteUrl: configuredSiteUrl ?? "https://www.yamunaskycity.example",
   // TODO: set the confirmed handle, or leave empty to omit the tag.
   twitterHandle: "",
@@ -63,12 +64,22 @@ export const analytics = {
  * depends on it (footer rows, call links, WhatsApp CTAs) stays hidden.
  */
 export const contact = {
-  phoneDisplay: "", // TODO: confirmed sales number, e.g. "+91 ..."
-  phoneHref: "", // TODO: matching tel: link, e.g. "tel:+91..."
-  email: "", // TODO: confirmed sales email
-  address: "", // TODO: confirmed project address
+  // Confirmed from the client's earlier site build (SkyCity draft):
+  // sales line, email and the Yamuna Homes office address.
+  phoneDisplay: "+91 88844 39155",
+  phoneHref: "tel:+918884439155",
+  email: "yamunahomes16@gmail.com",
+  address: "1st Floor, Nalapad Building, Mallikatta, Kadri, Mangalore – 575003",
+  /** Structured form of `address` for JSON-LD. */
+  postalAddress: {
+    streetAddress: "1st Floor, Nalapad Building, Mallikatta, Kadri",
+    addressLocality: "Mangalore",
+    addressRegion: "Karnataka",
+    postalCode: "575003",
+    addressCountry: "IN",
+  },
   // WhatsApp number — digits only, country code included, no leading +.
-  whatsappNumber: "", // TODO: confirmed WhatsApp business number
+  whatsappNumber: "918884439155",
   whatsappPrefilledMessage:
     "Hi, I'm interested in Yamuna Sky City. Please share more details.",
 } as const;
@@ -124,13 +135,12 @@ export const brochure = {
 } as const;
 
 export const legal = {
-  // Left empty until the confirmed RERA number is supplied — the footer
-  // hides this row while empty.
-  reraNumber: "",
+  // Karnataka RERA registration, as published on the client's earlier
+  // site build. Rendered with a "RERA No." label in the footer.
+  reraNumber: "PRM/KA/RERA/1257/334/PR/171023/006331",
   /** Registered legal entity that operates the website / markets the
-      project, e.g. "XYZ Developers Private Limited". Empty → the privacy
-      policy refers to the brand name instead. TODO: confirm with client. */
-  entityName: "",
+      project — used in the privacy policy and the footer copyright. */
+  entityName: "Yamuna Homes and Design Pvt. Ltd.",
   /** Grievance Officer under the DPDP Act 2023 / IT Rules. Empty → the
       policy states that contact details will be published. TODO. */
   grievanceOfficer: { name: "", email: "" },

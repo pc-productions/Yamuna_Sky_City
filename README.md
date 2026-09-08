@@ -50,7 +50,7 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 - **Location artwork**: DONE — desktop uses the clean aerial render (`public/media/location/tower-aerial.jpg`, 1672×941) with a programmatic GSAP/SVG connectivity overlay driven by `content/location.ts`; below `lg` the approved mobile composition `mbl_loc_img.png` (1448×1086, labels and travel times matching the content layer) is served through `next/image`, so visitors receive an optimised derivative rather than the 2.7 MB source. Keep the two in sync if travel times change: desktop from `content/location.ts`, mobile by re-exporting the artwork.
 - **Private-viewing background, 3D preview**: placeholder SVGs in `public/media/`, swap via `content/media.ts`.
 - **People behind the project** (`content/people.ts`) and **Yamuna's Legacy** (`content/legacy.ts`): data sources are empty, so both sections are **switched off for visitors** via `sectionVisibility` in `content/site.ts` (the components and the "Legacy" nav link stay in the codebase). Add the verified entries/figures, flip the flag to `true`, and the section and its nav link return — nothing is invented, no placeholder rows are shown.
-- **Contact details, WhatsApp number, RERA number, Twitter handle** (`content/site.ts`): empty until confirmed; dependent UI stays hidden.
+- **Contact details, WhatsApp number, RERA number, legal entity** (`content/site.ts`): DONE — taken from the client's earlier site build (SkyCity draft). They drive the footer rows, the WhatsApp CTAs (form button, desktop floating control `components/layout/FloatingWhatsApp.tsx`), the privacy-policy contact block and Organization JSON-LD. **Social profiles and Twitter handle** remain empty (the draft only had placeholder links); **grievance officer** name is still to be confirmed.
 - **3D experience URL**: DONE — configured in `content/site.ts` (clearing it falls back to a link-less "Coming Soon" preview). **Production domain**: set `NEXT_PUBLIC_SITE_URL` in the deploy environment (see Launch checklist below).
 - **Temporary visuals** (intro poster, private-viewing background, 3D preview): neutral brand-toned graphics with no development labels; marked TEMPORARY in the SVG sources — replace via `content/media.ts`.
 - **Privacy Policy** (`content/privacy.ts`): a full draft describing exactly what the site does (enquiry data → CRM, consent-gated GTM tags, session-only attribution), awaiting legal sign-off. Fill `legal.entityName`, `legal.grievanceOfficer` and `legal.privacyLastUpdated` in `content/site.ts`; until then the policy uses the brand name and states that contact details will be published. **Terms** (`app/terms`): honest "being finalised" copy until the confirmed legal text is supplied.
@@ -77,10 +77,10 @@ the project team can confirm:
    with the CRM developer (key names, auth, response) are in the same doc.
    Brochure access: set `brochure.href` in `content/site.ts` once the
    approved PDF exists.
-3. **Contact details** — phone, email, address, WhatsApp number in
-   `content/site.ts`; the dependent UI appears automatically.
-4. **RERA number + legal copy** — `content/site.ts` (`legal.reraNumber`) and
-   the Privacy Policy / Terms pages.
+3. **Contact details** — DONE (phone, email, address, WhatsApp in
+   `content/site.ts`).
+4. **RERA number** — DONE (`legal.reraNumber`). **Legal copy** — Privacy
+   Policy drafted (needs sign-off + grievance officer name); Terms pending.
 5. **Remaining content** — intro film (`content/media.ts`), People Behind
    (`content/people.ts`), Legacy figures (`content/legacy.ts`), social
    profiles and Twitter handle (`content/site.ts`).

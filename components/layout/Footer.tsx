@@ -62,7 +62,7 @@ export function Footer() {
         )}
 
         <div className="flex flex-col gap-4 border-t border-line-dark pt-10 text-xs leading-relaxed text-mist-muted/80">
-          {legal.reraNumber && <p>{legal.reraNumber}</p>}
+          {legal.reraNumber && <p>RERA No.: {legal.reraNumber}</p>}
           <p className="max-w-3xl">{legal.disclaimer}</p>
           <div className="flex flex-wrap gap-x-7 gap-y-2 pt-3">
             <a href="/privacy-policy" className="transition-colors hover:text-white">
@@ -73,7 +73,7 @@ export function Footer() {
             </a>
             <CookiePreferencesButton className="transition-colors hover:text-white" />
             <span>
-              &copy; {new Date().getFullYear()} {brand.name}. All rights reserved.
+              &copy; {new Date().getFullYear()} {legal.entityName || brand.name}. All rights reserved.
             </span>
           </div>
         </div>

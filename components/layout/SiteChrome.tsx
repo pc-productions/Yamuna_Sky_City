@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PersistentCTA } from "@/components/layout/PersistentCTA";
 import { CookieConsent } from "@/components/layout/CookieConsent";
+import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { EnquiryModal } from "@/components/modal/EnquiryModal";
 
@@ -33,6 +34,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <PersistentCTA onEnquire={() => setModalOpen(true)} />
+      <FloatingWhatsApp />
       <CookieConsent />
       <EnquiryModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </>

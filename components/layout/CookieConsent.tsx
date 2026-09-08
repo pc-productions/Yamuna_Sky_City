@@ -26,6 +26,14 @@ export function CookieConsent() {
     };
   }, []);
 
+  // Let fixed controls (the WhatsApp button) make room while the bar is up.
+  useEffect(() => {
+    document.documentElement.dataset.consentOpen = open ? "true" : "false";
+    return () => {
+      delete document.documentElement.dataset.consentOpen;
+    };
+  }, [open]);
+
   if (!open) return null;
 
   const choose = (choice: "granted" | "denied") => {
