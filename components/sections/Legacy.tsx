@@ -22,7 +22,7 @@ export function Legacy() {
       data-header-tone="dark"
       className="dark-surface flex min-h-[72svh] scroll-mt-16 items-center overflow-hidden bg-night text-mist xl:scroll-mt-18"
     >
-      <Container className="section-pad flex flex-col gap-16 sm:gap-24">
+      <Container className="flex flex-col gap-16 py-24 sm:gap-24 sm:py-32">
         <ParallaxMedia percent={4}>
           <SectionHeading
             eyebrow={legacyContent.eyebrow}

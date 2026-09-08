@@ -123,13 +123,18 @@
   --text-stat-md--letter-spacing: -0.02em;
 }
 
-/* Section rhythm — one generous vertical unit, used whole (section-pad)
-   or per edge so consecutive sections can share a single beat. */
+/* Section rhythm — ASYMMETRIC on purpose. A section's top padding is
+   short so that an anchor jump (nav, CTA) lands with the content right
+   under the header; its bottom padding is long so that, scrolling
+   naturally, the breathing room between two sections still comes from
+   the one being left. The page keeps its pulse without content ever
+   looking lifted off the top of its section. */
 @utility section-pad {
-  padding-block: clamp(5rem, 9vw, 10rem);
+  padding-top: clamp(3rem, 4.5vw, 4rem);
+  padding-bottom: clamp(5rem, 9vw, 10rem);
 }
 @utility section-top {
-  padding-top: clamp(5rem, 9vw, 10rem);
+  padding-top: clamp(3rem, 4.5vw, 4rem);
 }
 @utility section-bottom {
   padding-bottom: clamp(5rem, 9vw, 10rem);

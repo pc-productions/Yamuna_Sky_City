@@ -7,18 +7,21 @@ import { RevealLines } from "@/components/ui/RevealLines";
 /**
  * Project Overview — the first editorial spread after the film.
  *
- * It slides up over the sticky hero (curtain) and fills a viewport with
- * generous distribution rather than stacked blocks: eyebrow and project
- * name settle, the headline rises line by line, the copy follows, and
- * the four facts arrive one after another on hairline dividers. No
- * cards, no counters, no decoration — hierarchy through scale, weight
- * and whitespace. All content and facts come from the content layer.
+ * It slides up over the sticky hero (curtain) with its title block
+ * right at the leading edge, so the eyebrow and headline rise into
+ * view as the curtain climbs; the breathing room sits BELOW the facts
+ * (section-bottom), where it separates this spread from the location
+ * photograph rather than lifting the content off the top. Eyebrow and
+ * project name settle, the headline rises line by line, the copy
+ * follows, and the four facts arrive one after another on hairline
+ * dividers. No cards, no counters, no decoration. All content and
+ * facts come from the content layer.
  */
 export function ProjectFacts() {
   return (
     <section
       id="project"
-      className="flex min-h-svh scroll-mt-16 items-center bg-white pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 xl:scroll-mt-18"
+      className="section-top section-bottom scroll-mt-16 bg-white xl:scroll-mt-18"
     >
       <Container>
         <Reveal>

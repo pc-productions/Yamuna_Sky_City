@@ -19,7 +19,7 @@ export function PrivateViewingCTA() {
       data-header-tone="dark"
       className="dark-surface flex min-h-[82svh] items-center overflow-hidden bg-brand sm:min-h-[88svh]"
     >
-      <Container className="section-pad">
+      <Container className="py-24 sm:py-32">
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <Reveal>
             <span className="eyebrow block text-paper/90">{privateViewingSection.eyebrow}</span>
