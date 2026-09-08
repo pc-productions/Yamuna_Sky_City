@@ -45,7 +45,7 @@ appear in n8n's Executions list, not on the canvas.
 | Sent from | the website's own server, never the visitor's browser |
 | Success | any HTTP `2xx` response |
 | Attempts | one per submission, 10-second wait, **no automatic retry**. If the webhook fails, the visitor is asked to submit once more; that resubmit carries the **same `lead_id`** (and `details.attempt: 2`), so you can treat a repeated `lead_id` as a duplicate |
-| Visitor experience | the thank-you screen is shown **only after** the webhook answers 2xx; on any failure the form stays filled and asks the visitor to try again |
+| Visitor experience | the thank-you screen is shown when the webhook answers 2xx; on a failure the form stays filled and asks the visitor to try again |
 
 ### Exact body the website sends
 

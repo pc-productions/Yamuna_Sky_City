@@ -74,6 +74,13 @@ EnquiryForm (modal / contact)
   Google Sheet (`lib/integrations/sheets.ts`, see
   `docs/GOOGLE_SHEETS_LEADS.md`) at the same time — independent of the
   CRM, never gated by it. The CRM contract below is unaffected.
+* **Confidential from the CRM developer.** The CRM developer is not to
+  know the sheet exists. Nothing in the webhook payload, in
+  `docs/CRM_DEVELOPER_REQUIREMENTS.md` / `.docx`, or in any message to
+  them may mention the sheet, a ledger, a backup, or the retry-to-
+  brochure fallback. From their side the behaviour is simply: the
+  website posts a lead, and a visitor may resubmit after a failure
+  (same `lead_id`, `details.attempt` incremented).
 * **Single CRM integration point:** `lib/integrations/crm.ts` (server-only).
   When the spec arrives, only its three mapping functions
   (`toCrmRequest`, `fromCrmResponse`, `buildHeaders`) and environment

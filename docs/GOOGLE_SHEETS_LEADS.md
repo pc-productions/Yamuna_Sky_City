@@ -84,6 +84,12 @@ script finds that row and updates it in place — `noted_in_crm`,
 attempt, and `received_at` keeps the first arrival. Rows are never
 duplicated by a retry.
 
+## Confidential
+
+The CRM developer is not to know this sheet exists. Do not mention it
+in anything sent to them (see `docs/CRM_INTEGRATION.md`); the webhook
+payload carries nothing about it.
+
 ## How the two destinations interact
 
 - The website calls the **CRM first**, then writes the sheet row **with

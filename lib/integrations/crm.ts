@@ -52,7 +52,9 @@ export type DeliveryOutcome =
  * visitor's thank-you screen, so the two systems can be reconciled. `phone` is sent as typed (the CRM developer
  * has not asked for E.164). `project` is the inquired project name.
  * `details` carries everything else the website records; the workflow
- * can ignore it. `details.attempt` > 1 means the visitor was asked to
+ * can ignore it. CONFIDENTIALITY: nothing sent here may reveal that the
+ * business also keeps its own lead ledger (the Google Sheet) — no sheet
+ * status, no ledger IDs, no hints in key names. `details.attempt` > 1 means the visitor was asked to
  * submit again after a failed attempt: the SAME lead_id is sent again,
  * so a workflow that stores lead_id can treat it as a duplicate.
  */
