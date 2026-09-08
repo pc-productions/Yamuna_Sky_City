@@ -5,6 +5,10 @@ website enquiries land in the CRM reliably and completely.
 **Who fills this in:** the CRM developer.
 **Who receives it:** the website team (pc-productions).
 
+> **Status:** answered by SparkOs on 8 September 2026. The resulting
+> contract is recorded in `docs/CRM_INTEGRATION.md`; this file is kept as
+> the questionnaire that was sent.
+
 **Where things stand:** the CRM developer has shared the webhook and the
 four fields it needs (lead name, email, phone number, inquired project
 name). The website already sends exactly that. What remains is a short

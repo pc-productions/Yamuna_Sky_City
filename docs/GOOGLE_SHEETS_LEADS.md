@@ -53,7 +53,8 @@ Redeploy. Both are server-only; nothing reaches the browser.
 
 ## 5. Test
 
-Submit one enquiry from the site with the name `TEST - website`. A row
+Submit one enquiry from the site with the name `Google-TEST-website`
+(the marker the CRM developer asked for). A row
 should appear in the **Leads** tab within a few seconds. Delete it
 afterwards.
 

@@ -6,27 +6,31 @@
  * lib/actions/submitEnquiry.ts, so nothing here (endpoint, credentials,
  * request shape, response shape) can reach the browser bundle.
  *
- * STATUS: the CRM developer has supplied an n8n webhook (set as
- * ENQUIRY_WEBHOOK_URL in the deploy environment — never committed) and
- * asked for: lead name, email, phone number, inquired project name.
- * `toCrmRequest()` sends exactly those four as flat top-level keys,
- * plus the website's context (source, attribution, consent, timestamp)
- * under `details` so nothing already captured is lost. Any 2xx counts
- * as an acknowledged lead.
+ * STATUS (confirmed by the CRM developer, SparkOs, 8 Sep 2026 — see
+ * docs/CRM_INTEGRATION.md for the full contract):
+ *   - endpoint: n8n webhook in ENQUIRY_WEBHOOK_URL (server-only, never
+ *     committed); POST application/json; any 2xx = accepted (they
+ *     acknowledge at once and process asynchronously);
+ *   - auth: shared secret in the `X-Webhook-Secret` header, from
+ *     ENQUIRY_WEBHOOK_SECRET (server-only);
+ *   - body: flat top-level keys `name, email, phone, project,
+ *     utm_source, utm_medium, utm_campaign` (their sample payload) —
+ *     phone normalised to carry a country code (lib/phone.ts) — plus
+ *     `lead_id` and a `details` object with everything else the website
+ *     records (city, attribution, consent, timestamps, attempt);
+ *   - errors: 400 validation, 401 auth, 500 system, all non-2xx;
+ *   - duplicates: matched on email/phone and updated, so a visitor's
+ *     manual resubmit is safe;
+ *   - no lead ID or brochure URL comes back; `fromCrmResponse` stays empty.
  *
- * STILL UNCONFIRMED by the CRM developer (see docs/CRM_INTEGRATION.md):
- *   - the exact JSON key names their workflow reads (the ones below are
- *     the website's proposal — adjust here if they differ);
- *   - authentication (none was given; the webhook is treated as
- *     unauthenticated — add it in `buildHeaders()` from server-only env
- *     vars, never NEXT_PUBLIC_*);
- *   - the response body (nothing is read from it yet), duplicate
- *     handling, and brochure delivery.
- * The form UI, hook, validation and success UI need no changes for any
- * of those.
+ * OPEN: they asked for fixed `campaign ID` and `owner` values on every
+ * lead but did not supply the values. Add them to `toCrmRequest` once
+ * given (or they set them inside the workflow — the better place for a
+ * constant).
  */
 
 import type { LeadRecord } from "@/lib/actions/submitEnquiry";
+import { normalisePhone } from "@/lib/phone";
 
 /** How long the website waits for the lead destination to acknowledge. */
 const DELIVERY_TIMEOUT_MS = 10_000;
@@ -41,32 +45,42 @@ const PROJECT_NAME = "Yamuna Sky City";
  */
 export type DeliveryOutcome =
   | { delivered: true; leadId?: string; brochureUrl?: string }
-  | { delivered: false; cause: "not_configured" | "rejected" | "timeout" | "network" };
+  | { delivered: false; cause: "not_configured" | "rejected" | "timeout" | "network"; status?: number };
 
 /**
  * Request mapping — the website LeadRecord → the CRM developer's webhook body.
  *
- * Top level = the four fields the CRM developer asked for, flat, so an n8n
- * workflow can read them directly — plus `lead_id`, the website-issued
- * reference (YSC-…) that also appears in the sheet ledger and on the
- * visitor's thank-you screen, so the two systems can be reconciled. `phone` is sent as typed (the CRM developer
- * has not asked for E.164). `project` is the inquired project name.
- * `details` carries everything else the website records; the workflow
- * can ignore it. CONFIDENTIALITY: nothing sent here may reveal that the
- * business also keeps its own lead ledger (the Google Sheet) — no sheet
- * status, no ledger IDs, no hints in key names. `details.attempt` > 1 means the visitor was asked to
- * submit again after a failed attempt: the SAME lead_id is sent again,
- * so a workflow that stores lead_id can treat it as a duplicate.
+ * Top level matches the sample payload SparkOs supplied: the four lead
+ * fields plus the three UTM keys, flat, so the n8n workflow reads them
+ * directly. `phone` is normalised to carry a country code (their A3
+ * answer); the number exactly as typed is kept in `details`. `lead_id`
+ * is the website-issued reference (also on the visitor's thank-you
+ * screen). `details` carries everything else the website records; the
+ * workflow can ignore it. `details.attempt` > 1 means the visitor was
+ * asked to submit again after a failed attempt: the SAME lead_id and
+ * the same email/phone are sent again, which their workflow treats as
+ * an update, not a new lead.
+ *
+ * CONFIDENTIALITY: nothing sent here may reveal that the business also
+ * keeps its own lead ledger (the Google Sheet) — no sheet status, no
+ * ledger IDs, no hints in key names.
  */
 export function toCrmRequest(lead: LeadRecord) {
+  const src = lead.source;
   return {
     lead_id: lead.meta.leadId,
     name: lead.lead.name,
     email: lead.lead.email,
-    phone: lead.lead.mobile,
+    phone: normalisePhone(lead.lead.mobile),
     project: PROJECT_NAME,
+    utm_source: src.utm_source ?? "",
+    utm_medium: src.utm_medium ?? "",
+    utm_campaign: src.utm_campaign ?? "",
+    ...(src.utm_term ? { utm_term: src.utm_term } : {}),
+    ...(src.utm_content ? { utm_content: src.utm_content } : {}),
     details: {
       lead_id: lead.meta.leadId,
+      phone_as_typed: lead.lead.mobile,
       city: lead.lead.city ?? "",
       source: lead.source,
       consent: lead.consent,
@@ -79,10 +93,9 @@ export function toCrmRequest(lead: LeadRecord) {
 
 /**
  * Response mapping — the destination's body → optional lead metadata.
- * Nothing is read from the body: the CRM developer has not described what the
- * webhook returns, so a 2xx status alone means "acknowledged".
- * TODO(CRM): extract a lead identifier / brochure URL if the CRM developer's
- * workflow returns them.
+ * Confirmed 8 Sep 2026: the webhook answers 200 with a success body and
+ * returns no lead/record ID and no brochure URL, so nothing is read from
+ * it; a 2xx status alone means "acknowledged".
  */
 function fromCrmResponse(body: unknown): { leadId?: string; brochureUrl?: string } {
   void body; // intentionally unread until the CRM response contract exists
@@ -90,12 +103,18 @@ function fromCrmResponse(body: unknown): { leadId?: string; brochureUrl?: string
 }
 
 /**
- * Authentication headers. None — the CRM developer supplied no auth scheme for
- * the webhook. TODO(CRM): add one here from server-only env vars if they
- * introduce a token/secret.
+ * Authentication: the shared secret SparkOs issued, sent as
+ * `X-Webhook-Secret` (their B1 answer). The value lives ONLY in the
+ * server-side env var ENQUIRY_WEBHOOK_SECRET — never in the repo, never
+ * NEXT_PUBLIC_*. While unset the request goes out without the header
+ * and the CRM answers 401, which the logs show as a rejection.
  */
 function buildHeaders(): Record<string, string> {
-  return { "Content-Type": "application/json", Accept: "application/json" };
+  const headers: Record<string, string> = { "Content-Type": "application/json", Accept: "application/json" };
+  const secret = process.env.ENQUIRY_WEBHOOK_SECRET;
+  if (secret) headers["X-Webhook-Secret"] = secret;
+  else console.warn("[enquiry] ENQUIRY_WEBHOOK_SECRET is not set — the CRM will reject the lead with 401.");
+  return headers;
 }
 
 /**
@@ -145,7 +164,7 @@ export async function deliverLead(lead: LeadRecord): Promise<DeliveryOutcome> {
     console.error(
       `[enquiry] destination rejected the lead (HTTP ${res.status})${excerpt ? `: ${excerpt}` : ""}`,
     );
-    return { delivered: false, cause: "rejected" };
+    return { delivered: false, cause: "rejected", status: res.status };
   }
 
   // A malformed or empty body on a 2xx is still an acknowledged lead.

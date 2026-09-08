@@ -86,7 +86,8 @@ the project team can confirm:
 2. **Lead backend / CRM** — set `ENQUIRY_WEBHOOK_URL` (server-only, in
    Vercel) to the CRM developer's n8n webhook recorded in
    `docs/CRM_INTEGRATION.md`; each enquiry is POSTed as
-   `{ name, email, phone, project, details }` and the form shows the
+   `{ lead_id, name, email, phone, project, utm_source, utm_medium, utm_campaign, details }`
+   with the shared secret from `ENQUIRY_WEBHOOK_SECRET` in the `X-Webhook-Secret` header, and the form shows the
    thank-you/brochure state only after the webhook answers 2xx. Until
    the variable is set the form is honest about being unavailable. The
    mapping lives in `lib/integrations/crm.ts`; open points to confirm

@@ -6,50 +6,77 @@ fields it wants. The website maps leads onto that shape (see "Agreed
 contract" below). Remaining open items are listed in the table further
 down — nothing beyond what the CRM developer stated has been assumed.
 
-## Agreed contract (from the CRM developer, 2026-09-05)
+## Agreed contract (confirmed by the CRM developer, SparkOs, 8 Sep 2026)
 
-- **Endpoint:** `https://n8n.thesparksocial.in/webhook/yamuna-google-ads`
-  (n8n). Set it as `ENQUIRY_WEBHOOK_URL` in the Vercel project — server
-  side only; it is not committed anywhere in code.
-- **Method / body:** `POST`, `application/json`.
-- **Fields requested:** lead name, email, phone number, inquired project
-  name. The website sends them flat at the top level, plus its own
-  context under `details`:
+The CRM developer returned the requirements document with every item
+answered. The contract below is what the website implements; the filled
+document is the source (kept by the website team, not in the repo).
+
+| Item | Value |
+|---|---|
+| Endpoint | the n8n production webhook in `ENQUIRY_WEBHOOK_URL` (server-only env var; the URL is not committed) — one URL for test and production |
+| Method / type | `POST`, `application/json`, from the website's server only |
+| Authentication | shared secret in the **`X-Webhook-Secret`** header, from `ENQUIRY_WEBHOOK_SECRET` (server-only). No other header, no IP allow-list |
+| Success | any `2xx` (they answer `200` with a success body at once and process the lead **asynchronously** in the workflow; no lead ID or brochure URL is returned) |
+| Errors | `400` validation, `401` bad/missing secret, `500` system — never an error inside a `200` |
+| Response time | acknowledgement expected within 5 s; the website waits up to 10 s |
+| Duplicates | matched on email/phone and **updated** (2xx), so a visitor's manual resubmit is safe. They asked us not to resubmit blindly; the website never retries automatically |
+| Test leads | allowed on the production URL; the name must start with **`Google-TEST-`** (their marker). Verified through n8n's execution history and a confirmation from SparkOs |
+| Rate limits | none imposed; genuine submissions only |
+| Brochure | website-hosted PDF (the current `brochure.href` flow); nothing comes from the CRM |
+| Changes / support | SparkOs will notify the website team before the URL, fields or workflow change; SparkOs integration support after launch |
+
+**Body the website sends** (their sample payload, plus `lead_id` and
+`details`):
 
 ```json
 {
-  "lead_id": "YSC-20260908-7K3Q9F2M",
-  "name":    "Visitor name",
-  "email":   "visitor@example.com",
-  "phone":   "+91 98765 43210",
-  "project": "Yamuna Sky City",
+  "lead_id":      "YSC-20260908-7K3Q9F2M",
+  "name":         "Visitor name",
+  "email":        "visitor@example.com",
+  "phone":        "+919876543210",
+  "project":      "Yamuna Sky City",
+  "utm_source":   "google ads",
+  "utm_medium":   "cpc",
+  "utm_campaign": "launch",
   "details": {
     "lead_id": "YSC-20260908-7K3Q9F2M",
+    "phone_as_typed": "98765 43210",
     "city": "",
     "source": { "ui": "modal", "utm_source": "…", "referrer": "…", "landing_page": "…" },
     "consent": { "agreed": true, "text": "…", "recordedAt": "ISO-8601" },
     "submittedAt": "ISO-8601",
+    "attempt": 1,
     "site": "yamuna-sky-city-website"
   }
 }
 ```
 
-- **Success:** any `2xx` response. Nothing is read from the body.
+- `phone` carries a country code (their requirement): the number as typed
+  is normalised in `lib/phone.ts` — spaces/dashes/brackets removed, `00`
+  → `+`, and a bare 10-digit number treated as Indian (`+91`). **This last
+  rule is an assumption** made because the form does not ask for a country
+  code; the number exactly as typed always travels in
+  `details.phone_as_typed`. If the client would rather the form ask for
+  the country code explicitly, that is a visible form change to approve.
+- `utm_term` / `utm_content` are added at the top level only when captured.
+- `details` may be ignored by the workflow; `details.attempt` > 1 means the
+  visitor resubmitted after a failure (same `lead_id`, same email/phone,
+  which their workflow treats as an update).
 
-**To confirm with the CRM developer before go-live**
+**Still open with SparkOs**
 
-1. The key names `name` / `email` / `phone` / `project` are the website's
-   proposal — the CRM developer did not specify names. If their n8n workflow
-   expects different keys (or the Google Ads lead-form webhook schema,
-   given the endpoint's name), change `toCrmRequest()` in
-   `lib/integrations/crm.ts` only.
-2. No authentication was given. The webhook is treated as unauthenticated;
-   if they add a token, it goes in `buildHeaders()` from a server-only env var.
-3. Phone is delivered as typed; say if E.164 is required.
-4. What the webhook returns, how duplicates are handled, and brochure
-   delivery (website-hosted `brochure.href` is assumed meanwhile).
-5. A single URL was given — confirm whether test leads are acceptable on
-   it, and agree a test-lead marker (e.g. name prefixed `TEST -`).
+1. They want fixed **campaign ID** and **owner** values on every lead but
+   did not supply the values. Best set inside the n8n workflow (they are
+   constants); if they want them in the body, they must send the exact
+   keys and values and `toCrmRequest()` gains two lines.
+2. The shared secret was sent inside the Word document rather than over a
+   secure channel. It works, but the business may want SparkOs to rotate
+   it once and hand the new value over privately; rotating is a one-field
+   change in Vercel.
+3. They mentioned that more than the four fields would "help qualify the
+   lead faster". Any additional form field is a visible change that needs
+   the client's approval first.
 
 ## How the website side works today
 
@@ -204,23 +231,23 @@ filtered out.
 
 ## Brochure
 
-No approved brochure asset exists in the repository yet. Access is
-resolved in `lib/brochure.ts` only from a confirmed successful
-submission, with this precedence: CRM-returned URL (if the CRM developer
-provides one) → website-hosted file (`brochure.href` in
-`content/site.ts`). While neither is configured, the success state
-shows an honest "we will share the brochure shortly" line instead of a
-dead link.
+The approved brochure ships at `public/media/brochure/` and is offered
+through `brochure.href` in `content/site.ts`; the CRM developer confirmed
+(8 Sep 2026) that the website hosts and delivers it and nothing comes
+from the CRM. Access is resolved in `lib/brochure.ts` only from a
+confirmed submission (see the brochure policy above).
 
 ## Exact next steps
 
-1. In Vercel → Project → Settings → Environment Variables, add
-   `ENQUIRY_WEBHOOK_URL` = the webhook URL above (Production, and Preview
-   if test leads are acceptable). Redeploy.
-2. Submit one clearly marked test enquiry (name `TEST - website`) from
-   the live site; ask the CRM developer to confirm the lead arrived with all
-   four fields populated, and delete it.
-3. If any key name differs from what their workflow reads, adjust
-   `toCrmRequest()` and redeploy — no other file changes.
-4. When the approved brochure PDF exists, place it under
-   `public/media/brochure/` and set `brochure.href` in `content/site.ts`.
+1. In Vercel → Project → Settings → Environment Variables (Production, and
+   Preview if test leads are acceptable), make sure both are set:
+   `ENQUIRY_WEBHOOK_URL` (already set) and `ENQUIRY_WEBHOOK_SECRET` (the
+   value from SparkOs). Redeploy.
+2. Confirm with SparkOs that the workflow is **active** (the website's
+   test on 8 Sep still received n8n's "not registered" 404).
+3. Submit one test enquiry named `Google-TEST-website` from the live site;
+   ask SparkOs to confirm it arrived with all fields, and delete it. The
+   Google Sheet row should show `noted_in_crm` = TRUE for the same
+   `lead_id`.
+4. Settle the open items above (campaign ID / owner values, secret
+   rotation).

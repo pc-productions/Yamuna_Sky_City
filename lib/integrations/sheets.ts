@@ -42,7 +42,7 @@ export function describeCrmOutcome(crm: DeliveryOutcome): { notedInCrm: boolean;
   if (crm.cause === "not_configured") return { notedInCrm: false, note: "CRM not configured" };
   const note =
     crm.cause === "rejected"
-      ? "CRM rejected the lead"
+      ? `CRM rejected the lead${crm.status ? ` (HTTP ${crm.status})` : ""}`
       : crm.cause === "timeout"
         ? "CRM did not respond in time"
         : "Could not reach the CRM";

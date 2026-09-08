@@ -34,14 +34,18 @@ the CRM developer · **[Dev]** website change, ready to do on request.
    indexing, per-page canonicals, `sitemap.xml`, `robots.txt` allow,
    Organization + WebSite structured data and correct OG/Twitter URLs.
 
-3. **CRM workflow activated** [CRM dev]
-   The n8n production webhook still returns 404 "not registered"
-   (workflow switched off). `ENQUIRY_WEBHOOK_URL` is already set in
-   Vercel. Until the workflow is active every enquiry shows "Something
-   went wrong" and **no lead is captured**. Then: one test lead
-   (`TEST - website`) from the live domain, confirmed and deleted, and
-   the answers in `docs/CRM_DEVELOPER_REQUIREMENTS.md` (field names,
-   auth, duplicate handling).
+3. **CRM workflow activated + secret set** [CRM dev / Team]
+   SparkOs answered the requirements document on 8 Sep 2026 (contract in
+   `docs/CRM_INTEGRATION.md`). Two things remain: the n8n workflow must
+   be **active** (the live test on 8 Sep still got 404 "not registered"),
+   and `ENQUIRY_WEBHOOK_SECRET` must be set in Vercel Production
+   alongside `ENQUIRY_WEBHOOK_URL` (without it every lead is answered
+   401). Until both are done, leads land only in the Google Sheet marked
+   `noted_in_crm` FALSE and visitors get the brochure on their second
+   submit. Then: one test lead named `Google-TEST-website` from the live
+   domain, confirmed by SparkOs and deleted; the sheet row must show TRUE.
+   Still owed by SparkOs: the fixed campaign ID / owner values they asked
+   for.
 
 4. **Mailbox `sales@yamunaskycity.com` exists and is monitored** [Team]
    It is printed in the footer and the privacy policy (from the
