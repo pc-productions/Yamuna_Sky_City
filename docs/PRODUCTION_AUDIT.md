@@ -89,7 +89,7 @@ request; on a real network this audit passes.
 | 8 | Favicon | Done | Dynamic favicon (64px) plus Apple touch icon (180px), both from the approved mark. |
 | 9 | Sitemap + robots.txt | Done | Both generated; indexable only once the real domain is configured. |
 | 10 | Alt text on images | Done | 0 images without `alt`; decorative images use `alt=""`. |
-| 11 | Compress images | Done | All raster images go through `next/image` (the 2.7 MB mobile location PNG is a source file only — visitors get an optimised ~100 KB derivative); hero film 1080p WebM/MP4. |
+| 11 | Compress images | Done | All raster images go through `next/image` (the 2.7 MB mobile location PNG is a source file only — visitors get an optimised ~100 KB derivative); hero film served from Cloudinary (not from the deploy). |
 | 12 | Page load speed | Done | Lighthouse Performance 100 desktop / 86 mobile; CLS 0. |
 | 13 | Colour contrast | Done | axe colour-contrast rule: 0 violations on every route, viewport and the consent bar. |
 | 14 | Mobile friendly | Done, one visual caveat | No overflow at 360–820 px; touch targets fine. Caveat: hero film crops its title letters on portrait phones (needs a portrait cut). Mobile Location artwork is now the approved composition with correct labels. |

@@ -9,7 +9,10 @@
  */
 
 export type VideoSource = {
-  /** MP4 (H.264) path under /public/media/video. Undefined = poster/fallback only. */
+  /**
+   * MP4 (H.264) source: an absolute URL on the media CDN (Cloudinary) or a
+   * path under /public. Undefined = poster/fallback only.
+   */
   src?: string;
   /** Optional WebM (VP9) variant — preferred by browsers that support it. */
   webmSrc?: string;
@@ -42,11 +45,12 @@ export const introFallbackDurationMs = 6000;
 export const introFrequency: "always" | "once-per-session" = "once-per-session";
 
 export const heroVideo: VideoSource = {
-  // Supplied hero film (12s loop, 16:9). Optimized from the 4K master to
-  // 1080p30 h264, muted, faststart. Poster is the film's first frame so
-  // playback starts without a visual jump.
-  src: "/media/video/hero-1080.mp4",
-  webmSrc: "/media/video/hero-1080.webm",
+  // Supplied hero film (12s loop, 16:9), served from Cloudinary rather
+  // than from the deploy: the film is the heaviest asset on the site, and
+  // hosting it on the media CDN keeps it (and its bandwidth) off Vercel.
+  // The poster stays local — it is small and must paint before the film.
+  // Swap the film by replacing this URL; nothing else changes.
+  src: "https://res.cloudinary.com/brojss75/video/upload/v1788895838/Yamuna_Sky_City.mp4",
   poster: "/media/posters/hero-poster.jpg",
   // The film's embedded titles sit around the tower at frame center, so
   // every breakpoint keeps center framing. On narrow portrait screens a

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { preconnect } from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { heroVideo } from "@/content/media";
@@ -19,7 +20,21 @@ import { VideoBackground } from "@/components/ui/VideoBackground";
  * the scroll cue, which appears after the first loop and retreats once
  * the visitor moves.
  */
+/** Origin of the film's CDN, if it is served from one (content/media.ts). */
+const heroMediaOrigin = (() => {
+  try {
+    return heroVideo.src && /^https?:\/\//.test(heroVideo.src) ? new URL(heroVideo.src).origin : null;
+  } catch {
+    return null;
+  }
+})();
+
 export function Hero({ active }: { active: boolean }) {
+  // Open the CDN connection (DNS + TLS) while the page is still parsing,
+  // so the film's first bytes are not delayed by a cold handshake.
+  // Rendered into <head> by React; a no-op for a same-origin file.
+  if (heroMediaOrigin) preconnect(heroMediaOrigin);
+
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showCue, setShowCue] = useState(false);
