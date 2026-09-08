@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { consentField, formCopy } from "@/content/form";
-import { contact, ctaLabels, getWhatsAppUrl } from "@/content/site";
+import { brochure as brochureConfig, contact, ctaLabels, getWhatsAppUrl } from "@/content/site";
 import { useEnquiryForm } from "@/lib/hooks/useEnquiryForm";
 import { resolveBrochureAccess } from "@/lib/brochure";
 import { Button } from "@/components/ui/Button";
@@ -157,6 +157,10 @@ export function EnquiryForm({
         <p role="status" className={`text-sm ${labelTone}`}>
           {formCopy.notConfiguredMessage}
         </p>
+      )}
+
+      {brochureConfig.href && (
+        <p className={`-mt-1 text-sm ${labelTone}`}>{formCopy.brochurePromise}</p>
       )}
 
       <div className="flex flex-col gap-4 pt-2 sm:flex-row">

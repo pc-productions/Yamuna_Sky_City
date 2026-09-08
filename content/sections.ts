@@ -19,5 +19,5 @@ export const explore3dSection = {
 } as const;
 
 export const contactSection = {
-  eyebrow: "Private Viewing",
+  eyebrow: "Brochure & Private Viewing",
 } as const;

@@ -1,6 +1,7 @@
 "use client";
 
 import { formCopy } from "@/content/form";
+import { contactSection } from "@/content/sections";
 import { useDialog } from "@/lib/hooks/useDialog";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 
@@ -41,7 +42,7 @@ export function EnquiryModal({
           &times;
         </button>
 
-        <span className="eyebrow text-brand">Private Viewing</span>
+        <span className="eyebrow text-brand">{contactSection.eyebrow}</span>
         <h2 id="enquiry-modal-heading" className="text-display-md mt-6 pr-6 text-ink">
           {formCopy.heading}
         </h2>

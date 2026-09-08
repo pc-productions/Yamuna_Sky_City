@@ -54,8 +54,14 @@ export const consentField = {
 
 export const formCopy = {
   heading: "Experience Yamuna Sky City.",
+  /* The invitation: the brochure is the reward for sharing details —
+     an offer, not a gate. Contents named here (floor plans, 3 & 4 BHK
+     residences, amenities) are verified against the brochure PDF. */
   supportingLine:
-    "Share your details and our team will be in touch to arrange your private viewing.",
+    "Share a few details and the complete Yamuna Sky City brochure is yours to download right away: floor plans, the 3 and 4 BHK residences and the amenities. Our team will also be in touch to arrange your private viewing.",
+  /* Small reassurance beside the submit button (only when a brochure
+     is configured in content/site.ts). */
+  brochurePromise: "Your brochure download appears the moment you submit.",
   submitLabel: "SUBMIT ENQUIRY",
   submittingLabel: "Submitting…",
   /* After an attempt the CRM could not confirm (the lead itself is safe
