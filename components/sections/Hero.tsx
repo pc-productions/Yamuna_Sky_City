@@ -105,13 +105,16 @@ export function Hero({ active }: { active: boolean }) {
       data-hero=""
       aria-label="Yamuna Sky City"
       data-header-tone="video"
-      className="sticky top-0 z-0 h-dvh w-full overflow-hidden bg-night"
+      className="sticky top-0 z-0 h-dvh w-full overflow-hidden bg-paper"
     >
-      {/* Film. When the intro hands over, the picture settles from a
-          slight zoom to rest — the establishing shot finding its frame. */}
+      {/* Film. It begins exactly at the header's lower edge (top-16 /
+          xl:top-18 = header height), never underneath it: the film is
+          top-anchored so the crown of the tower is always in frame and
+          only the bottom crops with the viewport ratio. When the intro
+          hands over, the picture settles from a slight zoom to rest. */}
       <div
         data-hero-media=""
-        className="absolute inset-0 transition-transform duration-[var(--motion-cinematic)] ease-[var(--ease-editorial)] motion-reduce:transition-none"
+        className="absolute inset-x-0 top-16 bottom-0 transition-transform duration-[var(--motion-cinematic)] ease-[var(--ease-editorial)] motion-reduce:transition-none xl:top-18"
         style={{ transform: active ? "scale(1)" : "scale(1.06)" }}
       >
         <VideoBackground
@@ -124,7 +127,7 @@ export function Hero({ active }: { active: boolean }) {
       <div
         data-hero-dim=""
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-night opacity-0"
+        className="pointer-events-none absolute inset-x-0 top-16 bottom-0 bg-night opacity-0 xl:top-18"
       />
 
       {/* Scroll cue — compact mouse pill with the Ember dot. */}
