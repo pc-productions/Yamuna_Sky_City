@@ -68,7 +68,11 @@ EnquiryForm (modal / contact)
   (ONLY on confirmed delivery)
 ```
 
-* **Single integration point:** `lib/integrations/crm.ts` (server-only).
+* **Parallel ledger:** every lead is also written to the business's own
+  Google Sheet (`lib/integrations/sheets.ts`, see
+  `docs/GOOGLE_SHEETS_LEADS.md`) at the same time — independent of the
+  CRM, never gated by it. The CRM contract below is unaffected.
+* **Single CRM integration point:** `lib/integrations/crm.ts` (server-only).
   When the spec arrives, only its three mapping functions
   (`toCrmRequest`, `fromCrmResponse`, `buildHeaders`) and environment
   variables change. No UI, hook, validation or success-state code changes.

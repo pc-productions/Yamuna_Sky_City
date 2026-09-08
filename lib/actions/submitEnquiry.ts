@@ -3,6 +3,7 @@
 import { consentField, enquiryFields } from "@/content/form";
 import { validateForm } from "@/lib/validation";
 import { deliverLead } from "@/lib/integrations/crm";
+import { recordLeadInLedger } from "@/lib/integrations/sheets";
 import type { Attribution } from "@/lib/attribution";
 
 /**
@@ -12,12 +13,21 @@ import type { Attribution } from "@/lib/attribution";
  *
  * This action owns what the website vouches for: it re-validates the
  * submission, assembles the normalized LeadRecord (fields + consent +
- * UI source + marketing attribution + timestamp), hands it to the CRM
- * boundary, and returns a normalized SubmitResult the UI can render
- * without knowing anything about the destination.
+ * UI source + marketing attribution + timestamp), hands it to BOTH lead
+ * destinations at once, and returns a normalized SubmitResult the UI
+ * can render without knowing anything about either.
  *
- * HONESTY RULE: `ok: true` is returned ONLY when the destination
- * acknowledged the lead. No backend → `not_configured`, never success.
+ * Two independent destinations (lib/integrations/*):
+ *   1. the CRM webhook (crm.ts) — the sales pipeline;
+ *   2. the Google Sheets ledger (sheets.ts) — the business's own backup
+ *      of every lead, so the data survives any change of CRM provider.
+ * They run in parallel; one failing never blocks the other.
+ *
+ * HONESTY RULE: `ok: true` is returned ONLY when at least one configured
+ * destination acknowledged the lead — i.e. the business really holds it.
+ * Neither configured → `not_configured`, never success. A destination
+ * that failed while the other succeeded is logged server-side
+ * ("[enquiry]" / "[ledger]" in the platform logs) for reconciliation.
  */
 
 export type EnquiryPayload = {
@@ -81,29 +91,44 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
     meta: { submittedAt: now, site: "yamuna-sky-city-website" },
   };
 
-  const outcome = await deliverLead(record);
+  // Both destinations at once; neither waits for or depends on the other.
+  const [outcome, ledger] = await Promise.all([deliverLead(record), recordLeadInLedger(record)]);
 
-  if (outcome.delivered) {
-    return {
-      ok: true,
-      ...(outcome.leadId ? { leadId: outcome.leadId } : {}),
-      ...(outcome.brochureUrl ? { brochureUrl: outcome.brochureUrl } : {}),
-    };
-  }
+  const crmConfigured = !(outcome.delivered === false && outcome.cause === "not_configured");
+  const ledgerConfigured = !(ledger.recorded === false && ledger.cause === "not_configured");
 
-  if (outcome.cause === "not_configured") {
+  if (!crmConfigured && !ledgerConfigured) {
     // Development visibility only — this is NOT lead delivery.
-    console.warn("[enquiry] No lead backend configured (ENQUIRY_WEBHOOK_URL unset). Enquiry NOT delivered.");
+    console.warn(
+      "[enquiry] No lead destination configured (ENQUIRY_WEBHOOK_URL and LEADS_SHEET_WEBHOOK_URL unset). Enquiry NOT delivered.",
+    );
     return { ok: false, reason: "not_configured", error: "Enquiry submissions are not available yet." };
   }
 
+  // Reconciliation trail: a configured destination that did not accept
+  // the lead while the other did is the case the ledger exists for.
+  if (crmConfigured && !outcome.delivered && ledger.recorded) {
+    console.error(`[enquiry] CRM did not accept the lead (${outcome.cause}); it IS in the sheet ledger — re-push to CRM manually.`);
+  }
+  if (ledgerConfigured && !ledger.recorded && outcome.delivered) {
+    console.error(`[ledger] sheet write failed (${ledger.cause}); lead IS in the CRM${outcome.leadId ? ` (id ${outcome.leadId})` : ""}.`);
+  }
+
+  if (outcome.delivered || ledger.recorded) {
+    return {
+      ok: true,
+      ...(outcome.delivered && outcome.leadId ? { leadId: outcome.leadId } : {}),
+      ...(outcome.delivered && outcome.brochureUrl ? { brochureUrl: outcome.brochureUrl } : {}),
+    };
+  }
+
+  const timedOut =
+    (outcome.delivered === false && outcome.cause === "timeout") ||
+    (ledger.recorded === false && ledger.cause === "timeout");
   return {
     ok: false,
     reason: "failed",
-    error:
-      outcome.cause === "timeout"
-        ? "That took too long. Please try again."
-        : "Something went wrong. Please try again.",
+    error: timedOut ? "That took too long. Please try again." : "Something went wrong. Please try again.",
   };
 }
 

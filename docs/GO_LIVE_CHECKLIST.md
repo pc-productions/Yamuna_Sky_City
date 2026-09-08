@@ -11,6 +11,10 @@ the CRM developer · **[Dev]** website change, ready to do on request.
 
 ---
 
+## Lead ledger (new)
+
+- [ ] Google Sheet created, Apps Script deployed, `LEADS_SHEET_WEBHOOK_URL` + `LEADS_SHEET_WEBHOOK_SECRET` set in Vercel Production (docs/GOOGLE_SHEETS_LEADS.md). Test lead appears in the sheet.
+
 ## Branch policy (in force)
 
 - Vercel Production environment tracks `main`; the Claude working branch deploys as Preview only.

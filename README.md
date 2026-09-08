@@ -28,14 +28,16 @@ Open http://localhost:3000.
 - `components/ui/` — layout/typography/media primitives (`Container`, `SectionHeading`, `Stat`, `Button`, `Reveal`, `RevealLines`, `VideoBackground`).
 - `lib/motion.ts` + `components/motion/` — the **global motion system**: one set of durations/easings/distances (`lib/motion.ts`, mirrored as CSS variables in `globals.css`), the smooth-scroll provider (`SmoothScroll`, Lenis — wheel only, off on touch and under reduced motion, synced with GSAP ScrollTrigger, anchor-aware) and `ParallaxMedia`. `Reveal` has four variants (fade / lines / image / stagger) so different content types move differently but always in the same language; markup is authored in its finished state so reduced-motion and no-JS visitors see the complete page. The hero is a sticky backdrop that later sections slide over (`main > section` rule in `globals.css`).
 - `components/forms/` + `lib/hooks/useEnquiryForm.ts` + `lib/validation.ts` — the shared enquiry form logic used by both the Contact section and the Enquiry modal.
-- `lib/actions/submitEnquiry.ts` — the one place a lead backend integration gets wired in (see below).
+- `lib/actions/submitEnquiry.ts` — the one place leads leave the website, fanning out to `lib/integrations/crm.ts` (CRM) and `lib/integrations/sheets.ts` (Google Sheets ledger) in parallel (see below).
 
 ## Wiring up a lead backend
 
-Leads are delivered server-side through `lib/integrations/crm.ts` to the CRM developer's webhook. While `ENQUIRY_WEBHOOK_URL` is unset, `lib/actions/submitEnquiry.ts` returns an explicit `not_configured` result and the form shows an honest "enquiries not available yet" message — it never fakes a successful submission. To connect:
+Leads go to **two independent destinations in parallel** from the server action (`lib/actions/submitEnquiry.ts`):
 
-1. Set `ENQUIRY_WEBHOOK_URL` (a server-only environment variable — see `.env.example` and `docs/CRM_INTEGRATION.md`) in the deploy platform.
-2. That's it — the action POSTs the mapped lead as JSON once the variable is set. No component changes needed.
+1. the CRM webhook — `lib/integrations/crm.ts`, `ENQUIRY_WEBHOOK_URL` (see `docs/CRM_INTEGRATION.md`);
+2. the **Google Sheets lead ledger** — `lib/integrations/sheets.ts`, `LEADS_SHEET_WEBHOOK_URL` + `LEADS_SHEET_WEBHOOK_SECRET`, the business's own record of every lead, independent of the CRM provider (setup: `docs/GOOGLE_SHEETS_LEADS.md`, script: `integrations/google-sheets/Code.gs`).
+
+The visitor sees success only when at least one configured destination acknowledged the lead; while neither is configured the form shows an honest "not available yet" message and never fakes a submission. A destination that fails while the other succeeds is logged (`[enquiry]` / `[ledger]`) for reconciliation.
 
 Never expose backend credentials via `NEXT_PUBLIC_*` variables; keep integration secrets server-only.
 

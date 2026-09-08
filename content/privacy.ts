@@ -66,7 +66,7 @@ export const privacyPolicy = {
       paragraphs: ["We do not sell your personal data. We share it only as follows."],
       bullets: [
         "Our sales team and authorised representatives who handle enquiries for the project.",
-        "Service providers who process data on our behalf and under our instructions: the provider of our lead-management (CRM) and workflow-automation system, our website hosting and content-delivery provider, and Google (Google Tag Manager, Google Analytics and Google Ads) for analytics and advertising measurement.",
+        "Service providers who process data on our behalf and under our instructions: the provider of our lead-management (CRM) and workflow-automation system, our website hosting and content-delivery provider, and Google — Google Workspace (Google Sheets), where we keep our own record of enquiries, and Google Tag Manager, Google Analytics and Google Ads for analytics and advertising measurement.",
         "Messaging platforms you choose to contact us through, such as WhatsApp, whose own privacy policies apply to that communication.",
         "Courts, regulators, law-enforcement agencies and professional advisers where the law requires it or where necessary to establish, exercise or defend legal claims.",
         "A successor entity in the event of a merger, acquisition or transfer of the project, subject to this Policy.",
