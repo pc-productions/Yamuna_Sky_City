@@ -1,7 +1,8 @@
 # Google Sheets Lead Ledger — setup
 
-Every valid website enquiry is sent to **two independent destinations at
-the same time**: the CRM webhook and a Google Sheet owned by the business.
+Every valid website enquiry is sent to **two independent destinations**,
+one after the other: the CRM webhook first, then a Google Sheet owned by
+the business, whose row records what the CRM answered.
 The sheet is the business's own record of every lead, so the data stays
 with Yamuna Sky City whatever happens to the CRM provider or relationship.
 
