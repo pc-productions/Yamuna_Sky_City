@@ -58,19 +58,21 @@ export function EnquiryForm({
             {brochure.available ? formCopy.brochureReadyMessage : formCopy.brochurePendingMessage}
           </p>
         </div>
-        <div className="flex flex-col gap-4 sm:flex-row">
+        {/* Wraps by available width (not viewport): side by side in the
+            Contact column, stacked inside the narrower modal. */}
+        <div className="flex flex-wrap gap-4">
           {brochure.available && (
             <Button
               href={brochure.href}
               variant="primary"
-              className="sm:flex-1"
+              className="flex-1 basis-[13rem]"
               {...(brochure.external ? {} : { download: true })}
             >
               {formCopy.brochureButtonLabel}
             </Button>
           )}
           {whatsappUrl && (
-            <Button href={whatsappUrl} variant={outlineVariant} className="sm:flex-1">
+            <Button href={whatsappUrl} variant={outlineVariant} className="flex-1 basis-[13rem]">
               {ctaLabels.chatWhatsApp}
             </Button>
           )}

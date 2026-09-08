@@ -1,6 +1,6 @@
 import { navLinks } from "@/content/nav";
 import { CookiePreferencesButton } from "@/components/layout/CookiePreferencesButton";
-import { brand, contact, legal, socialLinks } from "@/content/site";
+import { brand, contact, externalLinks, legal, socialLinks } from "@/content/site";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
 
@@ -35,12 +35,22 @@ export function Footer() {
                   {contact.phoneDisplay}
                 </a>
               )}
+              {contact.phoneSecondaryDisplay && (
+                <a href={contact.phoneSecondaryHref} className="transition-colors hover:text-white">
+                  {contact.phoneSecondaryDisplay}
+                </a>
+              )}
               {contact.email && (
                 <a href={`mailto:${contact.email}`} className="transition-colors hover:text-white">
                   {contact.email}
                 </a>
               )}
               {contact.address && <address className="not-italic">{contact.address}</address>}
+              {contact.projectSiteLine && (
+                <p className="pt-1 text-mist-muted/80">
+                  Project site: <span className="text-mist-muted">{contact.projectSiteLine}</span>
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -73,7 +83,20 @@ export function Footer() {
             </a>
             <CookiePreferencesButton className="transition-colors hover:text-white" />
             <span>
-              &copy; {new Date().getFullYear()} {legal.entityName || brand.name}. All rights reserved.
+              &copy; {new Date().getFullYear()}{" "}
+              {externalLinks.developerSite ? (
+                <a
+                  href={externalLinks.developerSite}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-white"
+                >
+                  {legal.entityName || brand.name}
+                </a>
+              ) : (
+                legal.entityName || brand.name
+              )}
+              . All rights reserved.
             </span>
           </div>
         </div>

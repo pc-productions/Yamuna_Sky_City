@@ -37,6 +37,11 @@ export function ProjectFacts() {
           <p className="mt-5 font-display text-[clamp(1.125rem,1.7vw,1.5rem)] font-semibold uppercase leading-none tracking-[0.14em] text-brand sm:mt-6">
             {brand.name}
           </p>
+          <p className="mt-3 text-[0.8125rem] uppercase tracking-[0.2em] text-ink/55">
+            {projectIntro.positioning}
+            <span aria-hidden="true" className="mx-3 text-line">|</span>
+            {projectIntro.unitMix}
+          </p>
         </Reveal>
 
         <RevealLines

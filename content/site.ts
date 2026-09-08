@@ -37,7 +37,7 @@ export const seo = {
   // Built only from approved facts — no location or positioning claims.
   // Facts only (content/facts.ts): scale, configuration, corridor, distance.
   description:
-    "Yamuna Sky City, Mangalore — South India's tallest sea-view tower: 296 sea-facing residences across GF+60 floors on the NH-66 corridor, 300 m from the Arabian Sea. Schedule a private viewing.",
+    "Yamuna Sky City, Kulai, Mangaluru — South India's tallest sea-view tower: 296 sea-facing 2, 3, 4 & 5 BHK residences across GF+60 floors on NH 66, minutes from the Arabian Sea. Schedule a private viewing.",
   siteUrl: configuredSiteUrl ?? "https://www.yamunaskycity.example",
   // TODO: set the confirmed handle, or leave empty to omit the tag.
   twitterHandle: "",
@@ -68,8 +68,15 @@ export const contact = {
   // sales line, email and the Yamuna Homes office address.
   phoneDisplay: "+91 88844 39155",
   phoneHref: "tel:+918884439155",
-  email: "yamunahomes16@gmail.com",
+  /** Second sales line printed in the brochure. */
+  phoneSecondaryDisplay: "+91 88845 39155",
+  phoneSecondaryHref: "tel:+918884539155",
+  // Project sales mailbox as printed in the official brochure (the
+  // earlier draft site used yamunahomes16@gmail.com).
+  email: "sales@yamunaskycity.com",
   address: "1st Floor, Nalapad Building, Mallikatta, Kadri, Mangalore – 575003",
+  /** Project site, as printed on the brochure cover. */
+  projectSiteLine: "N.H. 66, Kulai, Mangaluru",
   /** Structured form of `address` for JSON-LD. */
   postalAddress: {
     streetAddress: "1st Floor, Nalapad Building, Mallikatta, Kadri",
@@ -98,6 +105,8 @@ export const externalLinks = {
   // the 3D section falls back to a link-less "Coming Soon" preview —
   // visitors are never sent to a fake destination.
   explore3d: "https://www.turiya.co/360/YamunaSkyCity/",
+  /** Developer's corporate site, as printed in the brochure. */
+  developerSite: "https://www.yamunabuilders.com",
 } as const;
 
 /**
@@ -108,7 +117,7 @@ export const externalLinks = {
  * other change.
  */
 export const sectionVisibility = {
-  peopleBehind: false, // TODO: enable once content/people.ts has verified entries
+  peopleBehind: true, // project team verified from the official brochure
   legacy: false, // TODO: enable once content/legacy.ts has verified content
 } as const;
 
@@ -131,7 +140,9 @@ export const ctaLabels = {
  * confirmed successful enquiry; a CRM-provided URL takes precedence.
  */
 export const brochure = {
-  href: "", // TODO: approved brochure PDF path or URL
+  // Official brochure (final edition) supplied by the client, served
+  // from /public. Offered only after a confirmed enquiry.
+  href: "/media/brochure/Yamuna-Sky-City-Brochure.pdf",
 } as const;
 
 export const legal = {

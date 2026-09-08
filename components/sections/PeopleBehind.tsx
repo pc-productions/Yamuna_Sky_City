@@ -3,69 +3,56 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 
-function Initials({ name }: { name: string }) {
-  const initials = name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("");
-  return (
-    <div className="flex size-16 shrink-0 items-center justify-center border border-line font-display text-lg text-ink-muted">
-      {initials || "—"}
-    </div>
-  );
-}
-
 /**
- * Two rendering states, both driven by content/people.ts:
- * - Content-light (current): a single oversized editorial statement
- *   with a hairline above and air around it — intentional, not empty.
- *   No fake names, no placeholder rows.
- * - Full: adds the contributor rows automatically once verified entries
- *   exist in the data source.
+ * The project team. Driven entirely by content/people.ts (verified from
+ * the official brochure): an oversized editorial statement, then the
+ * roster of consultants and contractors as a typographic grid — role,
+ * firm, city — on hairlines. No portraits, no cards, no logos we do not
+ * hold. If the roster is ever emptied the section falls back to the
+ * statement alone.
  */
 export function PeopleBehind() {
   const hasContributors = contributors.length > 0;
 
   return (
-    <section className="bg-paper">
+    <section id="team" className="scroll-mt-16 bg-paper xl:scroll-mt-18">
       <Container>
         <div className="border-t border-line" />
       </Container>
       <Container
-        className={`flex flex-col gap-16 sm:gap-24 ${
-          hasContributors ? "section-top section-bottom" : "min-h-[62svh] justify-center py-24 sm:py-32"
+        className={`flex flex-col ${
+          hasContributors
+            ? "section-top section-bottom gap-16 sm:gap-20 lg:gap-24"
+            : "min-h-[62svh] justify-center py-24 sm:py-32"
         }`}
       >
         <SectionHeading
           eyebrow={peopleSection.eyebrow}
           heading={peopleSection.heading}
-          headingLines={["Designed and engineered", "by specialists."]}
+          headingLines={[...peopleSection.headingLines]}
+          supportingLine={hasContributors ? peopleSection.supportingLine : undefined}
           size="lg"
         />
 
         {hasContributors && (
           <Reveal variant="stagger">
-            <div className="flex flex-col divide-y divide-line border-y border-line">
-              {contributors.map((person, i) => (
+            <dl className="grid grid-cols-1 gap-x-10 border-t border-line sm:grid-cols-2 lg:grid-cols-3">
+              {contributors.map((c) => (
                 <div
-                  key={`${person.role}-${i}`}
+                  key={`${c.role}-${c.name}`}
                   data-reveal-item=""
-                  className="flex flex-col gap-6 py-10 sm:flex-row sm:items-start sm:gap-10"
+                  className="flex flex-col gap-2 border-b border-line py-7 pr-4 lg:py-8"
                 >
-                  <Initials name={person.name} />
-                  <div className="flex flex-col gap-1.5">
-                    <span className="eyebrow text-brand">{person.role}</span>
-                    <h3 className="font-display text-2xl text-ink">{person.name}</h3>
-                    <p className="text-sm text-ink-muted">{person.organization}</p>
-                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-faint">
-                      {person.description}
-                    </p>
-                  </div>
+                  <dt className="eyebrow text-brand">{c.role}</dt>
+                  <dd className="font-display text-[1.0625rem] font-medium leading-snug text-ink sm:text-lg">
+                    {c.name}
+                    {c.location && (
+                      <span className="mt-1 block text-sm font-normal text-ink-faint">{c.location}</span>
+                    )}
+                  </dd>
                 </div>
               ))}
-            </div>
+            </dl>
           </Reveal>
         )}
       </Container>

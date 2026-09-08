@@ -65,9 +65,9 @@ request; on a real network this audit passes.
 2. Search Console verification token, then submit `/sitemap.xml`.
 3. CRM: `ENQUIRY_WEBHOOK_URL` + the answers in
    `docs/CRM_DEVELOPER_REQUIREMENTS.md`; brochure PDF (`brochure.href`).
-4. Contact details, WhatsApp number, RERA number, social profiles
-   (`content/site.ts`); Privacy Policy and Terms copy.
-5. Intro film; People Behind and Legacy content.
+4. Social profiles (`content/site.ts`), grievance officer name, Terms
+   copy, privacy-policy sign-off. Contact, WhatsApp and RERA are done.
+5. Intro film; Legacy content (People Behind is live from the brochure).
 6. **Mobile hero**: the 16:9 film's baked-in title letters are cropped
    into fragments on portrait phones — a portrait cut of the film is
    needed (`content/media.ts` already accepts per-breakpoint sources).

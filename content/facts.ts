@@ -5,6 +5,9 @@ export type ProjectFact = {
 
 export const projectIntro = {
   eyebrow: "Project Overview",
+  /** Brochure cover line and unit mix — verified, printed as-is. */
+  positioning: "Sea-View Leisure Residences",
+  unitMix: "2, 3, 4 & 5 BHK",
   /* Deliberate two-line headline composition — rendered uppercase in
      Poppins Semibold. Wording per the approved claim; do not add
      adjectives. */
