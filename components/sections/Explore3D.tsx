@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { explore3dPreview } from "@/content/media";
-import { externalLinks } from "@/content/site";
+import { ctaLabels, externalLinks } from "@/content/site";
 import { explore3dSection } from "@/content/sections";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -11,9 +11,10 @@ import { ParallaxMedia } from "@/components/motion/ParallaxMedia";
 /**
  * Invitation into the external 3D experience. The photograph opens
  * through a soft mask while it settles from a slight zoom, then drifts
- * a few percent as the visitor scrolls past; on desktop, hover eases it
- * a touch closer. The call to action is typographic — a line of text
- * with a hairline, not a button — because the whole image is the link.
+ * a few percent as the visitor scrolls past. It sits softly blurred
+ * under a quiet dim with the site's primary CTA box centred on it, so
+ * the frame unmistakably reads as one thing to click; on desktop, hover
+ * sharpens the picture and eases it closer. The whole image is the link.
  *
  * Destination URL lives in content/site.ts (`externalLinks.explore3d`).
  * Unconfigured → no outbound link and an honest "Coming Soon".
@@ -22,44 +23,53 @@ export function Explore3D() {
   const url = externalLinks.explore3d;
   const isConfigured = url.length > 0;
 
+  // The whole frame is the link, so the "button" is a non-interactive
+  // box styled exactly like the site's primary CTA (components/ui/Button,
+  // variant primary, size large) — nested anchors are not allowed.
+  const ctaBox =
+    "font-display inline-flex items-center justify-center gap-3 whitespace-nowrap bg-brand px-8 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-paper shadow-[0_18px_50px_-20px_rgba(0,0,0,0.6)] transition-[background-color,transform] duration-[var(--motion-fast)] sm:px-11 sm:py-[1.125rem]";
+
   const overlay = (
     <div
-      className={`absolute inset-0 flex items-end bg-gradient-to-t from-night/70 via-night/15 to-transparent transition-opacity duration-[var(--motion-slow)] ${
-        isConfigured ? "group-hover:opacity-90" : ""
+      className={`absolute inset-0 flex flex-col items-center justify-center gap-5 bg-night/45 px-6 text-center transition-[background-color] duration-[var(--motion-slow)] ${
+        isConfigured ? "group-hover:bg-night/35" : ""
       }`}
     >
-      <div className="flex w-full flex-col gap-2 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-10">
-        <span className="font-display text-[0.8125rem] font-semibold uppercase tracking-[0.16em] text-paper sm:text-sm">
-          {isConfigured ? (
-            <span className="inline-flex items-center gap-3 border-b border-paper/60 pb-2 transition-[border-color] duration-[var(--motion-fast)] group-hover:border-paper">
-              {explore3dSection.invitation}
-              <span aria-hidden="true" className="inline-block transition-transform duration-[var(--motion-fast)] group-hover:translate-x-1">
-                &#8599;
-              </span>
-              <span className="sr-only">({explore3dSection.externalNote})</span>
+      {isConfigured ? (
+        <>
+          <span className={`${ctaBox} group-hover:bg-brand-dark group-hover:-translate-y-0.5`}>
+            {ctaLabels.exploreIn3d}
+            <span aria-hidden="true" className="inline-block transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              &#8599;
             </span>
-          ) : (
-            <span className="border-b border-paper/40 pb-2 text-paper/80">Coming Soon</span>
-          )}
-        </span>
-        {isConfigured && (
-          <span className="eyebrow text-[0.625rem] text-paper/65">{explore3dSection.externalNote}</span>
-        )}
-      </div>
+            <span className="sr-only">({explore3dSection.externalNote})</span>
+          </span>
+          <span className="flex flex-col items-center gap-1.5">
+            <span className="text-sm text-paper/90 sm:text-base">{explore3dSection.invitation}</span>
+            <span className="eyebrow text-[0.625rem] text-paper/60">{explore3dSection.externalNote}</span>
+          </span>
+        </>
+      ) : (
+        <span className={`${ctaBox} bg-night/60 text-paper/80`}>Coming Soon</span>
+      )}
     </div>
   );
 
   const preview = (
     <>
-      <ParallaxMedia percent={5} className="absolute -inset-y-[5%] inset-x-0">
+      <ParallaxMedia percent={5} className="absolute -inset-y-[5%] -inset-x-[1%]">
+        {/* Softly blurred at rest — the photograph is a doorway, not the
+            destination — and sharpening as the visitor reaches for it. */}
         <Image
           data-reveal-media=""
           src={explore3dPreview.src}
           alt={explore3dPreview.alt}
           fill
           sizes="(min-width: 1280px) 1152px, 100vw"
-          className={`object-cover ${
-            isConfigured ? "transition-[scale] duration-[var(--motion-cinematic)] ease-[var(--ease-editorial)] group-hover:scale-[1.025]" : ""
+          className={`object-cover blur-[3px] ${
+            isConfigured
+              ? "transition-[scale,filter] duration-[var(--motion-cinematic)] ease-[var(--ease-editorial)] group-hover:scale-[1.03] group-hover:blur-[1px]"
+              : ""
           }`}
           loading="lazy"
         />
