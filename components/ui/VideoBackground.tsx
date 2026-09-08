@@ -41,7 +41,11 @@ export function VideoBackground({
   const positionClass = `video-pos-${reactId}`;
   const { mobile, tablet, desktop } = media.objectPosition ?? {};
   const hasCustomPosition = Boolean(mobile || tablet || desktop);
-  const src = media.mobileSrc && isNarrowViewport() ? media.mobileSrc : media.src;
+  // Only ever swap to the mobile encode when the film is switched on
+  // (`src` set). A media object with `src` cleared must render the poster
+  // on the server AND on the client — otherwise a narrow viewport hydrates
+  // a <video> where the server rendered an <img> (React error #418).
+  const src = media.src ? (media.mobileSrc && isNarrowViewport() ? media.mobileSrc : media.src) : undefined;
 
   return (
     <div className={`relative h-full w-full overflow-hidden ${className}`}>
