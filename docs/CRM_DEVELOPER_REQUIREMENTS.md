@@ -82,7 +82,7 @@ appear in n8n's Executions list, not on the canvas.
 
 | Key | Notes |
 |---|---|
-| `lead_id` | website-issued reference (`YSC-YYYYMMDD-XXXXXXXX`), unique per lead; please store it on the CRM record so leads can be reconciled with the business's own ledger |
+| `lead_id` | website-issued reference (`YSC-YYYYMMDD-XXXXXXXX`), unique per lead. Optional for you — ignore it if the workflow has no use for it |
 | `name` | required; up to 200 characters |
 | `email` | required; validated format |
 | `phone` | required; **as typed by the visitor** (7–15 digits, optional `+`/`00`, spaces, dashes, brackets allowed) |
