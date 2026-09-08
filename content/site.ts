@@ -129,6 +129,7 @@ export const ctaLabels = {
   exploreIn3d: "Explore in 3D",
   skipIntro: "Skip Intro",
   mobileEnquire: "Enquire",
+  mobileWhatsApp: "WhatsApp",
   mobileSchedule: "Schedule a Viewing",
 } as const;
 

@@ -33,7 +33,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         {children}
       </main>
       <Footer />
-      <PersistentCTA onEnquire={() => setModalOpen(true)} />
+      <PersistentCTA />
       <FloatingWhatsApp />
       <CookieConsent />
       <EnquiryModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />

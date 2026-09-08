@@ -20,6 +20,4 @@ export const explore3dSection = {
 
 export const contactSection = {
   eyebrow: "Private Viewing",
-  /** Bridge line above the heading — the journey's conclusion. */
-  lead: "You have seen the tower, the sea and the city around it.",
 } as const;

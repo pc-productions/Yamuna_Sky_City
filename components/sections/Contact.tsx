@@ -6,8 +6,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { RevealLines } from "@/components/ui/RevealLines";
 
 /**
- * The conclusion. After the dark legacy card the page returns to light
- * and to the visitor: a bridge line, the invitation, and the form —
+ * The conclusion. The page returns to the visitor: the invitation and
+ * the form —
  * the same shared form and CRM boundary as the modal, only the
  * surrounding composition differs.
  */
@@ -19,15 +19,12 @@ export function Contact() {
           <div className="lg:pt-2">
             <Reveal>
               <span className="eyebrow block text-brand">{contactSection.eyebrow}</span>
-              <p className="mt-7 max-w-sm text-base leading-relaxed text-ink-faint">
-                {contactSection.lead}
-              </p>
             </Reveal>
             <RevealLines
               as="h2"
               lines={[formCopy.heading]}
               delayMs={160}
-              className="text-display-lg mt-6 text-ink"
+              className="text-display-lg mt-8 text-ink"
             />
             <Reveal delayMs={340}>
               <p className="mt-7 max-w-md text-lg leading-relaxed text-ink-muted">
