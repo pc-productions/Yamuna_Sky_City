@@ -18,7 +18,7 @@ import type { Attribution } from "@/lib/attribution";
  * destinations at once, and returns a normalized SubmitResult the UI
  * can render without knowing anything about either.
  *
- * Every lead gets a website-issued ID (YSC-YYYYMMDD-XXXXXX) that travels
+ * Every lead gets a website-issued ID (YSC-YYYYMMDD-XXXXXXXX) that travels
  * to both destinations, is shown to the visitor as a reference, and is
  * the key for reconciling the two.
  *
@@ -152,15 +152,17 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
 }
 
 /**
- * Website-issued lead reference: YSC-YYYYMMDD-XXXXXX. Date for humans,
- * 6 random characters (unambiguous alphabet, ~1 billion per day) for
- * uniqueness. Issued server-side, never by the browser.
+ * Website-issued lead reference: YSC-YYYYMMDD-XXXXXXXX. Date for humans,
+ * 8 random characters from an unambiguous 32-letter alphabet (2^40 ≈ a
+ * trillion combinations per day) so concurrent submissions across
+ * independent serverless instances cannot collide in practice. Issued
+ * server-side from a cryptographic source, never by the browser.
  */
 function generateLeadId(isoNow: string): string {
   const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I
-  const bytes = randomBytes(6);
+  const bytes = randomBytes(8);
   let suffix = "";
-  for (let i = 0; i < 6; i++) suffix += ALPHABET[bytes[i] % ALPHABET.length];
+  for (let i = 0; i < 8; i++) suffix += ALPHABET[bytes[i] % ALPHABET.length];
   return `YSC-${isoNow.slice(0, 10).replace(/-/g, "")}-${suffix}`;
 }
 

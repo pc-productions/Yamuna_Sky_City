@@ -63,7 +63,7 @@ One row per lead:
 | Column | Meaning |
 |---|---|
 | `received_at` | stamped by the sheet when the row arrives |
-| `lead_id` | **website-issued reference**, e.g. `YSC-20260908-7K3Q9F` — unique per lead, also sent to the CRM and shown to the visitor on the thank-you screen |
+| `lead_id` | **website-issued reference**, e.g. `YSC-20260908-7K3Q9F2M` — unique per lead, also sent to the CRM and shown to the visitor on the thank-you screen |
 | `submitted_at`, `name`, `email`, `mobile`, `city` | the enquiry |
 | `source_ui` | `modal` or `contact-section` |
 | `noted_in_crm` | **TRUE/FALSE** — TRUE only when the CRM acknowledged the lead; FALSE when it rejected it, did not respond in time, could not be reached, or is not configured. FALSE cells are highlighted red by the script so they cannot be missed |
@@ -90,6 +90,18 @@ header automatically.
   (`[enquiry]` / `[ledger]` in Vercel → Logs).
 - One attempt per destination, no automatic retries (a retry after a
   lost response would duplicate the row / the CRM lead).
+
+## Many visitors at once
+
+Each submission runs in its own serverless invocation with no shared
+state, so simultaneous visitors never interfere on the website side.
+Lead IDs come from a cryptographic random source (8 characters, about a
+trillion combinations per day). In the sheet, the Apps Script takes a
+script-wide lock for each append, so concurrent rows are written one
+after another and the header can never be created twice. Google allows
+30 simultaneous executions per script, far above a marketing site's
+peak; a submission that could not get the lock within 12 s is reported
+as a sheet failure (the CRM still has it, and the platform logs say so).
 
 ## Keeping the sheet safe
 

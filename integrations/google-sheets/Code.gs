@@ -24,9 +24,13 @@ var COLUMNS = [
 ];
 
 function doPost(e) {
+  // Concurrent submissions are serialised here so two leads can never
+  // write the same row or race the header; each append takes well under
+  // a second, so a queue of simultaneous visitors clears quickly. The
+  // website waits up to 15 s for this call.
   var lock = LockService.getScriptLock();
   try {
-    lock.waitLock(10000);
+    lock.waitLock(12000);
     var payload = JSON.parse((e && e.postData && e.postData.contents) || "{}");
     if (!payload.secret || payload.secret !== SHARED_SECRET) {
       return respond({ ok: false, error: "unauthorized" });

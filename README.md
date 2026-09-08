@@ -32,7 +32,7 @@ Open http://localhost:3000.
 
 ## Wiring up a lead backend
 
-Every lead gets a website-issued reference (`YSC-YYYYMMDD-XXXXXX`) and goes to **two independent destinations** from the server action (`lib/actions/submitEnquiry.ts`), CRM first, then the sheet carrying the CRM verdict (`noted_in_crm` TRUE/FALSE + `crm_note`):
+Every lead gets a website-issued reference (`YSC-YYYYMMDD-XXXXXXXX`) and goes to **two independent destinations** from the server action (`lib/actions/submitEnquiry.ts`), CRM first, then the sheet carrying the CRM verdict (`noted_in_crm` TRUE/FALSE + `crm_note`):
 
 1. the CRM webhook — `lib/integrations/crm.ts`, `ENQUIRY_WEBHOOK_URL` (see `docs/CRM_INTEGRATION.md`);
 2. the **Google Sheets lead ledger** — `lib/integrations/sheets.ts`, `LEADS_SHEET_WEBHOOK_URL` + `LEADS_SHEET_WEBHOOK_SECRET`, the business's own record of every lead, independent of the CRM provider (setup: `docs/GOOGLE_SHEETS_LEADS.md`, script: `integrations/google-sheets/Code.gs`).
