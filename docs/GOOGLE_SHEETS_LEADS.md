@@ -58,22 +58,36 @@ afterwards.
 
 ## What lands in the sheet
 
-One row per lead: `received_at` (stamped by the sheet), `submitted_at`,
-`name`, `email`, `mobile`, `city`, `source_ui` (modal / contact-section),
-`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`,
-`referrer`, `landing_page`, `consent_text`, `consent_at`, `site`. If the
-website ever sends an extra column, the script adds it to the header
-automatically.
+One row per lead:
+
+| Column | Meaning |
+|---|---|
+| `received_at` | stamped by the sheet when the row arrives |
+| `lead_id` | **website-issued reference**, e.g. `YSC-20260908-7K3Q9F` — unique per lead, also sent to the CRM and shown to the visitor on the thank-you screen |
+| `submitted_at`, `name`, `email`, `mobile`, `city` | the enquiry |
+| `source_ui` | `modal` or `contact-section` |
+| `noted_in_crm` | **TRUE/FALSE** — TRUE only when the CRM acknowledged the lead; FALSE when it rejected it, did not respond in time, could not be reached, or is not configured. FALSE cells are highlighted red by the script so they cannot be missed |
+| `crm_note` | the reason whenever `noted_in_crm` is FALSE (`CRM rejected the lead`, `CRM did not respond in time`, `Could not reach the CRM`, `CRM not configured`) |
+| `crm_lead_id` | the CRM's own identifier, when the CRM returns one |
+| `crm_checked_at` | when the CRM verdict was recorded |
+| `utm_source` … `utm_content`, `referrer`, `landing_page` | marketing attribution |
+| `consent_text`, `consent_at`, `site` | consent record |
+
+If the website ever sends an extra column, the script adds it to the
+header automatically.
 
 ## How the two destinations interact
 
-- They run **in parallel**; neither waits for or depends on the other.
-- The visitor sees the thank-you screen when **at least one** configured
-  destination accepted the lead — the business genuinely holds it.
-- If one destination fails while the other succeeds, the platform logs
-  record it: search Vercel → Logs for `[enquiry]` (CRM) or `[ledger]`
-  (sheet). A lead that reached the sheet but not the CRM is the case
-  the ledger exists for — re-enter it in the CRM by hand.
+- The website calls the **CRM first**, then writes the sheet row **with
+  the CRM's verdict**. The sheet row is written whatever the CRM did — a
+  CRM failure or timeout never prevents it.
+- The visitor sees the thank-you screen (with their `lead_id` as a
+  reference) when **at least one** configured destination accepted the
+  lead — the business genuinely holds it.
+- **Filter the sheet on `noted_in_crm` = FALSE** to find leads that
+  still need to be entered in the CRM by hand; use `lead_id` when
+  referring to them. The platform logs carry the same information
+  (`[enquiry]` / `[ledger]` in Vercel → Logs).
 - One attempt per destination, no automatic retries (a retry after a
   lost response would duplicate the row / the CRM lead).
 

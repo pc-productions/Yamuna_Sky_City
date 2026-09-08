@@ -64,6 +64,7 @@ export const formCopy = {
      honest interim) while no brochure mechanism is configured. */
   successHeading: "Thank you",
   successMessage: "Your enquiry has been received.",
+  referenceLabel: "Your reference",
   brochureReadyMessage: "Your Yamuna Sky City brochure is ready.",
   brochureButtonLabel: "Download Brochure",
   brochurePendingMessage: "Our team will share the Yamuna Sky City brochure with you shortly.",

@@ -47,18 +47,22 @@ export type DeliveryOutcome =
  * Request mapping — the website LeadRecord → the CRM developer's webhook body.
  *
  * Top level = the four fields the CRM developer asked for, flat, so an n8n
- * workflow can read them directly. `phone` is sent as typed (the CRM developer
+ * workflow can read them directly — plus `lead_id`, the website-issued
+ * reference (YSC-…) that also appears in the sheet ledger and on the
+ * visitor's thank-you screen, so the two systems can be reconciled. `phone` is sent as typed (the CRM developer
  * has not asked for E.164). `project` is the inquired project name.
  * `details` carries everything else the website records; the workflow
  * can ignore it.
  */
 export function toCrmRequest(lead: LeadRecord) {
   return {
+    lead_id: lead.meta.leadId,
     name: lead.lead.name,
     email: lead.lead.email,
     phone: lead.lead.mobile,
     project: PROJECT_NAME,
     details: {
+      lead_id: lead.meta.leadId,
       city: lead.lead.city ?? "",
       source: lead.source,
       consent: lead.consent,

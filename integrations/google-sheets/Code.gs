@@ -17,7 +17,8 @@ var SHARED_SECRET = "REPLACE-WITH-A-LONG-RANDOM-SECRET";
 var SHEET_NAME = "Leads";
 // Column order. Any extra keys the website sends are appended after these.
 var COLUMNS = [
-  "submitted_at", "name", "email", "mobile", "city", "source_ui",
+  "lead_id", "submitted_at", "name", "email", "mobile", "city", "source_ui",
+  "noted_in_crm", "crm_note", "crm_lead_id", "crm_checked_at",
   "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
   "referrer", "landing_page", "consent_text", "consent_at", "site",
 ];
@@ -53,10 +54,20 @@ function doPost(e) {
     var values = headers.map(function (h) {
       if (h === "received_at") return new Date();
       var v = row[h];
-      return v === undefined || v === null ? "" : String(v);
+      if (v === undefined || v === null) return "";
+      return typeof v === "boolean" ? v : String(v); // keep TRUE/FALSE real booleans
     });
     sheet.appendRow(values);
-    return respond({ ok: true });
+
+    // Make leads the CRM did NOT accept impossible to miss.
+    var statusCol = headers.indexOf("noted_in_crm") + 1;
+    if (statusCol > 0) {
+      var last = sheet.getLastRow();
+      var cell = sheet.getRange(last, statusCol);
+      if (row.noted_in_crm === true) cell.setBackground("#e3f4e6");
+      else cell.setBackground("#fde2dd").setFontWeight("bold");
+    }
+    return respond({ ok: true, lead_id: row.lead_id || "" });
   } catch (err) {
     return respond({ ok: false, error: String(err && err.message ? err.message : err) });
   } finally {

@@ -4,6 +4,7 @@ import { consentField, enquiryFields } from "@/content/form";
 import { validateForm } from "@/lib/validation";
 import { deliverLead } from "@/lib/integrations/crm";
 import { recordLeadInLedger } from "@/lib/integrations/sheets";
+import { randomBytes } from "node:crypto";
 import type { Attribution } from "@/lib/attribution";
 
 /**
@@ -17,11 +18,18 @@ import type { Attribution } from "@/lib/attribution";
  * destinations at once, and returns a normalized SubmitResult the UI
  * can render without knowing anything about either.
  *
+ * Every lead gets a website-issued ID (YSC-YYYYMMDD-XXXXXX) that travels
+ * to both destinations, is shown to the visitor as a reference, and is
+ * the key for reconciling the two.
+ *
  * Two independent destinations (lib/integrations/*):
  *   1. the CRM webhook (crm.ts) — the sales pipeline;
  *   2. the Google Sheets ledger (sheets.ts) — the business's own backup
  *      of every lead, so the data survives any change of CRM provider.
- * They run in parallel; one failing never blocks the other.
+ * The CRM is called first; the ledger row is then written WITH the
+ * CRM's verdict (saved / not saved + reason), so the sheet itself shows
+ * which leads still need to be pushed into the CRM by hand. The ledger
+ * is written whatever the CRM did — a CRM failure never blocks it.
  *
  * HONESTY RULE: `ok: true` is returned ONLY when at least one configured
  * destination acknowledged the lead — i.e. the business really holds it.
@@ -47,11 +55,18 @@ export type LeadRecord = {
   lead: Record<string, string>;
   consent: { agreed: true; text: string; recordedAt: string };
   source: { ui: string } & Attribution;
-  meta: { submittedAt: string; site: "yamuna-sky-city-website" };
+  meta: { leadId: string; submittedAt: string; site: "yamuna-sky-city-website" };
 };
 
 export type SubmitResult =
-  | { ok: true; leadId?: string; brochureUrl?: string }
+  | {
+      ok: true;
+      /** Website-issued reference (always present on success). */
+      leadId: string;
+      /** The CRM's own identifier, when it returned one. */
+      crmLeadId?: string;
+      brochureUrl?: string;
+    }
   | {
       ok: false;
       reason: "invalid" | "not_configured" | "failed";
@@ -84,15 +99,18 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
   }
 
   const now = new Date().toISOString();
+  const leadId = generateLeadId(now);
   const record: LeadRecord = {
     lead: values,
     consent: { agreed: true, text: consentField.label, recordedAt: now },
     source: { ui: String(payload.source ?? "unknown").slice(0, 64), ...sanitizeAttribution(payload.attribution) },
-    meta: { submittedAt: now, site: "yamuna-sky-city-website" },
+    meta: { leadId, submittedAt: now, site: "yamuna-sky-city-website" },
   };
 
-  // Both destinations at once; neither waits for or depends on the other.
-  const [outcome, ledger] = await Promise.all([deliverLead(record), recordLeadInLedger(record)]);
+  // CRM first, then the ledger row carrying the CRM verdict. The ledger
+  // is written regardless of what the CRM returned.
+  const outcome = await deliverLead(record);
+  const ledger = await recordLeadInLedger(record, outcome);
 
   const crmConfigured = !(outcome.delivered === false && outcome.cause === "not_configured");
   const ledgerConfigured = !(ledger.recorded === false && ledger.cause === "not_configured");
@@ -108,16 +126,17 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
   // Reconciliation trail: a configured destination that did not accept
   // the lead while the other did is the case the ledger exists for.
   if (crmConfigured && !outcome.delivered && ledger.recorded) {
-    console.error(`[enquiry] CRM did not accept the lead (${outcome.cause}); it IS in the sheet ledger — re-push to CRM manually.`);
+    console.error(`[enquiry] ${leadId}: CRM did not accept the lead (${outcome.cause}); it IS in the sheet ledger (marked NOT saved) — re-push to CRM manually.`);
   }
   if (ledgerConfigured && !ledger.recorded && outcome.delivered) {
-    console.error(`[ledger] sheet write failed (${ledger.cause}); lead IS in the CRM${outcome.leadId ? ` (id ${outcome.leadId})` : ""}.`);
+    console.error(`[ledger] ${leadId}: sheet write failed (${ledger.cause}); lead IS in the CRM${outcome.leadId ? ` (CRM id ${outcome.leadId})` : ""}.`);
   }
 
   if (outcome.delivered || ledger.recorded) {
     return {
       ok: true,
-      ...(outcome.delivered && outcome.leadId ? { leadId: outcome.leadId } : {}),
+      leadId,
+      ...(outcome.delivered && outcome.leadId ? { crmLeadId: outcome.leadId } : {}),
       ...(outcome.delivered && outcome.brochureUrl ? { brochureUrl: outcome.brochureUrl } : {}),
     };
   }
@@ -130,6 +149,19 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
     reason: "failed",
     error: timedOut ? "That took too long. Please try again." : "Something went wrong. Please try again.",
   };
+}
+
+/**
+ * Website-issued lead reference: YSC-YYYYMMDD-XXXXXX. Date for humans,
+ * 6 random characters (unambiguous alphabet, ~1 billion per day) for
+ * uniqueness. Issued server-side, never by the browser.
+ */
+function generateLeadId(isoNow: string): string {
+  const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I
+  const bytes = randomBytes(6);
+  let suffix = "";
+  for (let i = 0; i < 6; i++) suffix += ALPHABET[bytes[i] % ALPHABET.length];
+  return `YSC-${isoNow.slice(0, 10).replace(/-/g, "")}-${suffix}`;
 }
 
 /** Attribution comes from the browser: whitelist keys and cap lengths. */

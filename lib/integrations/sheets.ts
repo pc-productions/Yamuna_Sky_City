@@ -8,8 +8,10 @@
  * lead; the script appends a row and answers { ok: true }.
  *
  * Independence rules:
- *  - runs alongside the CRM delivery, never instead of it and never
- *    gated by it — each destination succeeds or fails on its own;
+ *  - written for EVERY valid lead, whatever the CRM did — a CRM failure
+ *    never blocks it. The row carries the CRM verdict (noted_in_crm
+ *    TRUE/FALSE + crm_note), so the sheet itself shows which leads
+ *    still need a manual CRM push;
  *  - a shared secret (server-only env var) travels in the body because
  *    Apps Script cannot read request headers;
  *  - one attempt, bounded wait, no automatic retry (a retry after a
@@ -17,6 +19,7 @@
  */
 
 import type { LeadRecord } from "@/lib/actions/submitEnquiry";
+import type { DeliveryOutcome } from "@/lib/integrations/crm";
 
 /** Apps Script cold starts can take a few seconds; allow a bit longer than the CRM. */
 const LEDGER_TIMEOUT_MS = 15_000;
@@ -25,9 +28,27 @@ export type LedgerOutcome =
   | { recorded: true }
   | { recorded: false; cause: "not_configured" | "rejected" | "timeout" | "network" };
 
+/**
+ * CRM verdict for the sheet: a real TRUE/FALSE in `noted_in_crm` (TRUE
+ * only when the CRM acknowledged the lead) plus a short reason in
+ * `crm_note` whenever it is FALSE.
+ */
+export function describeCrmOutcome(crm: DeliveryOutcome): { notedInCrm: boolean; note: string } {
+  if (crm.delivered) return { notedInCrm: true, note: "" };
+  if (crm.cause === "not_configured") return { notedInCrm: false, note: "CRM not configured" };
+  const note =
+    crm.cause === "rejected"
+      ? "CRM rejected the lead"
+      : crm.cause === "timeout"
+        ? "CRM did not respond in time"
+        : "Could not reach the CRM";
+  return { notedInCrm: false, note };
+}
+
 /** Flat, column-friendly row. Keys become the sheet's header row. */
-export function toLedgerRow(lead: LeadRecord) {
+export function toLedgerRow(lead: LeadRecord, crm: DeliveryOutcome) {
   return {
+    lead_id: lead.meta.leadId,
     submitted_at: lead.meta.submittedAt,
     name: lead.lead.name ?? "",
     email: lead.lead.email ?? "",
@@ -44,10 +65,14 @@ export function toLedgerRow(lead: LeadRecord) {
     consent_text: lead.consent.text,
     consent_at: lead.consent.recordedAt,
     site: lead.meta.site,
+    noted_in_crm: describeCrmOutcome(crm).notedInCrm,
+    crm_note: describeCrmOutcome(crm).note,
+    crm_lead_id: crm.delivered && crm.leadId ? crm.leadId : "",
+    crm_checked_at: new Date().toISOString(),
   };
 }
 
-export async function recordLeadInLedger(lead: LeadRecord): Promise<LedgerOutcome> {
+export async function recordLeadInLedger(lead: LeadRecord, crm: DeliveryOutcome): Promise<LedgerOutcome> {
   const endpoint = process.env.LEADS_SHEET_WEBHOOK_URL;
   const secret = process.env.LEADS_SHEET_WEBHOOK_SECRET;
   if (!endpoint || !secret) return { recorded: false, cause: "not_configured" };
@@ -59,7 +84,7 @@ export async function recordLeadInLedger(lead: LeadRecord): Promise<LedgerOutcom
       // text/plain avoids a CORS preflight that Apps Script cannot answer;
       // the script parses the body as JSON regardless of the header.
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ secret, row: toLedgerRow(lead) }),
+      body: JSON.stringify({ secret, row: toLedgerRow(lead, crm) }),
       signal: AbortSignal.timeout(LEDGER_TIMEOUT_MS),
       redirect: "follow", // Apps Script answers POSTs with a 302 to the result
       cache: "no-store",

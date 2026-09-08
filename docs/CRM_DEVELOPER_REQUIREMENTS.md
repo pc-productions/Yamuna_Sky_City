@@ -51,11 +51,13 @@ appear in n8n's Executions list, not on the canvas.
 
 ```json
 {
+  "lead_id": "YSC-20260908-7K3Q9F",
   "name":    "Visitor name",
   "email":   "visitor@example.com",
   "phone":   "+91 98765 43210",
   "project": "Yamuna Sky City",
   "details": {
+    "lead_id": "YSC-20260908-7K3Q9F",
     "city": "Mangalore",
     "source": {
       "ui": "modal",
@@ -80,6 +82,7 @@ appear in n8n's Executions list, not on the canvas.
 
 | Key | Notes |
 |---|---|
+| `lead_id` | website-issued reference (`YSC-YYYYMMDD-XXXXXX`), unique per lead; please store it on the CRM record so leads can be reconciled with the business's own ledger |
 | `name` | required; up to 200 characters |
 | `email` | required; validated format |
 | `phone` | required; **as typed by the visitor** (7–15 digits, optional `+`/`00`, spaces, dashes, brackets allowed) |

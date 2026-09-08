@@ -54,6 +54,12 @@ export function EnquiryForm({
             {formCopy.successHeading}
           </p>
           <p className={`mt-3 text-lg ${textTone}`}>{formCopy.successMessage}</p>
+          {result?.ok && result.leadId && (
+            <p className={`mt-2 text-sm ${labelTone}`}>
+              {formCopy.referenceLabel}:{" "}
+              <span className={`font-medium tracking-wide ${textTone}`}>{result.leadId}</span>
+            </p>
+          )}
           <p className={`mt-2 text-base ${labelTone}`}>
             {brochure.available ? formCopy.brochureReadyMessage : formCopy.brochurePendingMessage}
           </p>

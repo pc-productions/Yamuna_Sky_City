@@ -32,12 +32,12 @@ Open http://localhost:3000.
 
 ## Wiring up a lead backend
 
-Leads go to **two independent destinations in parallel** from the server action (`lib/actions/submitEnquiry.ts`):
+Every lead gets a website-issued reference (`YSC-YYYYMMDD-XXXXXX`) and goes to **two independent destinations** from the server action (`lib/actions/submitEnquiry.ts`), CRM first, then the sheet carrying the CRM verdict (`noted_in_crm` TRUE/FALSE + `crm_note`):
 
 1. the CRM webhook — `lib/integrations/crm.ts`, `ENQUIRY_WEBHOOK_URL` (see `docs/CRM_INTEGRATION.md`);
 2. the **Google Sheets lead ledger** — `lib/integrations/sheets.ts`, `LEADS_SHEET_WEBHOOK_URL` + `LEADS_SHEET_WEBHOOK_SECRET`, the business's own record of every lead, independent of the CRM provider (setup: `docs/GOOGLE_SHEETS_LEADS.md`, script: `integrations/google-sheets/Code.gs`).
 
-The visitor sees success only when at least one configured destination acknowledged the lead; while neither is configured the form shows an honest "not available yet" message and never fakes a submission. A destination that fails while the other succeeds is logged (`[enquiry]` / `[ledger]`) for reconciliation.
+The sheet row is written whatever the CRM returned, so the sheet itself lists the leads that still need a manual CRM push. The visitor sees success (with their reference) only when at least one configured destination acknowledged the lead; while neither is configured the form shows an honest "not available yet" message and never fakes a submission.
 
 Never expose backend credentials via `NEXT_PUBLIC_*` variables; keep integration secrets server-only.
 

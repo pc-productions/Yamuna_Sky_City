@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+/** Server actions from this page call the CRM (10 s cap) and then the
+    sheet ledger (15 s cap) in sequence; keep headroom on the platform. */
+export const maxDuration = 30;
+
 export default function Home() {
   return (
     <>
