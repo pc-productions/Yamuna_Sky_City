@@ -117,7 +117,7 @@ export const externalLinks = {
  * other change.
  */
 export const sectionVisibility = {
-  peopleBehind: true, // project team verified from the official brochure
+  peopleBehind: false, // content ready (verified from the brochure); switched off for launch by client decision
   legacy: false, // TODO: enable once content/legacy.ts has verified content
 } as const;
 
