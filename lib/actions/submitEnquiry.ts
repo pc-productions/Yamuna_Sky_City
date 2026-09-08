@@ -14,9 +14,10 @@ import type { Attribution } from "@/lib/attribution";
  *
  * This action owns what the website vouches for: it re-validates the
  * submission, assembles the normalized LeadRecord (fields + consent +
- * UI source + marketing attribution + timestamp), hands it to BOTH lead
- * destinations at once, and returns a normalized SubmitResult the UI
- * can render without knowing anything about either.
+ * UI source + marketing attribution + timestamp), hands it to both lead
+ * destinations in sequence (CRM, then the sheet with the CRM verdict),
+ * and returns a normalized SubmitResult the UI can render without
+ * knowing anything about either.
  *
  * Every lead gets a website-issued ID (YSC-YYYYMMDD-XXXXXXXX) that travels
  * to both destinations, is shown to the visitor as a reference, and is

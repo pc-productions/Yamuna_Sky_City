@@ -70,10 +70,13 @@ EnquiryForm (modal / contact)
   (ONLY on confirmed delivery)
 ```
 
-* **Parallel ledger:** every lead is also written to the business's own
-  Google Sheet (`lib/integrations/sheets.ts`, see
-  `docs/GOOGLE_SHEETS_LEADS.md`) at the same time — independent of the
-  CRM, never gated by it. The CRM contract below is unaffected.
+* **Second destination, in sequence:** every lead is also written to
+  the business's own Google Sheet (`lib/integrations/sheets.ts`, see
+  `docs/GOOGLE_SHEETS_LEADS.md`) immediately after the CRM call, with
+  the CRM's verdict in the row. The two are independent in outcome, not
+  in timing: a CRM failure never prevents the sheet row, and a sheet
+  failure never changes what the CRM received. The CRM contract below
+  is unaffected.
 * **Confidential from the CRM developer.** The CRM developer is not to
   know the sheet exists. Nothing in the webhook payload, in
   `docs/CRM_DEVELOPER_REQUIREMENTS.md` / `.docx`, or in any message to
