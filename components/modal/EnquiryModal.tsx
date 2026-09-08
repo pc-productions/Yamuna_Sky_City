@@ -46,7 +46,8 @@ export function EnquiryModal({
         <h2 id="enquiry-modal-heading" className="text-display-md mt-6 pr-6 text-ink">
           {formCopy.heading}
         </h2>
-        <p className="mt-4 text-sm leading-relaxed text-ink-muted">{formCopy.supportingLine}</p>
+        <p className="mt-4 text-sm leading-relaxed text-ink">{formCopy.introLine}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-muted">{formCopy.supportingLine}</p>
 
         <div className="mt-10">
           <EnquiryForm source="modal" tone="light" />

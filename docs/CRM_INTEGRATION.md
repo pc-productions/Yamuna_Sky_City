@@ -129,7 +129,7 @@ adapter will map it onto whatever field names the CRM requires.
   },
   "consent": {
     "agreed": true,
-    "text": "I agree to be contacted by Yamuna Sky City regarding this enquiry.",
+    "text": "I agree to be contacted regarding this enquiry.",
     "recordedAt": "ISO-8601 timestamp"
   },
   "source": {

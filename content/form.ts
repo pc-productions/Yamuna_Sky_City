@@ -48,7 +48,7 @@ export const enquiryFields: FormFieldConfig[] = [
 export const consentField = {
   id: "consent",
   label:
-    "I agree to be contacted by Yamuna Sky City regarding this enquiry.",
+    "I agree to be contacted regarding this enquiry.",
   required: true,
 } as const;
 
@@ -57,11 +57,12 @@ export const formCopy = {
   /* The invitation: the brochure is the reward for sharing details —
      an offer, not a gate. Contents named here (floor plans, 3 & 4 BHK
      residences, amenities) are verified against the brochure PDF. */
+  introLine: "Discover the residences, floor plans and amenities.",
   supportingLine:
-    "Share a few details and the complete Yamuna Sky City brochure is yours to download right away: floor plans, the 3 and 4 BHK residences and the amenities. Our team will also be in touch to arrange your private viewing.",
-  /* Small reassurance beside the submit button (only when a brochure
-     is configured in content/site.ts). */
-  brochurePromise: "Your brochure download appears the moment you submit.",
+    "Submit your details to unlock the complete project brochure and request a private viewing.",
+  /* Reassurance below the form's buttons (only when a brochure is
+     configured in content/site.ts). */
+  brochurePromise: "Your brochure will be available immediately after submission.",
   submitLabel: "SUBMIT ENQUIRY",
   submittingLabel: "Submitting…",
   /* After an attempt the CRM could not confirm (the lead itself is safe

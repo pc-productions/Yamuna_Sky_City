@@ -159,10 +159,6 @@ export function EnquiryForm({
         </p>
       )}
 
-      {brochureConfig.href && (
-        <p className={`-mt-1 text-sm ${labelTone}`}>{formCopy.brochurePromise}</p>
-      )}
-
       <div className="flex flex-col gap-4 pt-2 sm:flex-row">
         <Button type="submit" variant="primary" disabled={isSubmitting} className="sm:flex-1">
           {isSubmitting
@@ -177,8 +173,11 @@ export function EnquiryForm({
           </Button>
         )}
       </div>
+      {brochureConfig.href && (
+        <p className={`-mt-2 text-sm ${labelTone}`}>{formCopy.brochurePromise}</p>
+      )}
       {contact.phoneDisplay && contact.phoneHref && (
-        <p className={`text-xs ${labelTone}`}>
+        <p className={`-mt-2 text-xs ${labelTone}`}>
           Or call us at{" "}
           <a href={contact.phoneHref} className="underline underline-offset-2">
             {contact.phoneDisplay}

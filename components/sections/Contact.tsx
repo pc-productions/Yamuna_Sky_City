@@ -27,7 +27,8 @@ export function Contact() {
               className="text-display-lg mt-8 text-ink"
             />
             <Reveal delayMs={340}>
-              <p className="mt-7 max-w-md text-lg leading-relaxed text-ink-muted">
+              <p className="mt-7 max-w-md text-lg leading-relaxed text-ink">{formCopy.introLine}</p>
+              <p className="mt-4 max-w-md text-lg leading-relaxed text-ink-muted">
                 {formCopy.supportingLine}
               </p>
             </Reveal>

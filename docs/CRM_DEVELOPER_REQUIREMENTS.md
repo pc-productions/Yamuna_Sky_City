@@ -71,7 +71,7 @@ appear in n8n's Executions list, not on the canvas.
     },
     "consent": {
       "agreed": true,
-      "text": "I agree to be contacted by Yamuna Sky City regarding this enquiry.",
+      "text": "I agree to be contacted regarding this enquiry.",
       "recordedAt": "2026-09-07T09:48:01.212Z"
     },
     "submittedAt": "2026-09-07T09:48:01.212Z",
