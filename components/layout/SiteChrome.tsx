@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { captureAttribution } from "@/lib/attribution";
+import { ENQUIRY_OPEN_EVENT } from "@/lib/enquiryTrigger";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PersistentCTA } from "@/components/layout/PersistentCTA";
@@ -17,6 +18,14 @@ export function SiteChrome({ children }: { children: ReactNode }) {
   // the enquiry lead record — captured once per session, read at submit.
   useEffect(() => {
     captureAttribution();
+  }, []);
+
+  // Server-rendered pages (the Journal's "Request brochure") open the
+  // same modal by dispatching a window event — see lib/enquiryTrigger.ts.
+  useEffect(() => {
+    const open = () => setModalOpen(true);
+    window.addEventListener(ENQUIRY_OPEN_EVENT, open);
+    return () => window.removeEventListener(ENQUIRY_OPEN_EVENT, open);
   }, []);
 
   return (

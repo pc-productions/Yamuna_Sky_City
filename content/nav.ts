@@ -9,7 +9,8 @@ export type NavLink = {
 
 /**
  * Primary navigation. Hrefs are in-page anchors that match each section's
- * `id` (see components/sections/*). Reorder/add/remove here only. Links
+ * `id` (see components/sections/*) or real routes (the Journal at /blog).
+ * The same list feeds the footer. Reorder/add/remove here only. Links
  * that target a section hidden via `sectionVisibility` are dropped
  * automatically so the nav never points at something that isn't there.
  */
@@ -18,6 +19,7 @@ const allNavLinks: NavLink[] = [
   { label: "Location", href: "/#location" },
   { label: "3D Experience", href: "/#explore-3d" },
   { label: "Legacy", href: "/#legacy", requires: "legacy" },
+  { label: "Journal", href: "/blog" },
   { label: "Contact", href: "/#contact" },
 ];
 

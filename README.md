@@ -29,6 +29,7 @@ Open http://localhost:3000.
 - `lib/motion.ts` + `components/motion/` — the **global motion system**: one set of durations/easings/distances (`lib/motion.ts`, mirrored as CSS variables in `globals.css`), the smooth-scroll provider (`SmoothScroll`, Lenis — wheel only, off on touch and under reduced motion, synced with GSAP ScrollTrigger, anchor-aware) and `ParallaxMedia`. `Reveal` has four variants (fade / lines / image / stagger) so different content types move differently but always in the same language; markup is authored in its finished state so reduced-motion and no-JS visitors see the complete page. The hero is a sticky backdrop that later sections slide over (`main > section` rule in `globals.css`).
 - `components/forms/` + `lib/hooks/useEnquiryForm.ts` + `lib/validation.ts` — the shared enquiry form logic used by both the Contact section and the Enquiry modal.
 - `lib/actions/submitEnquiry.ts` — the one place leads leave the website, fanning out to `lib/integrations/crm.ts` (CRM) and `lib/integrations/sheets.ts` (Google Sheets ledger) in parallel (see below).
+- `content/blog/articles/*.md` + `lib/blog/*` + `app/blog/*` — the **Journal** (SEO blog): Markdown articles, statically generated at `/blog`, `/blog/<slug>` and `/blog/category/<slug>`, with per-article metadata, social cards, JSON-LD and automatic sitemap entries. How to add an article: `docs/JOURNAL.md`.
 
 ## Wiring up a lead backend
 
