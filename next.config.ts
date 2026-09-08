@@ -30,6 +30,13 @@ const nextConfig: NextConfig = {
             key: "Strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains",
           },
+          {
+            // Isolates the window from cross-origin openers while still
+            // allowing the site's own new-tab links (WhatsApp, 3D
+            // experience, brochure) to open normally.
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin-allow-popups",
+          },
         ],
       },
       {

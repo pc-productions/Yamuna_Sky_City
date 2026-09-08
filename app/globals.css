@@ -269,25 +269,25 @@ body {
   }
 }
 
+/* Opacity/transform only — box-shadow and letter-spacing animations run
+   on the main thread and were flagged as non-composited by Lighthouse. */
 @keyframes cue-ring-pulse {
   0%, 100% {
     opacity: 0.45;
-    box-shadow: 0 0 0 0 rgba(180, 40, 16, 0);
+    transform: scale(1);
   }
   50% {
     opacity: 0.75;
-    box-shadow: 0 0 0 4px rgba(180, 40, 16, 0.12);
+    transform: scale(1.06);
   }
 }
 
 @keyframes cue-label-fade {
   0%, 100% {
     opacity: 0.45;
-    letter-spacing: 0.28em;
   }
   50% {
     opacity: 0.85;
-    letter-spacing: 0.32em;
   }
 }
 
