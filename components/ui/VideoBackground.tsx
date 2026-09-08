@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useId, type RefObject } from "react";
 import type { VideoSource } from "@/content/media";
+import { isNarrowViewport } from "@/lib/motion";
 
 /**
  * Full-bleed background video with graceful degradation:
@@ -15,6 +16,11 @@ import type { VideoSource } from "@/content/media";
  * never cropped) is configured per breakpoint via `media.objectPosition`
  * in content/media.ts and applied through a small scoped <style> block —
  * no animation/positioning library required.
+ *
+ * Responsive weight: when `media.mobileSrc` is set, narrow viewports get
+ * that lighter encode instead of `src`. Chosen at render time (browsers
+ * ignore `media` attributes on <source>); the hero only mounts its video
+ * after hydration, so the choice is made with the real viewport.
  */
 export function VideoBackground({
   media,
@@ -35,6 +41,7 @@ export function VideoBackground({
   const positionClass = `video-pos-${reactId}`;
   const { mobile, tablet, desktop } = media.objectPosition ?? {};
   const hasCustomPosition = Boolean(mobile || tablet || desktop);
+  const src = media.mobileSrc && isNarrowViewport() ? media.mobileSrc : media.src;
 
   return (
     <div className={`relative h-full w-full overflow-hidden ${className}`}>
@@ -46,7 +53,7 @@ export function VideoBackground({
         `}</style>
       )}
 
-      {media.src ? (
+      {src ? (
         <video
           ref={videoRef}
           className={`h-full w-full object-cover ${hasCustomPosition ? positionClass : ""}`}
@@ -61,7 +68,7 @@ export function VideoBackground({
           {/* WebM (VP9) first where provided — smaller for supporting
               browsers; the H.264 MP4 is the universal fallback. */}
           {media.webmSrc && <source src={media.webmSrc} type="video/webm" />}
-          <source src={media.src} type="video/mp4" />
+          <source src={src} type="video/mp4" />
         </video>
       ) : (
         <Image
