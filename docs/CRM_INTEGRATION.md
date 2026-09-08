@@ -83,10 +83,29 @@ EnquiryForm (modal / contact)
   any **2xx** response is treated as an acknowledged lead. Unset → the
   site shows an honest "not available yet" state and never fakes success.
 * **Honesty rule:** the thank-you / brochure state is shown only after
-  the destination acknowledges the lead. Any failure keeps the form,
-  its values, and offers retry.
+  a destination acknowledges the lead. Any failure keeps the form, its
+  values, and offers retry.
+* **Brochure policy** (`lib/actions/submitEnquiry.ts`, server-side):
+  1. CRM accepts the lead → thank-you + brochure immediately.
+  2. CRM fails but the sheet ledger has the lead → the visitor is asked
+     to submit **once more** (form kept, button reads "Submit again").
+     The retry carries a server-signed token, so it reuses the **same
+     `lead_id`** and the server knows it is attempt 2.
+  3. CRM fails **again** and the sheet has the lead → thank-you +
+     brochure anyway. The business holds the lead (sheet row marked
+     `noted_in_crm` = FALSE, `attempt` = 2) and a CRM outage must not
+     cost a client. Logged as `[enquiry] … brochure released on the
+     ledger`.
+  4. CRM and sheet both fail → error, retry without limit, no brochure.
+  5. CRM not configured, sheet ok → nothing to retry against; the sheet
+     alone confirms the lead.
+  The visitor-facing text is generic in every case ("A temporary server
+  issue interrupted your submission…"): it never names the CRM, the
+  sheet, or the reason. Reasons go to the server logs only.
 * **No automatic retries** — a retry after a lost response could create a
-  duplicate lead. Retries are manual (the user resubmits).
+  duplicate lead. Retries are manual (the visitor resubmits); a resubmit
+  sends the same `lead_id` with `details.attempt` incremented, so a CRM
+  that stores `lead_id` can recognise the duplicate.
 
 ## The website lead record (what the website can provide)
 

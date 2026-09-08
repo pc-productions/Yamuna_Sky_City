@@ -14,8 +14,12 @@
  *    still need a manual CRM push;
  *  - a shared secret (server-only env var) travels in the body because
  *    Apps Script cannot read request headers;
- *  - one attempt, bounded wait, no automatic retry (a retry after a
- *    lost response would write the row twice).
+ *  - one attempt per submission, bounded wait, no automatic retry;
+ *  - keyed by `lead_id`: when the visitor is asked to submit again
+ *    (CRM failure), the retry carries the SAME lead ID and the script
+ *    UPDATES that row instead of appending — so a lead the CRM accepts
+ *    on the second go flips from FALSE to TRUE in place, and the
+ *    `attempt` column shows how many submissions it took.
  */
 
 import type { LeadRecord } from "@/lib/actions/submitEnquiry";
@@ -55,6 +59,7 @@ export function toLedgerRow(lead: LeadRecord, crm: DeliveryOutcome) {
     mobile: lead.lead.mobile ?? "",
     city: lead.lead.city ?? "",
     source_ui: lead.source.ui,
+    attempt: lead.meta.attempt,
     utm_source: lead.source.utm_source ?? "",
     utm_medium: lead.source.utm_medium ?? "",
     utm_campaign: lead.source.utm_campaign ?? "",

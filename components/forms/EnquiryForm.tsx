@@ -17,6 +17,11 @@ import { FormField } from "@/components/forms/FormField";
  * A missing lead backend surfaces as an honest "not available yet"
  * message — never a false success confirmation.
  *
+ * Retry state: the server could not get the CRM to confirm the lead on
+ * the first go (the lead is already safe in the ledger); the form stays
+ * with its values and asks for one more submit. What happens after that
+ * is the server's decision (lib/actions/submitEnquiry.ts).
+ *
  * Success state (only after the lead destination CONFIRMED the lead):
  * thank-you copy + brochure access resolved by lib/brochure.ts, with
  * WhatsApp as a secondary option. The form knows nothing about the CRM
@@ -142,6 +147,12 @@ export function EnquiryForm({
         </p>
       )}
 
+      {status === "retry" && (
+        <p role="alert" className={`text-sm ${tone === "dark" ? "text-mist" : "text-ink"}`}>
+          {errorMessage ?? formCopy.retryMessageFallback}
+        </p>
+      )}
+
       {status === "not_configured" && (
         <p role="status" className={`text-sm ${labelTone}`}>
           {formCopy.notConfiguredMessage}
@@ -150,7 +161,11 @@ export function EnquiryForm({
 
       <div className="flex flex-col gap-4 pt-2 sm:flex-row">
         <Button type="submit" variant="primary" disabled={isSubmitting} className="sm:flex-1">
-          {isSubmitting ? formCopy.submittingLabel : formCopy.submitLabel}
+          {isSubmitting
+            ? formCopy.submittingLabel
+            : status === "retry"
+              ? formCopy.retrySubmitLabel
+              : formCopy.submitLabel}
         </Button>
         {whatsappUrl && (
           <Button href={whatsappUrl} variant={outlineVariant} className="sm:flex-1">

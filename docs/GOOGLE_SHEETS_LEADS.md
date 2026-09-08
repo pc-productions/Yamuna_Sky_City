@@ -70,11 +70,19 @@ One row per lead:
 | `crm_note` | the reason whenever `noted_in_crm` is FALSE (`CRM rejected the lead`, `CRM did not respond in time`, `Could not reach the CRM`, `CRM not configured`) |
 | `crm_lead_id` | the CRM's own identifier, when the CRM returns one |
 | `crm_checked_at` | when the CRM verdict was recorded |
+| `attempt` | how many times the visitor submitted this lead (`1` normally; `2` when they were asked to submit again after a CRM failure) |
 | `utm_source` … `utm_content`, `referrer`, `landing_page` | marketing attribution |
 | `consent_text`, `consent_at`, `site` | consent record |
 
 If the website ever sends an extra column, the script adds it to the
 header automatically.
+
+**One row per lead, keyed by `lead_id`.** When a visitor is asked to
+submit again (see below), the website sends the same `lead_id`; the
+script finds that row and updates it in place — `noted_in_crm`,
+`crm_note`, `attempt` and `crm_checked_at` then reflect the latest
+attempt, and `received_at` keeps the first arrival. Rows are never
+duplicated by a retry.
 
 ## How the two destinations interact
 
@@ -82,14 +90,19 @@ header automatically.
   the CRM's verdict**. The sheet row is written whatever the CRM did — a
   CRM failure or timeout never prevents it.
 - The visitor sees the thank-you screen (with their `lead_id` as a
-  reference) when **at least one** configured destination accepted the
-  lead — the business genuinely holds it.
+  reference and the brochure) as soon as the **CRM** accepts the lead.
+  If the CRM fails, the visitor is asked to submit **once more**; if it
+  fails again and the lead is in the sheet, they get the thank-you and
+  brochure on the strength of the sheet alone — the business genuinely
+  holds the lead, and a CRM outage must not cost a client. Full policy:
+  `docs/CRM_INTEGRATION.md`.
 - **Filter the sheet on `noted_in_crm` = FALSE** to find leads that
   still need to be entered in the CRM by hand; use `lead_id` when
   referring to them. The platform logs carry the same information
   (`[enquiry]` / `[ledger]` in Vercel → Logs).
-- One attempt per destination, no automatic retries (a retry after a
-  lost response would duplicate the row / the CRM lead).
+- One attempt per destination per submission, no automatic retries. A
+  visitor's manual resubmit reuses the lead's `lead_id`, so it updates
+  the existing sheet row rather than adding one.
 
 ## Many visitors at once
 
@@ -97,7 +110,7 @@ Each submission runs in its own serverless invocation with no shared
 state, so simultaneous visitors never interfere on the website side.
 Lead IDs come from a cryptographic random source (8 characters, about a
 trillion combinations per day). In the sheet, the Apps Script takes a
-script-wide lock for each append, so concurrent rows are written one
+script-wide lock for each write, so concurrent rows are written one
 after another and the header can never be created twice. Google allows
 30 simultaneous executions per script, far above a marketing site's
 peak; a submission that could not get the lock within 12 s is reported

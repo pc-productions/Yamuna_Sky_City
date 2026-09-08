@@ -52,7 +52,9 @@ export type DeliveryOutcome =
  * visitor's thank-you screen, so the two systems can be reconciled. `phone` is sent as typed (the CRM developer
  * has not asked for E.164). `project` is the inquired project name.
  * `details` carries everything else the website records; the workflow
- * can ignore it.
+ * can ignore it. `details.attempt` > 1 means the visitor was asked to
+ * submit again after a failed attempt: the SAME lead_id is sent again,
+ * so a workflow that stores lead_id can treat it as a duplicate.
  */
 export function toCrmRequest(lead: LeadRecord) {
   return {
@@ -67,6 +69,7 @@ export function toCrmRequest(lead: LeadRecord) {
       source: lead.source,
       consent: lead.consent,
       submittedAt: lead.meta.submittedAt,
+      attempt: lead.meta.attempt,
       site: lead.meta.site,
     },
   };

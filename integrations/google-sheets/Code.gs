@@ -8,7 +8,14 @@
  * the website's hosting platform. Setup: docs/GOOGLE_SHEETS_LEADS.md.
  *
  * Request body (JSON):  { "secret": "...", "row": { column: value, ... } }
- * Response (JSON):      { "ok": true } | { "ok": false, "error": "..." }
+ * Response (JSON):      { "ok": true, "lead_id": "...", "updated": false }
+ *                     | { "ok": false, "error": "..." }
+ *
+ * Rows are keyed by `lead_id`. A row that already exists for the lead_id
+ * is UPDATED in place (the website re-sends the same lead when a visitor
+ * is asked to submit again after a CRM failure); otherwise a new row is
+ * appended. So each lead is exactly one row, whose noted_in_crm cell
+ * reflects the LATEST attempt.
  */
 
 // Change this to a long random value, then use the SAME value on the website.
@@ -18,14 +25,14 @@ var SHEET_NAME = "Leads";
 // Column order. Any extra keys the website sends are appended after these.
 var COLUMNS = [
   "lead_id", "submitted_at", "name", "email", "mobile", "city", "source_ui",
-  "noted_in_crm", "crm_note", "crm_lead_id", "crm_checked_at",
+  "noted_in_crm", "crm_note", "crm_lead_id", "crm_checked_at", "attempt",
   "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
   "referrer", "landing_page", "consent_text", "consent_at", "site",
 ];
 
 function doPost(e) {
   // Concurrent submissions are serialised here so two leads can never
-  // write the same row or race the header; each append takes well under
+  // write the same row or race the header; each write takes well under
   // a second, so a queue of simultaneous visitors clears quickly. The
   // website waits up to 15 s for this call.
   var lock = LockService.getScriptLock();
@@ -55,23 +62,43 @@ function doPost(e) {
       });
     }
 
+    // Same lead again (retry after a CRM failure)? Find its row.
+    var targetRow = 0;
+    var idCol = headers.indexOf("lead_id") + 1;
+    var lastRow = sheet.getLastRow();
+    if (idCol > 0 && row.lead_id && lastRow > 1) {
+      var ids = sheet.getRange(2, idCol, lastRow - 1, 1).getValues();
+      for (var i = 0; i < ids.length; i++) {
+        if (String(ids[i][0]) === String(row.lead_id)) { targetRow = i + 2; break; }
+      }
+    }
+
     var values = headers.map(function (h) {
       if (h === "received_at") return new Date();
       var v = row[h];
       if (v === undefined || v === null) return "";
-      return typeof v === "boolean" ? v : String(v); // keep TRUE/FALSE real booleans
+      // keep TRUE/FALSE and numbers real so filters and formulas work
+      return typeof v === "boolean" || typeof v === "number" ? v : String(v);
     });
-    sheet.appendRow(values);
+
+    var updated = targetRow > 0;
+    if (updated) {
+      // Update in place; keep the first-received timestamp.
+      values[0] = sheet.getRange(targetRow, 1).getValue() || values[0];
+      sheet.getRange(targetRow, 1, 1, values.length).setValues([values]);
+    } else {
+      sheet.appendRow(values);
+      targetRow = sheet.getLastRow();
+    }
 
     // Make leads the CRM did NOT accept impossible to miss.
     var statusCol = headers.indexOf("noted_in_crm") + 1;
     if (statusCol > 0) {
-      var last = sheet.getLastRow();
-      var cell = sheet.getRange(last, statusCol);
-      if (row.noted_in_crm === true) cell.setBackground("#e3f4e6");
+      var cell = sheet.getRange(targetRow, statusCol);
+      if (row.noted_in_crm === true) cell.setBackground("#e3f4e6").setFontWeight("normal");
       else cell.setBackground("#fde2dd").setFontWeight("bold");
     }
-    return respond({ ok: true, lead_id: row.lead_id || "" });
+    return respond({ ok: true, lead_id: row.lead_id || "", updated: updated });
   } catch (err) {
     return respond({ ok: false, error: String(err && err.message ? err.message : err) });
   } finally {

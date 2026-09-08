@@ -58,6 +58,12 @@ export const formCopy = {
     "Share your details and our team will be in touch to arrange your private viewing.",
   submitLabel: "SUBMIT ENQUIRY",
   submittingLabel: "Submitting…",
+  /* After an attempt the CRM could not confirm (the lead itself is safe
+     in the business's ledger): the form stays, values kept, and the
+     visitor is asked once more. Wording is generic on purpose — the
+     visitor never learns which backend failed or why. */
+  retrySubmitLabel: "SUBMIT AGAIN",
+  retryMessageFallback: "A temporary server issue interrupted your submission. Please click Submit Again.",
   /* Success state — shown ONLY after the lead destination has confirmed
      the lead. The brochure lines are used by lib/brochure.ts's
      resolution: "ready" when a brochure is available, "pending" (an

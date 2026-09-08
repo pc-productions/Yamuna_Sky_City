@@ -4,7 +4,7 @@ import { consentField, enquiryFields } from "@/content/form";
 import { validateForm } from "@/lib/validation";
 import { deliverLead } from "@/lib/integrations/crm";
 import { recordLeadInLedger } from "@/lib/integrations/sheets";
-import { randomBytes } from "node:crypto";
+import { generateLeadId, issueRetryToken, verifyRetryToken } from "@/lib/leadReference";
 import type { Attribution } from "@/lib/attribution";
 
 /**
@@ -36,6 +36,19 @@ import type { Attribution } from "@/lib/attribution";
  * Neither configured → `not_configured`, never success. A destination
  * that failed while the other succeeded is logged server-side
  * ("[enquiry]" / "[ledger]" in the platform logs) for reconciliation.
+ *
+ * BROCHURE POLICY (business rule, enforced here, not in the browser):
+ *   - CRM accepted the lead            → thank-you + brochure at once.
+ *   - CRM failed, sheet has the lead   → 1st time: keep the form and ask
+ *     the visitor to submit again (`reason: "retry"`). The retry carries
+ *     a signed token so it reuses the SAME lead ID and the server knows
+ *     it is attempt 2. If the CRM fails AGAIN and the sheet has the lead,
+ *     the visitor gets the thank-you + brochure anyway: the business
+ *     holds the lead in its own ledger (marked NOT saved in CRM, to be
+ *     pushed by hand) and a CRM outage must not cost a client.
+ *   - CRM failed, sheet failed too     → error, retry (no limit).
+ *   - CRM not configured, sheet ok     → there is nothing to retry
+ *     against; the ledger alone confirms the lead (brochure at once).
  */
 
 export type EnquiryPayload = {
@@ -48,6 +61,8 @@ export type EnquiryPayload = {
   /** Spam signals: hidden honeypot value and ms between mount and submit. */
   honeypot?: string;
   elapsedMs?: number;
+  /** Returned by a previous unsuccessful attempt; ties the retry to the same lead. */
+  retryToken?: string;
 };
 
 /** The website's own lead record — what the integration boundary receives. */
@@ -55,7 +70,7 @@ export type LeadRecord = {
   lead: Record<string, string>;
   consent: { agreed: true; text: string; recordedAt: string };
   source: { ui: string } & Attribution;
-  meta: { leadId: string; submittedAt: string; site: "yamuna-sky-city-website" };
+  meta: { leadId: string; submittedAt: string; attempt: number; site: "yamuna-sky-city-website" };
 };
 
 export type SubmitResult =
@@ -63,18 +78,38 @@ export type SubmitResult =
       ok: true;
       /** Website-issued reference (always present on success). */
       leadId: string;
+      /** Which destination vouches for the lead: the CRM, or the sheet ledger after the CRM failed repeatedly. */
+      capturedBy: "crm" | "ledger";
       /** The CRM's own identifier, when it returned one. */
       crmLeadId?: string;
       brochureUrl?: string;
     }
   | {
       ok: false;
-      reason: "invalid" | "not_configured" | "failed";
+      /**
+       * "retry": the lead is safe in the ledger but the CRM did not take
+       * it yet — the UI keeps the form and asks for one more submit.
+       */
+      reason: "invalid" | "not_configured" | "failed" | "retry";
       /** Safe, user-facing text only — never destination internals. */
       error: string;
+      /** Send back on the next submit so it counts as the same lead. */
+      retryToken?: string;
     };
 
 const MAX_FIELD_LENGTH = 200;
+/**
+ * How many times the CRM may fail for one lead before the brochure is
+ * released on the strength of the sheet ledger alone.
+ */
+const CRM_ATTEMPTS_BEFORE_LEDGER_FALLBACK = 2;
+/**
+ * Visitor-facing wording. Deliberately generic: the visitor must never
+ * learn WHICH backend failed or why (no "CRM", no "sheet", no reasons) —
+ * those details go to the server logs only.
+ */
+const RETRY_MESSAGE = "A temporary server issue interrupted your submission. Please click Submit Again.";
+const FAILED_MESSAGE = "A temporary server issue interrupted your submission. Please try again.";
 /** Submissions faster than this after the form mounted are treated as bots. */
 const MIN_SUBMIT_MS = 1_500;
 
@@ -99,12 +134,16 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
   }
 
   const now = new Date().toISOString();
-  const leadId = generateLeadId(now);
+  // A valid retry token means "same lead, next attempt"; anything else
+  // (absent, tampered, from another deployment) starts a fresh lead.
+  const retry = verifyRetryToken(payload.retryToken);
+  const leadId = retry?.leadId ?? generateLeadId(now);
+  const attempt = retry ? retry.attempt + 1 : 1;
   const record: LeadRecord = {
     lead: values,
     consent: { agreed: true, text: consentField.label, recordedAt: now },
     source: { ui: String(payload.source ?? "unknown").slice(0, 64), ...sanitizeAttribution(payload.attribution) },
-    meta: { leadId, submittedAt: now, site: "yamuna-sky-city-website" },
+    meta: { leadId, submittedAt: now, attempt, site: "yamuna-sky-city-website" },
   };
 
   // CRM first, then the ledger row carrying the CRM verdict. The ledger
@@ -125,19 +164,41 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
 
   // Reconciliation trail: a configured destination that did not accept
   // the lead while the other did is the case the ledger exists for.
-  if (crmConfigured && !outcome.delivered && ledger.recorded) {
-    console.error(`[enquiry] ${leadId}: CRM did not accept the lead (${outcome.cause}); it IS in the sheet ledger (marked NOT saved) — re-push to CRM manually.`);
-  }
   if (ledgerConfigured && !ledger.recorded && outcome.delivered) {
     console.error(`[ledger] ${leadId}: sheet write failed (${ledger.cause}); lead IS in the CRM${outcome.leadId ? ` (CRM id ${outcome.leadId})` : ""}.`);
   }
 
-  if (outcome.delivered || ledger.recorded) {
+  if (outcome.delivered) {
     return {
       ok: true,
       leadId,
-      ...(outcome.delivered && outcome.leadId ? { crmLeadId: outcome.leadId } : {}),
-      ...(outcome.delivered && outcome.brochureUrl ? { brochureUrl: outcome.brochureUrl } : {}),
+      capturedBy: "crm",
+      ...(outcome.leadId ? { crmLeadId: outcome.leadId } : {}),
+      ...(outcome.brochureUrl ? { brochureUrl: outcome.brochureUrl } : {}),
+    };
+  }
+
+  const retryToken = issueRetryToken({ leadId, attempt });
+
+  if (ledger.recorded) {
+    if (!crmConfigured) {
+      // No CRM to wait for: the ledger is the only destination.
+      return { ok: true, leadId, capturedBy: "ledger" };
+    }
+    if (attempt >= CRM_ATTEMPTS_BEFORE_LEDGER_FALLBACK) {
+      console.error(
+        `[enquiry] ${leadId}: CRM failed ${attempt} times (${outcome.cause}); lead IS in the sheet ledger (marked NOT saved) — brochure released on the ledger. Re-push to CRM manually.`,
+      );
+      return { ok: true, leadId, capturedBy: "ledger" };
+    }
+    console.warn(
+      `[enquiry] ${leadId}: attempt ${attempt} — CRM did not accept the lead (${outcome.cause}); it IS in the sheet ledger (marked NOT saved); visitor asked to submit again.`,
+    );
+    return {
+      ok: false,
+      reason: "retry",
+      error: RETRY_MESSAGE,
+      ...(retryToken ? { retryToken } : {}),
     };
   }
 
@@ -147,23 +208,9 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<SubmitResu
   return {
     ok: false,
     reason: "failed",
-    error: timedOut ? "That took too long. Please try again." : "Something went wrong. Please try again.",
+    error: timedOut ? "The server took too long to respond. Please try again." : FAILED_MESSAGE,
+    ...(retryToken ? { retryToken } : {}),
   };
-}
-
-/**
- * Website-issued lead reference: YSC-YYYYMMDD-XXXXXXXX. Date for humans,
- * 8 random characters from an unambiguous 32-letter alphabet (2^40 ≈ a
- * trillion combinations per day) so concurrent submissions across
- * independent serverless instances cannot collide in practice. Issued
- * server-side from a cryptographic source, never by the browser.
- */
-function generateLeadId(isoNow: string): string {
-  const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I
-  const bytes = randomBytes(8);
-  let suffix = "";
-  for (let i = 0; i < 8; i++) suffix += ALPHABET[bytes[i] % ALPHABET.length];
-  return `YSC-${isoNow.slice(0, 10).replace(/-/g, "")}-${suffix}`;
 }
 
 /** Attribution comes from the browser: whitelist keys and cap lengths. */

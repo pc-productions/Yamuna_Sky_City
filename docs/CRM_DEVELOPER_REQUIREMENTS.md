@@ -44,7 +44,7 @@ appear in n8n's Executions list, not on the canvas.
 | Content type | `application/json` |
 | Sent from | the website's own server, never the visitor's browser |
 | Success | any HTTP `2xx` response |
-| Attempts | one per submission, 10-second wait, **no automatic retry** (a retry after a lost response could create a duplicate lead; the visitor can resubmit manually) |
+| Attempts | one per submission, 10-second wait, **no automatic retry**. If the webhook fails, the visitor is asked to submit once more; that resubmit carries the **same `lead_id`** (and `details.attempt: 2`), so you can treat a repeated `lead_id` as a duplicate |
 | Visitor experience | the thank-you screen is shown **only after** the webhook answers 2xx; on any failure the form stays filled and asks the visitor to try again |
 
 ### Exact body the website sends
@@ -75,6 +75,7 @@ appear in n8n's Executions list, not on the canvas.
       "recordedAt": "2026-09-07T09:48:01.212Z"
     },
     "submittedAt": "2026-09-07T09:48:01.212Z",
+    "attempt": 1,
     "site": "yamuna-sky-city-website"
   }
 }
@@ -92,6 +93,7 @@ appear in n8n's Executions list, not on the canvas.
 | `details.source.utm_*`, `referrer`, `landing_page` | first-touch marketing attribution for the session; keys are omitted when not captured |
 | `details.consent` | consent flag, the exact wording agreed to, and when |
 | `details.submittedAt` | server time, ISO-8601 |
+| `details.attempt` | `1` normally; `2` when the visitor resubmitted after a failed attempt (same `lead_id`) |
 
 The `details` object can be ignored by the workflow if not needed; it is
 included so attribution and consent are not lost.

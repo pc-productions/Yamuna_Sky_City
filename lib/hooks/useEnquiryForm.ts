@@ -11,6 +11,8 @@ export type SubmitStatus =
   | "submitting"
   | "success"
   | "error"
+  /** Lead is safe but the CRM did not take it yet: form kept, one more submit requested. */
+  | "retry"
   | "not_configured";
 
 /**
@@ -21,6 +23,11 @@ export type SubmitStatus =
  * submitEnquiry() and maps the normalized SubmitResult onto UI status.
  * On success it also exposes the result so the caller can resolve
  * brochure access (lib/brochure.ts) — and only then.
+ *
+ * A failed attempt may return a retry token; it is sent back with the
+ * next submit so the server treats it as the same lead (same reference,
+ * same sheet row) and counts the attempts. The policy that decides when
+ * a retry turns into a success lives server-side.
  */
 export function useEnquiryForm(source: string) {
   const [values, setValues] = useState<FormValues>({});
@@ -37,6 +44,8 @@ export function useEnquiryForm(source: string) {
   useEffect(() => {
     mountedAt.current = Date.now();
   }, []);
+  // Opaque, server-signed; present only after an unsuccessful attempt.
+  const retryToken = useRef<string | undefined>(undefined);
 
   const setField = useCallback((id: string, value: string | boolean) => {
     setValues((prev) => ({ ...prev, [id]: value }));
@@ -60,6 +69,7 @@ export function useEnquiryForm(source: string) {
     setStatus("idle");
     setErrorMessage(undefined);
     setResult(null);
+    retryToken.current = undefined;
   }, []);
 
   const handleSubmit = useCallback(
@@ -88,6 +98,7 @@ export function useEnquiryForm(source: string) {
           attribution: getAttribution(),
           honeypot: String(values._gotcha ?? ""),
           elapsedMs: Date.now() - mountedAt.current,
+          retryToken: retryToken.current,
         });
       } catch {
         // The server action itself failed to run (offline, deploy in
@@ -98,8 +109,17 @@ export function useEnquiryForm(source: string) {
       }
 
       if (outcome.ok) {
+        retryToken.current = undefined;
         setResult(outcome);
         setStatus("success");
+        return;
+      }
+      // Keep whichever token the server issued so the next submit is
+      // recognised as the same lead (a token-less failure keeps the old one).
+      if (outcome.retryToken) retryToken.current = outcome.retryToken;
+      if (outcome.reason === "retry") {
+        setStatus("retry");
+        setErrorMessage(outcome.error);
       } else if (outcome.reason === "not_configured") {
         // No lead backend exists yet — never show a false "submitted" state.
         setStatus("not_configured");

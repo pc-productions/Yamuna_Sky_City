@@ -37,7 +37,7 @@ Every lead gets a website-issued reference (`YSC-YYYYMMDD-XXXXXXXX`) and goes to
 1. the CRM webhook — `lib/integrations/crm.ts`, `ENQUIRY_WEBHOOK_URL` (see `docs/CRM_INTEGRATION.md`);
 2. the **Google Sheets lead ledger** — `lib/integrations/sheets.ts`, `LEADS_SHEET_WEBHOOK_URL` + `LEADS_SHEET_WEBHOOK_SECRET`, the business's own record of every lead, independent of the CRM provider (setup: `docs/GOOGLE_SHEETS_LEADS.md`, script: `integrations/google-sheets/Code.gs`).
 
-The sheet row is written whatever the CRM returned, so the sheet itself lists the leads that still need a manual CRM push. The visitor sees success (with their reference) only when at least one configured destination acknowledged the lead; while neither is configured the form shows an honest "not available yet" message and never fakes a submission.
+The sheet row is written whatever the CRM returned, so the sheet itself lists the leads that still need a manual CRM push. Brochure policy (enforced server-side in `lib/actions/submitEnquiry.ts`): the visitor gets the thank-you screen and brochure when the CRM accepts the lead; if the CRM fails they are asked to submit once more (same reference, via a signed retry token); if it fails a second time and the sheet holds the lead, the brochure is released on the sheet alone so a CRM outage never costs a client. While neither destination is configured the form shows an honest "not available yet" message and never fakes a submission.
 
 Never expose backend credentials via `NEXT_PUBLIC_*` variables; keep integration secrets server-only.
 
