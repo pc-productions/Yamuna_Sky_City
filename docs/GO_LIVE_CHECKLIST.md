@@ -11,6 +11,11 @@ the CRM developer · **[Dev]** website change, ready to do on request.
 
 ---
 
+## Branch policy (in force)
+
+- Vercel Production environment tracks `main`; the Claude working branch deploys as Preview only.
+- Changes are pushed to the working branch by default. "Push to production" fast-forwards `main`.
+
 ## A. Blocking — do not switch DNS until these are done
 
 1. **Domain on Vercel** [Team]

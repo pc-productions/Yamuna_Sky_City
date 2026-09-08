@@ -57,6 +57,18 @@ Only verified, explicitly supplied project facts belong in `content/*.ts`. Do no
 - **Privacy Policy** (`content/privacy.ts`): a full draft describing exactly what the site does (enquiry data → CRM, consent-gated GTM tags, session-only attribution), awaiting legal sign-off. Fill `legal.entityName`, `legal.grievanceOfficer` and `legal.privacyLastUpdated` in `content/site.ts`; until then the policy uses the brand name and states that contact details will be published. **Terms** (`app/terms`): honest "being finalised" copy until the confirmed legal text is supplied.
 - **Lead backend**: see above — not connected by default.
 
+## Branches and deployment
+
+- `main` is **production**: Vercel's Production environment tracks it, and the
+  .com domain will point at it. Nothing reaches production without a push to
+  `main`.
+- `claude/yamuna-sky-city-rebuild-lnm5dd` is the **working branch**: every
+  change lands here first and gets a Vercel **Preview** URL. Review there.
+- Promotion is an explicit step: fast-forward `main` to the reviewed commit
+  (`git push origin <branch>:main`). When working with Claude, the phrase
+  **"push to production"** triggers exactly that; otherwise pushes go to the
+  working branch only.
+
 ## Launch checklist
 
 The build is production-hardened (security headers, env-driven canonical
