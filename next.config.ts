@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
     contentDispositionType: "attachment",
     contentSecurityPolicy: "script-src 'none'; frame-src 'none'; sandbox;",
   },
+  // Paths that existed on the previous yamunaskycity.com (a WordPress
+  // single-pager whose menu pointed here) — sent to the matching part of
+  // this site rather than a 404. Nothing else on the old site was public.
+  async redirects() {
+    return [
+      { source: "/brochure", destination: "/#contact", permanent: true },
+      { source: "/amenities", destination: "/#project", permanent: true },
+      { source: "/contact-me", destination: "/#contact", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

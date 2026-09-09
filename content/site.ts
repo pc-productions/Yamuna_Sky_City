@@ -36,8 +36,11 @@ export const seo = {
   titleTemplate: "%s | Yamuna Sky City",
   // Built only from approved facts — no location or positioning claims.
   // Facts only (content/facts.ts): scale, configuration, corridor, distance.
+  // Leads with the phrase the previous yamunaskycity.com site ranked for
+  // ("Sea View Apartments in Mangalore", its tagline) so the switch
+  // keeps that relevance; the rest is approved facts only.
   description:
-    "Yamuna Sky City, Kulai, Mangaluru — South India's tallest sea-view tower: 296 sea-facing 2, 3, 4 & 5 BHK residences across GF+60 floors on NH 66, minutes from the Arabian Sea. Schedule a private viewing.",
+    "Yamuna Sky City — sea view apartments in Mangalore. South India's tallest sea-view tower: 296 sea-facing 2, 3, 4 & 5 BHK residences across GF+60 floors on NH 66, Kulai, minutes from the Arabian Sea. Schedule a private viewing.",
   siteUrl: configuredSiteUrl ?? "https://www.yamunaskycity.example",
   // TODO: set the confirmed handle, or leave empty to omit the tag.
   twitterHandle: "",
