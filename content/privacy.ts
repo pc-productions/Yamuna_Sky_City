@@ -37,7 +37,7 @@ export const privacyPolicy = {
       bullets: [
         "Information you give us. When you submit the enquiry form or request a private viewing we ask for your full name, email address, mobile number and, optionally, your city, together with your confirmation that we may contact you about your enquiry. We record the wording of that consent and the time it was given.",
         "Information collected automatically. With your consent (see “Cookies and analytics” below) our analytics and advertising tags collect information about your device and browser, approximate location derived from your IP address, the pages you view and how you interact with them. Independently of consent, the website keeps a note in your browser’s session storage of how you arrived (campaign parameters in the link, the referring website and the first page you opened) so that, if you enquire, we know which campaign your enquiry came from. This note is deleted when you close the browser.",
-        "Technical logs. Our hosting provider records standard server logs, including IP address, browser type and the time of each request, for security, abuse prevention and troubleshooting.",
+        "Technical logs. Our hosting provider, and the media content-delivery provider that serves the website’s video, record standard server logs, including IP address, browser type and the time of each request, for security, abuse prevention and troubleshooting.",
       ],
       after: [
         "We do not knowingly collect sensitive personal data (such as financial information, health data or government identifiers) through this website, and we ask you not to include such information in any message you send us.",
@@ -66,7 +66,7 @@ export const privacyPolicy = {
       paragraphs: ["We do not sell your personal data. We share it only as follows."],
       bullets: [
         "Our sales team and authorised representatives who handle enquiries for the project.",
-        "Service providers who process data on our behalf and under our instructions: the provider of our lead-management (CRM) and workflow-automation system, our website hosting and content-delivery provider, and Google — Google Workspace (Google Sheets), where we keep our own record of enquiries, and Google Tag Manager, Google Analytics and Google Ads for analytics and advertising measurement.",
+        "Service providers who process data on our behalf and under our instructions: the provider of our lead-management (CRM) and workflow-automation system, our website hosting provider, the media content-delivery provider that serves the website’s video, and Google — Google Workspace (Google Sheets), where we keep our own record of enquiries, and Google Tag Manager, Google Analytics and Google Ads for analytics and advertising measurement.",
         "Messaging platforms you choose to contact us through, such as WhatsApp, whose own privacy policies apply to that communication.",
         "Courts, regulators, law-enforcement agencies and professional advisers where the law requires it or where necessary to establish, exercise or defend legal claims.",
         "A successor entity in the event of a merger, acquisition or transfer of the project, subject to this Policy.",
