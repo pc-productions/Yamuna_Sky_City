@@ -158,7 +158,7 @@ export const legal = {
   entityName: "Yamuna Homes and Design Pvt. Ltd.",
   /** Grievance Officer under the DPDP Act 2023 / IT Rules. Empty → the
       policy states that contact details will be published. TODO. */
-  grievanceOfficer: { name: "", email: "" },
+  grievanceOfficer: { name: "Cyril Joselin Rodrigues", email: "" }, // email: falls back to contact.email until a dedicated privacy address exists
   /** Date the privacy policy was approved, e.g. "7 September 2026".
       Empty → the "Last updated" line is hidden. */
   privacyLastUpdated: "",
