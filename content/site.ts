@@ -166,8 +166,16 @@ export const legal = {
     "All images, plans and information are indicative and subject to change without notice. Details herein do not constitute an offer or contract.",
 } as const;
 
-export type SocialLink = { label: string; href: string };
+export type SocialLink = {
+  label: string;
+  href: string;
+  /** false → shown in the footer but NOT listed as the project's own
+      profile in structured data (e.g. the developer's account). */
+  sameAs?: boolean;
+};
 
+/** Confirmed profiles (client-supplied 10 Sep 2026); tracking parameters removed. */
 export const socialLinks: SocialLink[] = [
-  // TODO: populate with confirmed social profiles, or leave empty.
+  { label: "Instagram", href: "https://www.instagram.com/yamunaskycity/" },
+  { label: "Yamuna Homes & Design on Instagram", href: "https://www.instagram.com/yamuna_homes_and_design/", sameAs: false },
 ];

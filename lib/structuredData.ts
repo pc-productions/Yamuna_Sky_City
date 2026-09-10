@@ -18,7 +18,7 @@ export function buildSiteStructuredData() {
     },
     slogan: brand.tagline,
   };
-  const sameAs = socialLinks.map((s) => s.href).filter(Boolean);
+  const sameAs = socialLinks.filter((s) => s.sameAs !== false).map((s) => s.href).filter(Boolean);
   if (sameAs.length > 0) organization.sameAs = sameAs;
   if (contact.address) {
     organization.address = { "@type": "PostalAddress", ...contact.postalAddress };
