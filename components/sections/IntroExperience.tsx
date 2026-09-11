@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { introFrequency } from "@/content/media";
+import { introEnabled, introFrequency } from "@/content/media";
 import { IntroVideo } from "@/components/sections/IntroVideo";
 import { Hero } from "@/components/sections/Hero";
 
@@ -22,8 +22,9 @@ const SESSION_KEY = "ysc-intro-seen";
  *                 the Hero video become active.
  *
  * The same flow runs on every device — desktop and mobile. Whether the
- * intro repeats on later loads is configured centrally via
- * `introFrequency` in content/media.ts.
+ * intro plays at all (`introEnabled`) and whether it repeats on later
+ * loads (`introFrequency`) are configured centrally in content/media.ts.
+ * With the intro switched off the flow is simply resolving → hero.
  *
  * The Hero is mounted throughout (never remounted), so the intro's fade
  * reveals an already-rendered layer with no layout shift.
@@ -48,7 +49,7 @@ export function IntroExperience() {
     }
 
     const nextPhase: EntryPhase =
-      prefersReducedMotion || alreadySeen ? "hero" : "intro";
+      !introEnabled || prefersReducedMotion || alreadySeen ? "hero" : "intro";
 
     // Deferred via rAF rather than called synchronously in the effect body.
     const frame = requestAnimationFrame(() => setPhase(nextPhase));

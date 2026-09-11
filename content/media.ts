@@ -27,6 +27,15 @@ export type VideoSource = {
   };
 };
 
+/**
+ * MASTER SWITCH for the cinematic intro overlay. `false` = the site opens
+ * straight on the Hero on every load; the intro component, its state
+ * machine and all of its settings below stay in the codebase untouched.
+ * Flip to `true` to bring it back (and set `introVideo.src` when the
+ * film exists). Client decision, 11 Sep 2026: off for launch.
+ */
+export const introEnabled = false;
+
 export const introVideo: VideoSource = {
   src: undefined, // TODO: ~20–30s cinematic amenities/lifestyle film (mp4, h264).
   poster: "/media/posters/intro-poster.svg",
