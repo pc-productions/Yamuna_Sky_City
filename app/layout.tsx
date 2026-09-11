@@ -20,11 +20,16 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+// Editorial serif, used only inside journal article bodies (pull quotes
+// and the drop cap — see .journal-prose in globals.css). Not preloaded:
+// the browser fetches it only on pages whose text actually uses it, so
+// the homepage's first paint is not competing with ~75 KB of serif.
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
