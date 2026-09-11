@@ -71,6 +71,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // Tells Next.js the smooth scroll-behavior in globals.css is
+      // intentional, so it suspends it during route transitions and a
+      // new page opens at its top instead of gliding there from the old
+      // scroll position.
+      data-scroll-behavior="smooth"
       className={`${poppins.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
       {/* Google Tag Manager (content/site.ts → analytics.gtmId). Next's

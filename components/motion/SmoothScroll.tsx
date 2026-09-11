@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -24,6 +25,7 @@ import { isCoarsePointer, prefersReducedMotion } from "@/lib/motion";
  */
 export function SmoothScroll({ paused = false }: { paused?: boolean }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -73,7 +75,10 @@ export function SmoothScroll({ paused = false }: { paused?: boolean }) {
       if (!target) return;
       event.preventDefault();
       lenis.scrollTo(target, { offset: headerOffset(target), duration: 1.5, easing: easeOutQuart });
-      window.history.pushState(null, "", match[1] ? href : window.location.pathname + href);
+      // "#top" is the logo's back-to-top; it should not leave "#top" in
+      // the address bar the way a section anchor does.
+      const url = id === "top" ? window.location.pathname : match[1] ? href : window.location.pathname + href;
+      window.history.pushState(null, "", url);
       if (target.hasAttribute("tabindex")) target.focus({ preventScroll: true });
     };
     document.addEventListener("click", onClick);
@@ -102,6 +107,16 @@ export function SmoothScroll({ paused = false }: { paused?: boolean }) {
     if (paused) lenis.stop();
     else lenis.start();
   }, [paused]);
+
+  // New route: Next has already put the window at the top (or at the
+  // hash target). Lenis still remembers the previous page's position and
+  // would glide back to it on its next frame, so re-sync it.
+  useEffect(() => {
+    const lenis = lenisRef.current;
+    if (!lenis) return;
+    lenis.resize();
+    lenis.scrollTo(window.scrollY, { immediate: true, force: true });
+  }, [pathname]);
 
   return null;
 }
