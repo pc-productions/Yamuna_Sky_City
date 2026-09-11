@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/Container";
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (
     <div className="flex flex-1 items-center bg-paper">
-      <Container className="py-32 sm:py-40">
+      <Container className="py-24 xl:py-28">
         <div className="h-[2px] w-12 bg-brand" />
         <p className="mt-5 text-[0.6875rem] font-medium uppercase tracking-[0.3em] text-brand">
           Something Went Wrong

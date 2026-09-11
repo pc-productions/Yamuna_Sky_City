@@ -55,7 +55,7 @@ export default async function ArticlePage({ params }: PageProps<"/blog/[slug]">)
       <ArticleTracking slug={article.slug} category={article.category} bodyId={BODY_ID} />
 
       <article className="bg-paper">
-        <header className="pt-32 sm:pt-40">
+        <header className="pt-24 xl:pt-28">
           <Container>
             <div className="mx-auto max-w-4xl">
               <Reveal>

@@ -32,7 +32,7 @@ export default function JournalPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJournalStructuredData(articles)) }}
         />
       )}
-      <section className="bg-paper pt-20 pb-12 sm:pt-24 sm:pb-14">
+      <section className="bg-paper pt-24 pb-12 sm:pb-14 xl:pt-28">
         <Container>
           <JournalHero />
         </Container>

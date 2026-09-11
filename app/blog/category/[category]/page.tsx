@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }: PageProps<"/blog/category
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildCategoryStructuredData(category)) }}
         />
       )}
-      <section className="bg-paper pt-20 pb-12 sm:pt-24 sm:pb-14">
+      <section className="bg-paper pt-24 pb-12 sm:pb-14 xl:pt-28">
         <Container>
           <Reveal>
             <Breadcrumb items={[{ name: journalCopy.breadcrumbHome, path: "/" }, { name: journalCopy.breadcrumbJournal, path: journalPath }]} />

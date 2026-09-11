@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
   );
 
   return (
-    <Container className="pt-36 pb-24 sm:pt-40">
+    <Container className="pt-24 pb-24 xl:pt-28">
       <div className="h-[2px] w-12 bg-brand" />
       <h1 className="mt-6 font-display text-display-lg font-semibold uppercase text-ink">{title}</h1>
       {lastUpdated && (
