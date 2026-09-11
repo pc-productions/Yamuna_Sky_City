@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { navLinks } from "@/content/nav";
 import { ctaLabels } from "@/content/site";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 
 /**
@@ -116,7 +117,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
             video/black surfaces, the primary asset on ivory. Both are
             mounted and cross-faded so the swap never flashes; each is the
             real approved file, never a CSS-recoloured one. */}
-        <a href="#top" className="relative block shrink-0" aria-label="Yamuna Sky City — top">
+        <Link href="/" className="relative z-10 block shrink-0" aria-label="Yamuna Sky City — home">
           <span
             className={`block transition-opacity duration-500 ${onDark ? "opacity-0" : "opacity-100"}`}
           >
@@ -130,7 +131,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           >
             <Logo type="lockup" variant="dark" height={34} priority />
           </span>
-        </a>
+        </Link>
 
         <nav
           aria-label="Primary"
