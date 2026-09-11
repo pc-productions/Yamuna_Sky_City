@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Envelope, InstagramLogo, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
+import { Envelope, FacebookLogo, InstagramLogo, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
 import { navLinks } from "@/content/nav";
 import { CookiePreferencesButton } from "@/components/layout/CookiePreferencesButton";
 import { brand, contact, externalLinks, legal, socialLinks } from "@/content/site";
@@ -9,6 +9,7 @@ import { Logo } from "@/components/ui/Logo";
 /** Footer social icons, keyed by the `icon` field in content/site.ts. */
 const socialIcons = {
   instagram: InstagramLogo,
+  facebook: FacebookLogo,
 } as const;
 
 /**

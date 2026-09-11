@@ -171,7 +171,7 @@ export type SocialLink = {
   label: string;
   href: string;
   /** Which icon the footer draws (components/layout/Footer.tsx). */
-  icon: "instagram";
+  icon: "instagram" | "facebook";
   /** false → shown in the footer but NOT listed as the project's own
       profile in structured data. */
   sameAs?: boolean;
@@ -179,9 +179,11 @@ export type SocialLink = {
 
 /**
  * Confirmed profiles. Client decision, 11 Sep 2026: the Yamuna Homes &
- * Design account is the primary (and only) social link; the separate
- * @yamunaskycity account is not linked. Tracking parameters removed.
+ * Design Instagram is the primary account (the separate @yamunaskycity
+ * account is not linked); the Yamuna Asha City Facebook page was added
+ * the same day. Tracking parameters removed.
  */
 export const socialLinks: SocialLink[] = [
   { label: "Instagram", href: "https://www.instagram.com/yamuna_homes_and_design/", icon: "instagram" },
+  { label: "Facebook", href: "https://www.facebook.com/yamunaashacity/", icon: "facebook" },
 ];
