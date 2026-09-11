@@ -232,19 +232,19 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className="flex max-h-[calc(100dvh-4rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-6 py-6 lg:hidden"
+          className="flex max-h-[calc(100dvh-4rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-5 py-3 lg:hidden"
         >
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="py-3.5 font-display text-2xl text-ink transition-colors hover:text-brand"
+              className="py-2.5 font-display text-[1.0625rem] font-medium text-ink transition-colors hover:text-brand"
             >
               {link.label}
             </a>
           ))}
-          <div className="mt-4 flex flex-col gap-3 border-t border-line pt-6">
+          <div className="mt-2 flex flex-col gap-2.5 border-t border-line pt-4 pb-1">
             <Button
               variant="primary"
               onClick={() => {
