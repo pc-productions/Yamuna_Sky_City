@@ -1,8 +1,14 @@
 import { navLinks } from "@/content/nav";
 import { CookiePreferencesButton } from "@/components/layout/CookiePreferencesButton";
 import { brand, contact, externalLinks, legal, socialLinks } from "@/content/site";
+import { InstagramLogo } from "@phosphor-icons/react/dist/ssr";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
+
+/** Footer social icons, keyed by the `icon` field in content/site.ts. */
+const socialIcons = {
+  instagram: InstagramLogo,
+} as const;
 
 export function Footer() {
   return (
@@ -56,18 +62,23 @@ export function Footer() {
         </div>
 
         {socialLinks.length > 0 && (
-          <div className="flex gap-7">
-            {socialLinks.map((social) => (
-              <a
-                key={social.href}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-mist-muted transition-colors hover:text-white"
-              >
-                {social.label}
-              </a>
-            ))}
+          <div className="flex gap-6">
+            {socialLinks.map((social) => {
+              const Icon = socialIcons[social.icon];
+              return (
+                <a
+                  key={social.href}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  title={social.label}
+                  className="flex size-10 items-center justify-center text-mist-muted transition-colors duration-[var(--motion-fast)] hover:text-white"
+                >
+                  <Icon size={24} weight="regular" aria-hidden="true" />
+                </a>
+              );
+            })}
           </div>
         )}
 

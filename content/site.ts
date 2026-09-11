@@ -167,15 +167,21 @@ export const legal = {
 } as const;
 
 export type SocialLink = {
+  /** Accessible name / tooltip, e.g. "Instagram". */
   label: string;
   href: string;
+  /** Which icon the footer draws (components/layout/Footer.tsx). */
+  icon: "instagram";
   /** false → shown in the footer but NOT listed as the project's own
-      profile in structured data (e.g. the developer's account). */
+      profile in structured data. */
   sameAs?: boolean;
 };
 
-/** Confirmed profiles (client-supplied 10 Sep 2026); tracking parameters removed. */
+/**
+ * Confirmed profiles. Client decision, 11 Sep 2026: the Yamuna Homes &
+ * Design account is the primary (and only) social link; the separate
+ * @yamunaskycity account is not linked. Tracking parameters removed.
+ */
 export const socialLinks: SocialLink[] = [
-  { label: "Instagram", href: "https://www.instagram.com/yamunaskycity/" },
-  { label: "Yamuna Homes & Design on Instagram", href: "https://www.instagram.com/yamuna_homes_and_design/", sameAs: false },
+  { label: "Instagram", href: "https://www.instagram.com/yamuna_homes_and_design/", icon: "instagram" },
 ];
