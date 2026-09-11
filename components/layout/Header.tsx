@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/content/nav";
 import { ctaLabels } from "@/content/site";
@@ -91,6 +91,13 @@ const surfaceByTone: Record<HeaderTone, string> = {
 export function Header({ onEnquire }: { onEnquire: () => void }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === "/";
+  const onLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    // With Lenis active, components/motion/SmoothScroll handles "#top".
+    if (document.documentElement.classList.contains("lenis")) return;
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   const sectionTone = useHeaderTone(pathname === "/");
 
   // The open mobile menu always sits on a solid paper panel.
@@ -117,7 +124,17 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
             video/black surfaces, the primary asset on ivory. Both are
             mounted and cross-faded so the swap never flashes; each is the
             real approved file, never a CSS-recoloured one. */}
-        <Link href="/" className="relative z-10 block shrink-0" aria-label="Yamuna Sky City — home">
+        {/* The lockup: on the home page it is a back-to-top control (a
+            plain anchor so the smooth-scroll click handler owns it on
+            desktop; on touch we scroll natively and keep "#top" out of
+            the address bar); on every other page it navigates home. */}
+        {isHome ? (
+          <a
+            href="#top"
+            onClick={onLogoClick}
+            className="relative z-10 block shrink-0"
+            aria-label="Yamuna Sky City — back to top"
+          >
           <span
             className={`block transition-opacity duration-500 ${onDark ? "opacity-0" : "opacity-100"}`}
           >
@@ -131,7 +148,24 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
           >
             <Logo type="lockup" variant="dark" height={34} priority />
           </span>
-        </Link>
+          </a>
+        ) : (
+          <Link href="/" className="relative z-10 block shrink-0" aria-label="Yamuna Sky City — home">
+          <span
+            className={`block transition-opacity duration-500 ${onDark ? "opacity-0" : "opacity-100"}`}
+          >
+            <Logo type="lockup" variant="primary" height={34} priority />
+          </span>
+          <span
+            aria-hidden="true"
+            className={`absolute inset-0 transition-opacity duration-500 ${
+              onDark ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Logo type="lockup" variant="dark" height={34} priority />
+          </span>
+          </Link>
+        )}
 
         <nav
           aria-label="Primary"
