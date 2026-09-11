@@ -9,8 +9,11 @@ import { isNarrowViewport } from "@/lib/motion";
  * Full-bleed background video with graceful degradation:
  * - No `src` yet (real footage not supplied)? Renders the poster only —
  *   no broken network request, no layout shift.
- * - `src` present but autoplay/playback fails? The <video>'s `poster`
- *   attribute is shown natively; nothing traps the user.
+ * - `src` present? The same optimised poster stays underneath the
+ *   <video> (which carries no `poster` attribute), so the frame the
+ *   server painted is never swapped for a second, full-size download of
+ *   the raw JPEG, there is no gap while the film buffers, and if
+ *   autoplay/playback fails the poster simply remains visible.
  *
  * Responsive framing (so on-screen text/subjects in the source video are
  * never cropped) is configured per breakpoint via `media.objectPosition`
@@ -57,11 +60,17 @@ export function VideoBackground({
         `}</style>
       )}
 
-      {src ? (
+      <Image
+        src={media.poster}
+        alt=""
+        fill
+        priority={priority}
+        className={`object-cover ${hasCustomPosition ? positionClass : ""}`}
+      />
+      {src && (
         <video
           ref={videoRef}
-          className={`h-full w-full object-cover ${hasCustomPosition ? positionClass : ""}`}
-          poster={media.poster}
+          className={`relative h-full w-full object-cover ${hasCustomPosition ? positionClass : ""}`}
           autoPlay
           muted
           loop={loop}
@@ -74,14 +83,6 @@ export function VideoBackground({
           {media.webmSrc && <source src={media.webmSrc} type="video/webm" />}
           <source src={src} type="video/mp4" />
         </video>
-      ) : (
-        <Image
-          src={media.poster}
-          alt=""
-          fill
-          priority={priority}
-          className={`object-cover ${hasCustomPosition ? positionClass : ""}`}
-        />
       )}
     </div>
   );
