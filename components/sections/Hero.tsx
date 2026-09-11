@@ -5,7 +5,7 @@ import { preconnect } from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { heroVideo } from "@/content/media";
-import { isNarrowViewport, prefersReducedMotion } from "@/lib/motion";
+import { isCoarsePointer, isNarrowViewport, prefersReducedMotion } from "@/lib/motion";
 import { VideoBackground } from "@/components/ui/VideoBackground";
 
 /**
@@ -80,15 +80,18 @@ export function Hero({ active }: { active: boolean }) {
         ScrollTrigger.create(st);
         return;
       }
+      // On touch devices the film settles exactly with the finger; the
+      // half-second catch-up is for wheel/trackpad scrolling only.
+      const scrub = isCoarsePointer() ? true : 0.5;
       gsap.to("[data-hero-media]", {
         scale: isNarrowViewport() ? 1.04 : 1.08,
         ease: "none",
-        scrollTrigger: { ...st, scrub: 0.5 },
+        scrollTrigger: { ...st, scrub },
       });
       gsap.to("[data-hero-dim]", {
         opacity: 0.55,
         ease: "none",
-        scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub: 0.5 },
+        scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub },
       });
     }, root);
     return () => ctx.revert();
@@ -120,7 +123,7 @@ export function Hero({ active }: { active: boolean }) {
       data-hero=""
       aria-label="Yamuna Sky City"
       data-header-tone="video"
-      className="sticky top-0 z-0 h-dvh w-full overflow-hidden bg-paper"
+      className="sticky top-0 z-0 h-svh w-full overflow-hidden bg-paper"
     >
       {/* Film. It begins exactly at the header's lower edge (top-16 /
           xl:top-18 = header height), never underneath it: the film is

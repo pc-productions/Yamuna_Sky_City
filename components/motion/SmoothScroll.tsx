@@ -26,9 +26,15 @@ export function SmoothScroll({ paused = false }: { paused?: boolean }) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    // Phones resize the viewport every time the browser toolbar slides in
+    // or out. Without this, ScrollTrigger refreshes (and re-measures the
+    // whole page) on each of those resizes, right as the finger lifts —
+    // felt as a stutter or a small jump. Real orientation changes still
+    // refresh.
+    ScrollTrigger.config({ ignoreMobileResize: true });
     if (prefersReducedMotion() || isCoarsePointer()) return;
 
-    gsap.registerPlugin(ScrollTrigger);
     const lenis = new Lenis({
       lerp: 0.085,
       wheelMultiplier: 1,
