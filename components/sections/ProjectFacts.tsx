@@ -37,12 +37,15 @@ export function ProjectFacts() {
           <p className="mt-5 font-display text-[clamp(1.125rem,1.7vw,1.5rem)] font-semibold uppercase leading-none tracking-[0.14em] text-brand sm:mt-6">
             {brand.name}
           </p>
+          {/* Positioning line and unit mix: one line with a hairline
+              divider from sm up; stacked on phones so "2, 3, 4 & 5 BHK"
+              never breaks mid-list. */}
           <p className="mt-3 text-[0.8125rem] uppercase tracking-[0.2em] text-ink/55">
-            {projectIntro.positioning}
-            <span aria-hidden="true" className="mx-3 text-line">
+            <span className="block sm:inline">{projectIntro.positioning}</span>
+            <span aria-hidden="true" className="mx-3 hidden text-line sm:inline">
               |
             </span>
-            {projectIntro.unitMix}
+            <span className="mt-1.5 block whitespace-nowrap sm:mt-0 sm:inline">{projectIntro.unitMix}</span>
           </p>
         </Reveal>
 
