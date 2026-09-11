@@ -28,10 +28,10 @@ export function JournalHero({
         as="h1"
         lines={lines.map((line, i) => (i < lines.length - 1 ? `${line} ` : line))}
         delayMs={80}
-        className="mt-7 text-display-lg text-ink"
+        className="mt-5 text-display-lg text-ink"
       />
       <Reveal delayMs={300}>
-        <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-muted">{supportingLine}</p>
+        <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-muted">{supportingLine}</p>
       </Reveal>
     </div>
   );

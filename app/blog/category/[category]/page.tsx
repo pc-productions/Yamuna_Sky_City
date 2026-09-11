@@ -9,7 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Breadcrumb } from "@/components/journal/Breadcrumb";
 import { JournalHero } from "@/components/journal/JournalHero";
 import { CategoryNav } from "@/components/journal/CategoryNav";
-import { ArticleCard } from "@/components/journal/ArticleCard";
+import { ArticleGrid } from "@/components/journal/ArticleGrid";
 import { JournalCTA } from "@/components/journal/JournalCTA";
 
 /**
@@ -45,12 +45,12 @@ export default async function CategoryPage({ params }: PageProps<"/blog/category
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildCategoryStructuredData(category)) }}
         />
       )}
-      <section className="bg-paper pt-32 pb-14 sm:pt-40 sm:pb-16">
+      <section className="bg-paper pt-20 pb-12 sm:pt-24 sm:pb-14">
         <Container>
           <Reveal>
             <Breadcrumb items={[{ name: journalCopy.breadcrumbHome, path: "/" }, { name: journalCopy.breadcrumbJournal, path: journalPath }]} />
           </Reveal>
-          <div className="mt-10">
+          <div className="mt-8">
             <JournalHero eyebrow={journalCopy.eyebrow} lines={[category.label]} supportingLine={category.description} />
           </div>
         </Container>
@@ -62,11 +62,7 @@ export default async function CategoryPage({ params }: PageProps<"/blog/category
           <h2 id="category-articles-heading" className="sr-only">
             {category.label} articles
           </h2>
-          <Reveal variant="stagger" className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
-            {articles.map((a, i) => (
-              <ArticleCard key={a.slug} article={a} priority={i < 3} />
-            ))}
-          </Reveal>
+          <ArticleGrid articles={articles} />
         </Container>
       </section>
 
