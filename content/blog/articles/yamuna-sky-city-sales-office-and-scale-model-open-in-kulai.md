@@ -3,8 +3,8 @@ title: "Don't Just Read About It: Yamuna Sky City Opens Its Doors in Kulai"
 excerpt: "On 25 April 2026 the Yamuna Sky City sales office was inaugurated and the scale model unveiled on site at Kulai. Why seeing it in person changes the decision."
 category: yamuna-sky-city
 publishedAt: 2026-04-21
-featuredImage: /media/journal/tower-from-the-sea.jpg
-featuredImageAlt: "Rendering of the Yamuna Sky City tower on the Kulai shoreline"
+featuredImage: /media/journal/scale-model-lobby.jpg
+featuredImageAlt: "The Yamuna Sky City scale model on display in the sales office at Kulai"
 tags: [yamuna-sky-city, sales-office, scale-model, kulai, news]
 seoTitle: "Yamuna Sky City Sales Office and Scale Model Open in Kulai"
 seoDescription: "The Yamuna Sky City sales office and scale model opened on site at Kulai, NH 66, on 25 April 2026. What to see, and why a visit beats any brochure."
@@ -39,7 +39,7 @@ This is not simply buying an apartment. It is stepping into something better:
 - **Architecture with modern elegance.** Each detail is designed to match current expectations, combining style with function.
 - **A place you are proud to call your own.**
 
-![Rendering of the podium infinity pool at Yamuna Sky City](/media/journal/podium-infinity-pool.jpg "The podium pool, one of the spaces the scale model brings to life")
+![Rendering of the golf lawn at Yamuna Sky City](/media/journal/golf-view.jpg "The golf lawn, one of the spaces the scale model brings to life")
 
 ## Why the scale model is worth the trip
 
@@ -49,6 +49,8 @@ Seeing the project in miniature does what no brochure can:
 - **Understand the plan.** The model shows the tower, the podium and the ground in a way a floor plan cannot.
 - **Get first-hand answers.** Early visitors get clarity before demand grows.
 - **Meet the team behind the project.** Ask questions directly and build confidence through conversation.
+
+![Close view of the Yamuna Sky City scale model](/media/journal/scale-model-detail.jpg "The scale model, floor by floor")
 
 ## Your next move starts with a visit
 

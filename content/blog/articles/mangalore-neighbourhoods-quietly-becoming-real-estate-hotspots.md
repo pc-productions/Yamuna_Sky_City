@@ -3,8 +3,8 @@ title: "Neighbourhoods in Mangalore That Are Quietly Becoming Real Estate Hotspo
 excerpt: "Beyond the busy centre, a handful of Mangalore neighbourhoods are gathering momentum. Kadri, Bejai, Kulai and Yekkur, and why each one is worth a look."
 category: mangalore-real-estate
 publishedAt: 2025-12-10
-featuredImage: /media/journal/coast-dawn-mist.jpg
-featuredImageAlt: "Morning mist over the Mangalore coast at Kulai with a tall residential tower by the sea"
+featuredImage: /media/journal/mangalore-skyline.jpg
+featuredImageAlt: "Mangalore skyline at dusk, with apartment towers rising above the trees"
 tags: [mangalore, neighbourhoods, kulai, kadri, bejai, investment]
 seoTitle: "Mangalore Neighbourhoods Turning Into Real Estate Hotspots"
 seoDescription: "The Mangalore neighbourhoods quietly becoming real estate hotspots, from Kadri and Bejai to Kulai on the coast, and what is driving buyers there."
@@ -30,6 +30,8 @@ Kulai may not be the first name in everyday conversation yet, but it is gaining 
 
 Beyond the well-known zones, suburbs such as Yekkur are slowly gaining appeal. As central areas get busier and more expensive, buyers open to a slightly farther address are drawn to the suburbs for affordability and growth. With thoughtful development, these areas are catching the attention of homebuyers looking for balance.
 
+![Aerial view of a tree-lined road and rooftops in Mangalore](/media/journal/mangalore-road-aerial.jpg "Mangalore's residential streets from above")
+
 ## Why these areas are gaining ground
 
 - **A balanced lifestyle.** Kadri and Bejai offer urban convenience with a relatively serene residential feel, which suits families and professionals alike.
@@ -41,7 +43,7 @@ Beyond the well-known zones, suburbs such as Yekkur are slowly gaining appeal. A
 
 Our flagship project, Yamuna Sky City in Kulai, blends modern living with coastal charm for people who want the best of both worlds. Elsewhere in the city, Yamuna Prakruthi in Yekkur offers thoughtfully designed apartments, and Ganga Yamuna gave homebuyers ready homes with quality amenities in the centre. Each project reflects the same commitment: to build spaces meant for living, growing and thriving, not merely structures.
 
-![Rendering of the Yamuna Sky City tower seen from the sea at Kulai](/media/journal/tower-from-the-sea.jpg "Yamuna Sky City at Kulai, between the highway and the sea")
+![Rendering of the Yamuna Sky City tower and entrance at Kulai](/media/journal/tower-entrance.jpg "Yamuna Sky City at Kulai")
 
 ## What this means for homebuyers
 

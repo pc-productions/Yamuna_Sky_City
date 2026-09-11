@@ -4,8 +4,8 @@ excerpt: "What we set out to build at Kulai, and how the site, the structure, th
 category: yamuna-sky-city
 publishedAt: 2025-10-03
 updatedAt: 2026-09-12
-featuredImage: /media/location/tower-aerial.jpg
-featuredImageAlt: "Aerial rendering of the Yamuna Sky City tower at Kulai, between National Highway 66 and the Arabian Sea"
+featuredImage: /media/journal/tower-entrance.jpg
+featuredImageAlt: "Rendering of the Yamuna Sky City tower and its entrance drive at Kulai, with the Arabian Sea behind"
 tags: [yamuna-sky-city, kulai, amenities, architecture, mangalore]
 seoTitle: "Inside Yamuna Sky City | Lifestyle, Location and Luxury in Kulai"
 seoDescription: "A guided look at Yamuna Sky City in Kulai, Mangalore: the sea-facing site, the 296-residence tower, the podium clubhouse and the thinking behind the project."
@@ -22,6 +22,8 @@ Kulai, on the northern edge of Mangalore, is one of the few places where the cal
 
 The scale of the project matches the setting. Yamuna Sky City has 296 apartments across 60 levels above the ground floor, a saleable area of 898,965 square feet and 459 car parking spaces. There are 2, 3, 4 and 5 BHK layouts, so a young couple and a three-generation household can both find a home here. Construction is under way, with handover planned for 2028, and the project is registered under RERA number PRM/KA/RERA/1257/334/PR/171023/006331.
 
+![Aerial rendering of the Yamuna Sky City tower on the Kulai coast between the highway and the sea](/media/journal/tower-aerial-coast.jpg "Kulai from above: the tower between National Highway 66 and the Arabian Sea")
+
 ## A location that makes the ordinary day easier
 
 What makes a location good is not the list of things nearby. It is how much simpler the day becomes.
@@ -36,7 +38,7 @@ Inside, the attention shifts to the things you notice after years rather than on
 
 The building runs on eight high-speed automation lifts serving a triple-height entrance lobby. Power backup covers the tower, and water comes through a treatment plant of its own, with a sewage treatment plant returning treated water to flushing and gardens. Rainwater is harvested. Sustainability here is part of the plumbing, not a slogan.
 
-![Rendering of the podium infinity pool at Yamuna Sky City looking out to the Arabian Sea](/media/journal/podium-infinity-pool.jpg "The infinity lap pool on the podium level, facing the sea")
+![Rendering of the podium swimming pool at Yamuna Sky City with the tower rising behind](/media/journal/podium-pool.jpg "The podium pool, with the tower rising behind it")
 
 ## Amenities that lift an ordinary evening
 
@@ -44,7 +46,11 @@ We did not want Yamuna Sky City to be a building you simply come home to at nigh
 
 Higher up, a rooftop area on the third floor holds an infinity pool and cafe, and the terrace floor has its own lap pool, pool deck and event space. Security runs around the clock, with intercom, fire safety systems and controlled entry.
 
-![Rendering of the terrace deck at Yamuna Sky City at sunset](/media/journal/terrace-sunset-deck.jpg "The terrace deck at dusk")
+![Rendering of the Miyawaki forest walk at Yamuna Sky City](/media/journal/miyawaki-forest.jpg "The Miyawaki forest on the podium")
+
+![Rendering of the mini golf lawn at Yamuna Sky City](/media/journal/golf-view.jpg "The golf lawn")
+
+![Rendering of the 51st-floor sky terrace at Yamuna Sky City with seating looking out over the coast](/media/journal/sky-terrace.jpg "The sky terrace on the 51st floor")
 
 ## More than apartments: a way of living
 

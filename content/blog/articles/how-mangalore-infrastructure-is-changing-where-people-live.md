@@ -3,8 +3,8 @@ title: "How Mangalore's Growing Infrastructure Is Changing Where People Live"
 excerpt: "Road expansion, commercial growth and better civic services are redrawing Mangalore's residential map. What that means for buyers, and for Kulai."
 category: mangalore-real-estate
 publishedAt: 2026-02-21
-featuredImage: /media/journal/coastline-clear.jpg
-featuredImageAlt: "Aerial view of the Kulai coastline and National Highway 66 with the Yamuna Sky City tower"
+featuredImage: /media/journal/mangalore-aerial.jpg
+featuredImageAlt: "Aerial view of Mangalore, with the city spreading towards the coast"
 tags: [mangalore, infrastructure, connectivity, kulai, real-estate]
 seoTitle: "How Mangalore's Infrastructure Is Changing Where People Live"
 seoDescription: "Mangalore's infrastructure growth is opening new residential choices. How connectivity, commercial hubs and civic upgrades are redefining where people live."
@@ -28,7 +28,7 @@ Mangalore's growth is closely tied to its commercial activity. Offices, logistic
 
 Modern infrastructure goes beyond roads. Reliable water, better drainage, stronger power distribution and improved public amenities are lifting living standards across the city, and buyers increasingly prefer projects that match those standards. At Sky City that means a water treatment plant of the project's own, a sewage treatment plant that returns treated water to flushing and gardens, rainwater harvesting and full power backup, alongside efficient layouts and natural ventilation.
 
-![Rendering of the podium infinity pool at Yamuna Sky City](/media/journal/podium-infinity-pool.jpg "The podium level at Yamuna Sky City")
+![Rendering of the podium swimming pool at Yamuna Sky City](/media/journal/podium-pool.jpg "The podium level at Yamuna Sky City")
 
 ## Schools and hospitals shape decisions
 
@@ -37,6 +37,8 @@ Families relocating within Mangalore, or moving in from nearby towns, often put 
 ## A shift towards planned communities
 
 As the city expands, buyers increasingly prefer organised residential developments over standalone buildings. Planned communities offer security, shared amenities and a sense of belonging that modern urban life asks for. Yamuna Sky City, rising inside the Yamuna Asha City community, is designed for community living with privacy intact: a place where residents feel safe, connected and comfortable.
+
+![Rendering of the Yamuna Sky City tower and entrance](/media/journal/tower-entrance.jpg "Yamuna Sky City, inside the Yamuna Asha City community")
 
 ## Investment potential in emerging corridors
 

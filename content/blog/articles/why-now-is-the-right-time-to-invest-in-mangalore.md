@@ -3,8 +3,8 @@ title: "Why Now Is the Right Time to Invest in Mangalore's Fast-Developing Resid
 excerpt: "Prices in well-connected pockets are climbing, infrastructure is arriving faster than expected, and demand is genuine. The case for buying in Mangalore now, and for Kulai in particular."
 category: property-investment
 publishedAt: 2026-03-11
-featuredImage: /media/journal/coast-aerial-tower.jpg
-featuredImageAlt: "Aerial view of the Yamuna Sky City tower rising beside the Arabian Sea at Kulai"
+featuredImage: /media/journal/tower-aerial-beach.jpg
+featuredImageAlt: "Aerial rendering of the Yamuna Sky City tower beside the beach at Kulai"
 tags: [investment, mangalore, kulai, timing, asha-city]
 seoTitle: "Why Invest in Mangalore's Fast-Growing Residential Areas Now"
 seoDescription: "Why Mangalore's fast-developing residential locations, Kulai above all, are a considered choice for property investment today, and what Yamuna Homes brings to it."
@@ -18,6 +18,8 @@ The city has grown well beyond its old commercial centre. Roads connecting Kulai
 
 In practical terms, locations that were peripheral a few years ago are now desirable addresses. Our completed projects tell that story: Yamuna Garden in Mannagudda, Prakruthi in Yekkur, Yamuna Residency in Naguri, Yamuna Paradise in Kottara Chowki, Yamuna Mathias Heights in Kapikad, Yamuna Pride in Jeppinamogaru and our earliest project, Ganga Yamuna in Lower Carstreet. Each was built when its neighbourhood was still coming into its own. Today they are established, connected and sought after.
 
+![Aerial view of Mangalore city](/media/journal/mangalore-aerial.jpg "Mangalore from above")
+
 ## Why Kulai is where serious buyers are looking
 
 Kulai, on the northern stretch of Mangalore, draws buyers and investors who want sea views, growing civic infrastructure and more room than the congested core allows. This is where Yamuna Sky City is rising, inside our completed Yamuna Asha City township.
@@ -26,7 +28,7 @@ Yamuna Asha City is a 35-acre gated community with 275 plotted sites and two joi
 
 For buyers who want a long-term hold, Kulai offers something important: room to grow. Property values in areas that are still mid-development have historically appreciated better than markets that have already peaked.
 
-![Rendering of the Yamuna Sky City tower seen from the sea](/media/journal/tower-from-the-sea.jpg "Yamuna Sky City, rising inside Yamuna Asha City at Kulai")
+![Rendering of the Yamuna Sky City gate at Kulai](/media/journal/sky-city-gate.jpg "The Sky City gate inside Yamuna Asha City, Kulai")
 
 ## The southern corridor is moving too
 

@@ -3,8 +3,8 @@ title: "From Coastal Charm to Modern Luxury: The New Face of Mangalore's Real Es
 excerpt: "Mangalore's buyers now want more than a shoreline view. What that shift looks like, and how a sea-facing tower at Kulai answers it."
 category: mangalore-real-estate
 publishedAt: 2025-11-18
-featuredImage: /media/journal/coastline-clear.jpg
-featuredImageAlt: "Aerial view of the Kulai coastline with the Yamuna Sky City tower beside the beach"
+featuredImage: /media/journal/tower-night.jpg
+featuredImageAlt: "Rendering of the Yamuna Sky City tower at night, lit against the sky and reflected in the water"
 tags: [mangalore, real-estate, coastal-living, yamuna-sky-city, kulai]
 seoTitle: "The New Face of Mangalore's Real Estate"
 seoDescription: "How Mangalore's real estate is changing, from coastal charm to modern luxury: smarter planning, lifestyle-led projects and sea-facing homes at Kulai."
@@ -18,6 +18,8 @@ Mangalore's coastline has always been its magnet: the Arabian Sea, gentle waves 
 
 Yamuna Sky City at Kulai is our answer to that shift: sea-facing apartments with premium finishes, and the calm of a beach town with the refinement of a city.
 
+![Aerial rendering of the Yamuna Sky City tower on the Kulai coast](/media/journal/tower-aerial-coast.jpg "Yamuna Sky City at Kulai")
+
 ## Location plus lifestyle
 
 Modern luxury in Mangalore is not about four walls. It is about setting: quiet but connected, scenic but accessible. The Sky City address gives residents the Arabian Sea in front of them and keeps schools, hospitals and workplaces within minutes. Our [location overview](/#location) shows the journeys.
@@ -28,7 +30,7 @@ Inside, a triple-height lobby, high-speed lifts, full power backup and landscape
 
 Luxury should not feel out of reach. That means delivering not just a grand facade but smart interiors, durable materials and finishes that last. We have grown from our roots in 1993, in earth-moving and drilling, into a developer that puts sustainability, quality and timely delivery first. Sky City's design language reflects that: open balconies, sea-facing layouts, expansive glass railings, and amenities that include a multipurpose court, spa and wellness rooms and children's play areas.
 
-![Rendering of the podium infinity pool at Yamuna Sky City](/media/journal/podium-infinity-pool.jpg "The podium infinity pool, with the sea beyond")
+![Rendering of the 51st-floor sky terrace at Yamuna Sky City](/media/journal/sky-terrace.jpg "The sky terrace on the 51st floor")
 
 ## The emerging landscape
 

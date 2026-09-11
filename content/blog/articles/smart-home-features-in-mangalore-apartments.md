@@ -3,8 +3,8 @@ title: "Smart Home Features Now Standard in Mangalore Apartments"
 excerpt: "Security, connectivity, energy management and automated common areas: the features buyers now expect as standard, and how a modern tower delivers them."
 category: lifestyle
 publishedAt: 2026-06-18
-featuredImage: /media/journal/terrace-sunset-deck.jpg
-featuredImageAlt: "Rendering of the terrace deck at Yamuna Sky City at dusk"
+featuredImage: /media/journal/sunset-window.jpg
+featuredImageAlt: "A couple watching the sunset over the sea from a floor-to-ceiling window of a modern apartment"
 tags: [smart-home, technology, security, amenities, mangalore]
 seoTitle: "Top Smart Home Features in Mangalore Apartments"
 seoDescription: "The smart home features buyers now expect in Mangalore apartments, from security and connectivity to energy-efficient living, and how Yamuna Sky City provides them."
@@ -26,7 +26,7 @@ Security remains the first priority for most families. Modern communities protec
 
 A reliable connection is essential for work and daily life: video meetings, online classes, streaming, staying in touch with family. Modern apartments are designed with connectivity infrastructure running through the building, so residents get a seamless digital experience without workarounds. With remote and hybrid work still growing, this has become one of the most sought-after features in any new development.
 
-![Rendering of the podium infinity pool at Yamuna Sky City](/media/journal/podium-infinity-pool.jpg "The podium level at Yamuna Sky City")
+![A modern apartment living room with a sea view](/media/journal/apartment-living-room.jpg "A living room designed for a connected life")
 
 ## Smarter energy use
 
@@ -35,6 +35,8 @@ Energy efficiency matters more each year. Efficient electrical layouts, dedicate
 ## Automated common areas
 
 Technology is not limited to the apartment. At Sky City the shared systems do quiet work all day: eight high-speed automation lifts, full power backup, a water treatment plant of the project's own, a sewage treatment plant that returns treated water to flushing and gardens, and rainwater harvesting. Together they keep the community running smoothly and comfortably.
+
+![Rendering of the entrance lobby at Yamuna Sky City](/media/journal/lobby.jpg "The triple-height entrance lobby")
 
 ## Lifestyle through smart amenities
 

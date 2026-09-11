@@ -3,8 +3,8 @@ title: "Living Between the City and the Sea: How Mangalore Is Redefining Sea-Vie
 excerpt: "Mangalore no longer asks you to choose between convenience and calm. Why sea-facing homes feel different, and how that shaped Yamuna Sky City."
 category: lifestyle
 publishedAt: 2026-02-09
-featuredImage: /media/journal/coast-dawn-mist.jpg
-featuredImageAlt: "Dawn mist over the Arabian Sea at Kulai with the Yamuna Sky City tower on the shore"
+featuredImage: /media/journal/balcony-sea-view.jpg
+featuredImageAlt: "View from a Yamuna Sky City balcony at sunset, looking out over the Arabian Sea"
 tags: [sea-view, coastal-living, lifestyle, mangalore, yamuna-sky-city]
 seoTitle: "Sea View Apartments in Mangalore for Modern Coastal Living"
 seoDescription: "Sea-view apartment living in Mangalore, where ocean views meet smooth connectivity to the city. How Yamuna Sky City is designed around the coast."
@@ -26,7 +26,7 @@ A home by the sea alters daily routine in subtle but real ways. Rooms feel brigh
 
 Our approach is to design apartments that work with their surroundings. Sky City's layouts encourage openness, comfort and privacy without excess, and every apartment faces the water. Each element is planned to feel practical, calm and liveable.
 
-![Rendering of the terrace deck at Yamuna Sky City at sunset over the Arabian Sea](/media/journal/terrace-sunset-deck.jpg "The terrace deck at Yamuna Sky City, looking west over the sea")
+![Aerial rendering of the Yamuna Sky City tower on the Kulai coast](/media/journal/tower-aerial-coast.jpg "Between the city and the sea: the tower at Kulai")
 
 ### Sky City as a reflection of thoughtful design
 
@@ -40,7 +40,7 @@ As the city grows, many buyers worry about losing the calm they value. Mangalore
 
 Sea-facing homes have lasting appeal because their surroundings cannot be replicated. Coastal land is limited, and well-planned developments near the sea tend to stay desirable. Yamuna Sky City is positioned with that long view in mind: for homeowners it means a better quality of life, and for investors a location that keeps its relevance as the city evolves.
 
-![Rendering of the podium infinity pool at Yamuna Sky City](/media/journal/podium-infinity-pool.jpg "The podium infinity pool")
+![Rendering of the rooftop pool at Yamuna Sky City](/media/journal/rooftop-pool.jpg "The rooftop pool")
 
 ## A future shaped by the city and the sea
 

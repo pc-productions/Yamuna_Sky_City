@@ -3,8 +3,8 @@ title: "Neighbourhood Guide: The Best Localities in Mangalore for Apartment Livi
 excerpt: "A locality-by-locality look at where apartment living works best in Mangalore, from Kulai on the coast to Mannagudda, Kapikad, Kottara and beyond."
 category: buying-guides
 publishedAt: 2025-12-27
-featuredImage: /media/journal/coast-aerial-tower.jpg
-featuredImageAlt: "Aerial view of the Yamuna Sky City tower and the Kulai shoreline"
+featuredImage: /media/journal/mangalore-road-aerial.jpg
+featuredImageAlt: "Aerial view of a green, tree-lined residential road in Mangalore"
 tags: [mangalore, localities, neighbourhood-guide, kulai, apartments]
 seoTitle: "Best Localities in Mangalore for Apartment Living"
 seoDescription: "Where to live in Mangalore: a neighbourhood guide to apartment living across Kulai, Mannagudda, Kapikad, Jeppinamogaru, Kottara, Kadri, Bejai and more."
@@ -19,6 +19,8 @@ Whether you are a young family, a professional or planning for the years ahead, 
 Kulai stands out as one of the most dynamic areas in the city. It balances accessibility and tranquillity without losing urban convenience. Minutes from the Arabian Sea, it is becoming a favourite for anyone who wants open views and relaxed mornings.
 
 This is where Yamuna Sky City rises, within our Yamuna Asha City community. The tower brings contemporary design and seaside character together in apartments that feel both luxurious and grounded in everyday ease. Commutes are short, and weekend walks end at the beach. [See how Kulai connects](/#location).
+
+![Rendering of the Yamuna Asha City entrance gate at Kulai](/media/journal/asha-city-gate.jpg "The entrance to Yamuna Asha City, Kulai")
 
 ## Mannagudda: culture and connectivity
 
@@ -44,7 +46,7 @@ Each balances lifestyle, access and future value, and each makes a strong case f
 
 Mangalore mixes seaside beauty with modern convenience: green promenades where evenings feel peaceful, strong educational institutions, and a city that is walkable in parts and well connected for drivers. Choosing an apartment here is about aligning your home with the way you want to live. Some buyers want lively streets and walkable shops; others want quiet mornings and less traffic. The right locality makes everyday life feel intentional.
 
-![Rendering of the terrace deck at Yamuna Sky City at sunset](/media/journal/terrace-sunset-deck.jpg "Evening on the terrace deck at Yamuna Sky City, Kulai")
+![Rendering of the podium swimming pool at Yamuna Sky City](/media/journal/podium-pool.jpg "The podium pool at Yamuna Sky City, Kulai")
 
 ## Final thoughts
 

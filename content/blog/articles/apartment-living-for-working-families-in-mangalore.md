@@ -3,8 +3,8 @@ title: "How an Apartment in Mangalore Can Offer Working Families a Better Everyd
 excerpt: "Work, school runs, travel and time together: what a well-located, well-planned apartment community does for a busy family's week."
 category: lifestyle
 publishedAt: 2026-06-10
-featuredImage: /media/journal/podium-infinity-pool.jpg
-featuredImageAlt: "Rendering of the podium infinity pool at Yamuna Sky City with the Arabian Sea beyond"
+featuredImage: /media/journal/podium-pool.jpg
+featuredImageAlt: "Rendering of the podium swimming pool at Yamuna Sky City with the tower behind"
 tags: [families, lifestyle, amenities, security, mangalore]
 seoTitle: "Apartments in Mangalore for Working Families"
 seoDescription: "How an apartment in Mangalore offers working families convenience, connectivity, security and a better lifestyle, with Yamuna Sky City at Kulai as the example."
@@ -26,7 +26,7 @@ Modern apartment living is not just owning a home; it is a lifestyle in which ev
 
 Sky City's podium clubhouse brings that together: a swimming pool with wade and toddler pools, a gym and yoga space, indoor games, children's play areas, an amphitheatre and landscaped gardens, all inside a secure community. Weekends feel lighter and evenings become more enjoyable when leisure is downstairs.
 
-![Rendering of the terrace deck at Yamuna Sky City at sunset](/media/journal/terrace-sunset-deck.jpg "The terrace deck at Yamuna Sky City")
+![Rendering of the podium park and play spaces at Yamuna Sky City](/media/journal/podium-park.jpg "The podium park at Yamuna Sky City")
 
 ## Safety brings peace of mind
 
@@ -35,6 +35,8 @@ For working families, security is among the most important factors in choosing a
 ## Community creates social balance
 
 One underrated benefit of apartment living is the community it creates. In a busy professional life, families struggle to find time for social interaction, and residential communities bring people together naturally. Children make friends easily, neighbours meet on evening walks, and community celebrations build stronger connections, which is especially valuable for families moving to Mangalore from elsewhere. Sky City is planned to encourage that interaction while preserving privacy.
+
+![Rendering of the Yamuna Sky City gate and entrance road](/media/journal/sky-city-gate.jpg "The Sky City gate")
 
 ## A comfortable home improves work-life balance
 

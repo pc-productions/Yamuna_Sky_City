@@ -3,8 +3,8 @@ title: "Renting vs Buying a Flat in Mangalore: When Does It Make Financial Sense
 excerpt: "Renting feels flexible; owning builds something. When buying wins in a growing city like Mangalore, and why location decides the answer."
 category: property-investment
 publishedAt: 2026-06-01
-featuredImage: /media/journal/coastline-clear.jpg
-featuredImageAlt: "Aerial view of the Kulai coast and the Yamuna Sky City tower"
+featuredImage: /media/journal/home-keys.jpg
+featuredImageAlt: "A set of house keys being handed over in front of a new apartment building"
 tags: [renting, buying, finance, mangalore, kulai]
 seoTitle: "Renting vs Buying a Flat in Mangalore: Which Saves More?"
 seoDescription: "Renting or buying a flat in Mangalore? Compare the costs, the lifestyle benefits and the long-term value to decide which suits your goals."
@@ -32,11 +32,13 @@ Buying becomes practical when you plan to stay in the city for several years and
 
 Ownership also brings discipline: each home loan payment builds equity, where rent is simply an expense.
 
-![Rendering of the podium infinity pool at Yamuna Sky City](/media/journal/podium-infinity-pool.jpg "The podium pool at Yamuna Sky City")
+![A buyer and an adviser reviewing a house model and paperwork](/media/journal/buyer-consultation.jpg "Owning starts with the sums")
 
 ## The lifestyle side of owning
 
 The emotional benefits matter as much as the financial ones. Families value the stability of their own space, without lease renewals or changing terms. Ownership lets you shape the interiors to your life: a children's room, a workspace, a quiet balcony. At Sky City that comes with sea-facing apartments, a podium clubhouse and a premium residential atmosphere designed to improve everyday living.
+
+![Rendering of the podium swimming pool at Yamuna Sky City](/media/journal/podium-pool.jpg "The podium pool at Yamuna Sky City")
 
 ## Why location decides it
 

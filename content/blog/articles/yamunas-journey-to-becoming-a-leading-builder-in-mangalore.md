@@ -3,8 +3,8 @@ title: "Yamuna's Journey to Becoming a Leading Builder in Mangalore"
 excerpt: "From drilling tube wells in 1993 to a 60-level sea-facing tower: the story of Yamuna Homes and Design, the projects along the way and the values that have not changed."
 category: yamuna-homes
 publishedAt: 2025-09-08
-featuredImage: /media/journal/coast-aerial-tower.jpg
-featuredImageAlt: "Aerial view of the Yamuna Sky City tower beside the Arabian Sea at Kulai"
+featuredImage: /media/journal/tower-aerial-coast.jpg
+featuredImageAlt: "Aerial rendering of the Yamuna Sky City tower on the Kulai coast"
 tags: [yamuna-homes, history, mangalore, completed-projects]
 seoTitle: "Yamuna Homes and Design: Our Journey as Builders in Mangalore"
 seoDescription: "How Yamuna Homes and Design grew from Yamuna Drilling Enterprises in 1993 into one of Mangalore's trusted builders, project by project, and where the journey goes next."
@@ -19,6 +19,8 @@ Our first projects were small. But handing over homes to families was something 
 ## Leadership
 
 Yamuna has flourished under Managing Director Purushotham R. Shetty. With more than two decades of experience, he has consistently pressed for innovation, sustainability and uncompromising quality, and his guidance has been central in taking the company from a drilling and earth-moving enterprise to a trusted name in real estate and construction across Karnataka.
+
+![Purushotham R. Shetty, Managing Director of Yamuna Homes and Design, at his desk](/media/journal/purushotham-shetty.jpg "Purushotham R. Shetty, Managing Director")
 
 ## Our vision and mission
 
@@ -44,6 +46,8 @@ Every project was a learning experience, and every family we served shaped the s
 ## Ongoing work
 
 **Yamuna Sky City, Kulai** is the most ambitious residential tower we have undertaken: 296 sea-facing apartments in 2, 3, 4 and 5 BHK layouts across 60 levels, rising inside Yamuna Asha City. It brings together spacious layouts, natural ventilation and premium finishes, with the city behind it and the Arabian Sea in front. More than height and scale, it is about a lifestyle where families can enjoy comfort, convenience and elegance every day. [See the project](/#project).
+
+![Rendering of the Yamuna Sky City tower and entrance at Kulai](/media/journal/tower-entrance.jpg "Yamuna Sky City, Kulai")
 
 Elsewhere in the city, Yamuna Kamaldeep Twin Tower on the Pumpwell to Nanthoor highway combines commercial and residential space on one of Mangalore's busiest corridors. Details of that project are on the [Yamuna Homes and Design website](https://yamunabuilders.com/).
 

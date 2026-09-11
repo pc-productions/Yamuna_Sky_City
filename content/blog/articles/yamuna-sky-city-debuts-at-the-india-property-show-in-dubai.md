@@ -3,8 +3,8 @@ title: "Yamuna Sky City Makes Its Debut at the India Property Show in Dubai"
 excerpt: "The soft launch of Yamuna Sky City took place at The Ritz-Carlton, Dubai, before an audience with strong ties to home. Here is why Dubai, and what we heard."
 category: yamuna-sky-city
 publishedAt: 2025-09-17
-featuredImage: /media/journal/tower-from-the-sea.jpg
-featuredImageAlt: "Rendering of the Yamuna Sky City tower seen from the Arabian Sea, with the beach in the foreground"
+featuredImage: /media/journal/dubai-property-show-stand.jpg
+featuredImageAlt: "The Yamuna Sky City stand at the India Property Show in Dubai, with the tower model and the sales team"
 tags: [yamuna-sky-city, dubai, nri, launch, news]
 seoTitle: "Yamuna Sky City Debuts at the India Property Show, Dubai"
 seoDescription: "Yamuna Sky City was soft-launched at the India Property Show in Dubai. Why we chose Dubai, what the audience asked, and what the project promises."
@@ -35,6 +35,8 @@ Every good residential development begins with its location, and Kulai's strengt
 Choosing Dubai for the soft launch was no accident. The city is a meeting place, a crossroads where aspirations from many cultures converge. More importantly, it is home to a large Indian community who, despite their success abroad, keep strong ties to the towns and cities they come from.
 
 At the India Property Show we spoke with many such families. Their questions went beyond price and floor plans. They asked what it would feel like to live there. Could they wake to the sound of the sea? Would their children have room to play? Could they return after years abroad and still feel at home? These are the questions that matter, and it was reassuring to see how naturally the project answered them.
+
+![Yamuna Homes and Design at the India Property Show in Dubai, meeting visitors at the stand](/media/journal/dubai-property-show-guests.jpg "Meeting visitors at the India Property Show, Dubai")
 
 ## More than a project
 
