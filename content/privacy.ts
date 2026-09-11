@@ -67,6 +67,7 @@ export const privacyPolicy = {
       bullets: [
         "Our sales team and authorised representatives who handle enquiries for the project.",
         "Service providers who process data on our behalf and under our instructions: the provider of our lead-management (CRM) and workflow-automation system, our website hosting provider, the media content-delivery provider that serves the website’s video, and Google — Google Workspace (Google Sheets), where we keep our own record of enquiries, and Google Tag Manager, Google Analytics and Google Ads for analytics and advertising measurement.",
+        "Meta Platforms (Facebook and Instagram). With your consent, the Meta Pixel and related tools share information about your visit and any enquiry you make with Meta so that we can measure our advertising on Facebook and Instagram and show you relevant advertisements there. If you enquire through a lead form inside Facebook or Instagram, Meta collects the details you enter and passes them to us; Meta’s own privacy policy applies to its collection of that information.",
         "Messaging platforms you choose to contact us through, such as WhatsApp, whose own privacy policies apply to that communication.",
         "Courts, regulators, law-enforcement agencies and professional advisers where the law requires it or where necessary to establish, exercise or defend legal claims.",
         "A successor entity in the event of a merger, acquisition or transfer of the project, subject to this Policy.",
@@ -75,9 +76,9 @@ export const privacyPolicy = {
     {
       heading: "5. Cookies and analytics",
       paragraphs: [
-        "This website uses Google Tag Manager to manage analytics and advertising tags. The tags may set cookies or use similar technologies to recognise your browser, measure visits and attribute enquiries and conversions to advertising campaigns.",
+        "This website uses Google Tag Manager to manage analytics and advertising tags, including Google Analytics, Google Ads and the Meta Pixel (Facebook and Instagram). The tags may set cookies or use similar technologies to recognise your browser, measure visits and attribute enquiries and conversions to advertising campaigns.",
         "No analytics or advertising cookie is set until you choose “Accept” in the cookie bar shown on your first visit. If you choose “Decline”, these tags remain disabled. Your choice is stored in your browser so that it is remembered on later visits, and you can change it at any time using the “Cookie preferences” link in the footer. You can also delete or block cookies through your browser settings, although some parts of the website may then work less well.",
-        "Information collected through Google services is processed by Google in accordance with Google’s privacy policy, which may involve transfer of data outside India.",
+        "Information collected through Google services is processed by Google in accordance with Google’s privacy policy, and information collected through the Meta Pixel is processed by Meta Platforms in accordance with Meta’s privacy policy. Either may involve transfer of data outside India. You can also manage the advertisements Meta shows you through the ad preferences in your Facebook and Instagram account settings.",
       ],
     },
     {

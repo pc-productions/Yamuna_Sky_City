@@ -161,7 +161,7 @@ export const legal = {
   grievanceOfficer: { name: "Cyril Joselin Rodrigues", email: "" }, // email: falls back to contact.email until a dedicated privacy address exists
   /** Date the privacy policy was approved, e.g. "7 September 2026".
       Empty → the "Last updated" line is hidden. */
-  privacyLastUpdated: "",
+  privacyLastUpdated: "1 September 2026",
   disclaimer:
     "All images, plans and information are indicative and subject to change without notice. Details herein do not constitute an offer or contract.",
 } as const;
