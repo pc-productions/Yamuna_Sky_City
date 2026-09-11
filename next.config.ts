@@ -20,6 +20,15 @@ const nextConfig: NextConfig = {
       { source: "/brochure", destination: "/#contact", permanent: true },
       { source: "/amenities", destination: "/#project", permanent: true },
       { source: "/contact-me", destination: "/#contact", permanent: true },
+      // Journal articles retired when the Journal was rebuilt from the
+      // Yamuna Homes and Design blog (Sept 2026). Each old slug goes to
+      // the article that now covers the same ground.
+      { source: "/blog/a-guide-to-buying-a-luxury-apartment-in-mangalore", destination: "/blog/best-localities-in-mangalore-for-apartment-living", permanent: true },
+      { source: "/blog/what-should-you-look-for-when-choosing-a-luxury-apartment", destination: "/blog/inside-yamuna-sky-city-lifestyle-location-and-luxury", permanent: true },
+      { source: "/blog/a-practical-guide-for-nris-buying-property-in-mangalore", destination: "/blog/yamuna-sky-city-debuts-at-the-india-property-show-in-dubai", permanent: true },
+      { source: "/blog/kulai-and-new-mangalore-understanding-the-areas-growing-connectivity", destination: "/blog/how-mangalore-infrastructure-is-changing-where-people-live", permanent: true },
+      { source: "/blog/why-mangalore-is-emerging-as-a-premium-coastal-real-estate-destination", destination: "/blog/the-new-face-of-mangalore-real-estate", permanent: true },
+      { source: "/blog/why-sea-facing-homes-continue-to-attract-luxury-homebuyers", destination: "/blog/living-between-the-city-and-the-sea", permanent: true },
     ];
   },
   async headers() {

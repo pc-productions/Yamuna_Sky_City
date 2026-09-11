@@ -24,9 +24,9 @@ export const journalCopy = {
   headlineLines: ["Ideas, Insights &", "Coastal Living."],
   supportingLine: "Explore perspectives on life, property and the evolving landscape of Mangalore.",
   /** <title> / description for /blog. */
-  seoTitle: "Journal — Mangalore Real Estate, Coastal Living & Buying Guides",
+  seoTitle: "Journal — Mangalore Real Estate, Coastal Living & Project News",
   seoDescription:
-    "Perspectives on Mangalore real estate, sea-facing living, NRI property and luxury apartment buying guides from Yamuna Sky City, Kulai, New Mangalore.",
+    "News from Yamuna Sky City and perspectives on Mangalore real estate, sea-facing living, neighbourhoods and property investment from Yamuna Homes and Design, Kulai, New Mangalore.",
   breadcrumbHome: "Home",
   breadcrumbJournal: "Journal",
 } as const;

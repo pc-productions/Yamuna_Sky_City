@@ -12,7 +12,8 @@ export type CategorySlug =
   | "lifestyle"
   | "buying-guides"
   | "nri-property"
-  | "yamuna-sky-city";
+  | "yamuna-sky-city"
+  | "yamuna-homes";
 
 export type Category = {
   slug: CategorySlug;
@@ -51,6 +52,11 @@ export const categories: readonly Category[] = [
     slug: "yamuna-sky-city",
     label: "Yamuna Sky City",
     description: "Notes from the project itself: the tower, the site and the thinking behind them.",
+  },
+  {
+    slug: "yamuna-homes",
+    label: "Yamuna Homes & Design",
+    description: "The developer behind Yamuna Sky City: our history, our completed projects and how we build.",
   },
 ] as const;
 

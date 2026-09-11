@@ -21,6 +21,21 @@ database, no CMS and no admin screen; publishing is a commit.
 | `components/journal/*` | Cards, featured story, category strip, breadcrumb, CTA, brochure button, tracking |
 | `app/globals.css` → `.journal-prose` | The reading column's typography |
 
+## Where the articles come from
+
+The Journal was rebuilt in September 2026 from the Yamuna Homes and
+Design blog (yamunabuilders.com/insights, exported from the WordPress
+database backup). Every article whose subject is Yamuna Sky City or
+Kulai was adapted for this site: same facts, same dates, wording
+reworked so the two sites do not publish identical text, internal
+links pointed at this site's sections, other-project promotion trimmed.
+Project figures were checked against the brochure before being kept.
+Two event notes (the Lamborghini launch, the Mangalore Meri Jaan
+feature) are `draft: true` until their original photographs are added
+under `public/media/journal/`. The remaining, Mangalore-general posts
+on the old blog (RERA, NRI booking, 2 vs 3 BHK, buyer checklists) were
+not migrated; they can be added the same way when wanted.
+
 ## Adding an article
 
 1. Create `content/blog/articles/<slug>.md`. The slug must be lowercase
