@@ -2,6 +2,26 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Keep serverless function bundles small (Vercel Hobby counts every
+  // retained deployment's function size against a 10 GB quota). The OG /
+  // Twitter image routes read `public/media/brand` and `public/media/
+  // journal` with fs, which makes the tracer pull in all of `public/`;
+  // everything else under it is served statically and never read by a
+  // function. Sharp is only used by Next's built-in image optimiser, which
+  // Vercel replaces with its own image service, so none of its binaries
+  // are needed inside a function there (local `next start` still has it).
+  outputFileTracingExcludes: {
+    "*": [
+      "./public/media/brochure/**",
+      "./public/media/location/**",
+      "./public/media/posters/**",
+      "./public/media/people/**",
+      "./public/*.mp4",
+      "./public/*.webm",
+      "./node_modules/sharp/**",
+      "./node_modules/@img/**",
+    ],
+  },
   turbopack: {
     root: process.cwd(),
   },
