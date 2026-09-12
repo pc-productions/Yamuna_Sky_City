@@ -21,10 +21,12 @@ export function LocationAtmosphere() {
       />
       {/* Frosted backdrop blur layer — held at full strength across the
           whole editorial column so it evidently sits behind the text,
-          then dissolves toward the tower. */}
+          then dissolves toward the tower. Mouse devices only: on Android
+          tablets this masked blur over the parallax image rendered as a
+          hard blurred rectangle and made scrolling stutter. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[52%] backdrop-blur-[14px] [mask-image:linear-gradient(90deg,black_0%,black_55%,transparent_100%)]"
+        className="pointer-events-none absolute inset-y-0 left-0 z-[1] hidden w-[52%] backdrop-blur-[14px] [mask-image:linear-gradient(90deg,black_0%,black_55%,transparent_100%)] fine:block"
       />
       {/* Boundary melts — the photograph surfaces out of the light
           section above and dissolves again before the Ember field

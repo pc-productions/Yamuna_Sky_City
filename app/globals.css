@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* `fine:` — mouse/trackpad devices only. Used to reserve GPU-heavy
+   effects (backdrop blur over large, masked, transformed layers) for
+   hardware that renders them well; touch tablets and phones get the
+   same composition without the blur. */
+@custom-variant fine (@media (hover: hover) and (pointer: fine));
+
 /* ---------------------------------------------------------------------- *
  * Design tokens — Yamuna Sky City (official brand guidelines)
  *

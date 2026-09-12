@@ -3,14 +3,14 @@
 import { useEffect, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { isNarrowViewport, prefersReducedMotion } from "@/lib/motion";
+import { isCoarsePointer, isNarrowViewport, prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Scroll-linked drift for media: the element travels `percent` of its
  * own height (from -percent/2 to +percent/2) while its trigger crosses
  * the viewport. Transform only, scrubbed with a short lag so it feels
- * physical rather than mechanical. Off on small screens and under
- * reduced motion — those visitors see the element at rest.
+ * physical rather than mechanical. Off on small screens, on touch
+ * devices and under reduced motion — those visitors see the element at rest.
  */
 export function useParallax(
   ref: RefObject<HTMLElement | null>,
@@ -18,7 +18,9 @@ export function useParallax(
 ) {
   useEffect(() => {
     const el = ref.current;
-    if (!el || prefersReducedMotion() || isNarrowViewport()) return;
+    // Off on touch devices as well as small screens: on tablets the
+    // scrubbed drift kept moving after the finger lifted and cost frames.
+    if (!el || prefersReducedMotion() || isNarrowViewport() || isCoarsePointer()) return;
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       gsap.fromTo(

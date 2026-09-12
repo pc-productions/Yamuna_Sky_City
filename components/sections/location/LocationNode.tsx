@@ -56,7 +56,7 @@ export function LocationNode({
           className="group flex flex-col items-center outline-offset-4"
         >
           <div
-            className="flex aspect-square w-[4.86cqw] items-center justify-center rounded-full bg-white/95 text-[#0B1B33] shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-[6px] transition-[scale,box-shadow] duration-300 ease-out group-hover:scale-[1.04] group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.16)] group-focus-visible:scale-[1.04]"
+            className="flex aspect-square w-[4.86cqw] items-center justify-center rounded-full bg-white/95 text-[#0B1B33] shadow-[0_8px_30px_rgba(0,0,0,0.10)] fine:backdrop-blur-[6px] transition-[scale,box-shadow] duration-300 ease-out group-hover:scale-[1.04] group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.16)] group-focus-visible:scale-[1.04]"
           >
             {/* Phosphor icon components render their own <svg> and
                 inherit the bubble's navy via currentColor. */}
