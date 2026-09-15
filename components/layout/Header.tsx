@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/content/nav";
 import { ctaLabels } from "@/content/site";
@@ -90,7 +90,21 @@ const surfaceByTone: Record<HeaderTone, string> = {
 
 export function Header({ onEnquire }: { onEnquire: () => void }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
   const pathname = usePathname();
+
+  // Escape closes the open menu and hands focus back to its button, as
+  // a keyboard user (tablet with a keyboard, foldable) expects.
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isMenuOpen]);
   const isHome = pathname === "/";
   const onLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     // With Lenis active, components/motion/SmoothScroll handles "#top".
@@ -208,6 +222,7 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         </div>
 
         <button
+          ref={menuButtonRef}
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={isMenuOpen}
@@ -232,7 +247,10 @@ export function Header({ onEnquire }: { onEnquire: () => void }) {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className="flex max-h-[calc(100dvh-4rem)] flex-col overflow-y-auto border-t border-line/70 bg-paper px-5 py-3 lg:hidden"
+          /* Capped so the panel ends above the fixed bottom action bar (3.25rem
+             plus the phone's safe area): on a phone held sideways the panel
+             used to run underneath it and its own buttons were unreachable. */
+          className="flex max-h-[calc(100dvh-4rem-3.25rem-env(safe-area-inset-bottom))] flex-col overflow-y-auto border-t border-line/70 bg-paper px-5 py-3 lg:hidden"
         >
           {navLinks.map((link) => (
             <a
