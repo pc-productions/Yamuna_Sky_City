@@ -32,7 +32,10 @@ export function LocationFeatureCard() {
     /* Raised to the approved position: bottom edge ~24% up the section,
        left-aligned with the editorial column's Container inset. */
     <div className="pointer-events-none absolute inset-x-0 bottom-[24%] z-[5] hidden lg:block">
-      <Container>
+      {/* Above 1920px the inset follows the section width (see
+          LocationEditorial) so the card keeps clear of the AJ Hospital
+          bubble, which is anchored to the photograph. */}
+      <Container className="2xl:max-w-none 2xl:px-[min(calc((100%_-_80rem)_/_2_+_51px),19.3%)]">
         <div data-loc-card="" className="pointer-events-auto w-[clamp(16rem,19vw,20.5rem)]">
           <HighlightRows className="rounded-[20px] border border-white/35 bg-white/80 px-5 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.10)] fine:bg-white/60 fine:backdrop-blur-[12px]" />
         </div>

@@ -13,14 +13,20 @@ import { LogoStar } from "@/components/sections/location/icons";
  *
  * Positioned with the SAME Container + top padding as every other
  * section (pt-8 sm:pt-10), so the section's content starts at the
- * identical height and left inset sitewide. The column is capped at
- * 17.5rem so it stays clear of the Beach bubble at wide viewports.
+ * identical height and left inset sitewide — up to 1920px. Beyond that
+ * the centred Container keeps moving inward while the photograph (and
+ * its bubbles) stay anchored to the section width, so from 2xl the inset
+ * is min(Container's own inset, 19.3% of the width): identical to the
+ * Container up to 1920px (where the two are equal), then a share of the
+ * width that keeps tracking the photograph. The column is wide enough
+ * for its heading at the largest type size and still clears the Beach
+ * bubble at every width.
  */
 export function LocationEditorial() {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 z-[5]">
-      <Container className="pt-8 sm:pt-10">
-        <div className="pointer-events-auto flex max-w-[14.5rem] flex-col lg:max-w-[14.75rem] xl:max-w-[16.5rem] 2xl:max-w-[18.5rem]">
+      <Container className="pt-8 sm:pt-10 2xl:max-w-none 2xl:px-[min(calc((100%_-_80rem)_/_2_+_51px),19.3%)]">
+        <div className="pointer-events-auto flex max-w-[14.5rem] flex-col lg:max-w-[14.75rem] xl:max-w-[16.5rem] 2xl:max-w-[20.5rem]">
           {/* Sitewide Section Eyebrow */}
           <span data-loc-eyebrow="" className="eyebrow block text-brand tracking-[0.22em]">
             {locationContent.eyebrow}
