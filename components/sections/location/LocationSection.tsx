@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { connectivity, locationContent } from "@/content/location";
+import { isCoarsePointer } from "@/lib/motion";
 import { locationImage } from "@/content/media";
 import { Container } from "@/components/ui/Container";
 import { CoverFrame } from "@/components/sections/location/CoverFrame";
@@ -64,13 +65,22 @@ export function LocationSection() {
       return () => cancelAnimationFrame(raf);
     }
     gsap.registerPlugin(ScrollTrigger);
+    // The photograph's own fade and settle zoom repaint the full-size,
+    // edge-masked image on every frame for ~2.6 s. Mouse devices take
+    // that in stride; on Android tablets it starved the rasteriser
+    // while the visitor scrolled and the section tore. Touch devices
+    // therefore show the photograph at rest from the start and only
+    // the light overlays (type, rings, lines, bubbles, card) animate.
+    const animatePhoto = !isCoarsePointer();
     const ctx = gsap.context(() => {
       // Author-time markup is the finished state; hide via GSAP so the
       // section degrades to the complete composition without JS.
       // Opacity on the masked wrapper; the settle zoom on the img INSIDE
       // it, so the feathered edges stay perfectly still while animating.
-      gsap.set("[data-loc-bg]", { opacity: 0 });
-      gsap.set("[data-loc-bg] img", { scale: 1.05 });
+      if (animatePhoto) {
+        gsap.set("[data-loc-bg]", { opacity: 0 });
+        gsap.set("[data-loc-bg] img", { scale: 1.05 });
+      }
       gsap.set("[data-loc-atmo]", { opacity: 0 });
       gsap.set("[data-loc-eyebrow]", { opacity: 0, y: 15 });
       gsap.set("[data-loc-heading]", { opacity: 0, y: 20 });
@@ -87,9 +97,14 @@ export function LocationSection() {
         defaults: { ease: "power3.out" },
         onComplete: () => setSettled(true),
       });
-      tl.to("[data-loc-bg]", { opacity: 1, duration: 1.9, ease: "power2.out" }, 0)
-        .to("[data-loc-bg] img", { scale: 1, duration: 2.6, ease: "power2.out" }, 0)
-        .to("[data-loc-atmo]", { opacity: 1, duration: 1.4 }, 0.2)
+      if (animatePhoto) {
+        tl.to("[data-loc-bg]", { opacity: 1, duration: 1.9, ease: "power2.out" }, 0).to(
+          "[data-loc-bg] img",
+          { scale: 1, duration: 2.6, ease: "power2.out" },
+          0,
+        );
+      }
+      tl.to("[data-loc-atmo]", { opacity: 1, duration: 1.4 }, 0.2)
         .to("[data-loc-eyebrow]", { opacity: 1, y: 0, duration: 0.7 }, 0.2)
         .to("[data-loc-heading]", { opacity: 1, y: 0, duration: 0.8 }, 0.28)
         .to("[data-loc-divider]", { scaleX: 1, duration: 0.6 }, 0.42)

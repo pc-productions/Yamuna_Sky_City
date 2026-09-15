@@ -65,16 +65,27 @@ export function Hero({ active }: { active: boolean }) {
     const reduced = prefersReducedMotion();
     const ctx = gsap.context(() => {
       const video = () => videoRef.current;
+      // Once the story has fully covered the film, hide the whole hero
+      // layer as well as pausing it. The sections above are opaque, but
+      // on Android tablets Chrome paints them in tiles, and while a
+      // heavy section (the Location composition) is still rasterising,
+      // its missing tiles are transparent — the sticky film underneath
+      // showed through as a torn, dimmed duplicate of the tower. A
+      // hidden layer cannot leak through anything. Evaluated on every
+      // refresh too, so a page restored mid-scroll starts correct.
+      const sync = (self: ScrollTrigger) => {
+        const covered = self.progress >= 1;
+        root.style.visibility = covered ? "hidden" : "";
+        if (covered) video()?.pause();
+        else video()?.play().catch(() => {});
+      };
       const st = {
         trigger: next,
         start: "top bottom",
         end: "top top",
-        onLeave: () => video()?.pause(),
-        onEnterBack: () => {
-          video()
-            ?.play()
-            .catch(() => {});
-        },
+        onLeave: sync,
+        onEnterBack: sync,
+        onRefresh: sync,
       };
       if (reduced) {
         ScrollTrigger.create(st);
