@@ -145,7 +145,11 @@ export function LocationSection() {
          between sections — this way the photograph always meets the
          neighbouring sections edge to edge. (On a 16:9 display this IS
          a full screen.) */
-      className="relative scroll-mt-16 overflow-hidden bg-paper-muted lg:h-[56.28vw] xl:scroll-mt-18"
+      /* White ground on the desktop composition: the photograph's feathered
+         edges and the white atmosphere dissolve into it, and with a classic
+         scrollbar (Windows) the frame is a few px shorter than 56.28vw — a
+         tinted ground showed as a faint line at the top edge. */
+      className="relative scroll-mt-16 overflow-hidden bg-paper-muted lg:h-[56.28vw] lg:bg-white xl:scroll-mt-18"
       style={{ "--tower-x": `${towerX}%`, "--tower-y": `${towerY}%` } as CSSProperties}
     >
       {/* ------------------------------------------------------------ *
